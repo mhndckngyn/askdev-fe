@@ -1,0 +1,38 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  padding-top: var(--mantine-spacing-md);
+  padding-bottom: var(--mantine-spacing-md);
+  background-color: rgba(var(--mantine-color-body-rgb), 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.homeButton {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  text-decoration: none;
+  font-size: var(--mantine-font-size-xl);
+  color: var(--mantine-color-text);
+  font-weight: bold;
+}
+
+.search {
+  flex: 1;
+  max-width: 400px;
+}
+
+.searchPopover {
+  max-width: 400px;
+}
+
+.helper {
+  font-family: var(--mantine-font-family-monospace);
+  font-size: var(--mantine-font-size-sm);
+  margin-top: 1.5px;
+  color: var(--mantine-color-dimmed);
+}
+
+.helperDescription {
+  font-size: var(--mantine-font-size-sm);
+}
