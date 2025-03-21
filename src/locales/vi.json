@@ -9,7 +9,7 @@
   "search-question-status": "Tìm theo trạng thái câu hỏi",
   "search-exact-phrase": "Khớp chính xác cụm từ",
   "welcome-back": "Chào mừng trở lại 🎉",
-  "join-community": "Tham gia cùng chúng tôi ❤️",
+  "join-community": "Tham gia cùng chúng tôi ",
   "enter-email": "Nhập email",
   "password": "Mật khẩu",
   "enter-password": "Nhập mật khẩu",
@@ -26,5 +26,11 @@
   "choose-username": "Chọn tên người dùng",
   "username-length": "Tên người dùng có ít nhất 4 ký tự.",
   "confirm-password": "Xác nhận mật khẩu",
-  "password-mismatch": "Mật khẩu không khớp"
+  "password-mismatch": "Mật khẩu không khớp",
+  "dev-community": "Cộng đồng dành cho lập trình viên",
+  "page-not-found": "Hmmm. Trang bạn đang tìm không tồn tại.",
+  "go-home": "Quay về trang chủ",
+  "error.banned-title": "Tài khoản bị tạm dừng",
+  "error.banned-description-1": "Tài khoản của bạn đã bị tạm dừng do vi phạm tiêu chuẩn cộng đồng.",
+  "error.banned-description-2": "Liên hệ với chúng tôi để biết thêm thông tin."
 }

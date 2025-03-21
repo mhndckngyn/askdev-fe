@@ -9,7 +9,7 @@
   "search-question-status": "Search question status",
   "search-exact-phrase": "Search exact phrase",
   "welcome-back": "Welcome back 🎉",
-  "join-community": "Join our community ❤️",
+  "join-community": "Join our community 🙋",
   "enter-email": "Enter your email",
   "password": "Password",
   "enter-password": "Enter your password",
@@ -26,5 +26,11 @@
   "choose-username": "Pick a username",
   "username-length": "Username has at least 4 letters.",
   "confirm-password": "Confirm password",
-  "password-mismatch": "Passwords do not match."
+  "password-mismatch": "Passwords do not match.",
+  "dev-community": "A community for developers",
+  "page-not-found": "Hmmm. The page you're looking for doesn't exist.",
+  "go-home": "Go back to Home",
+  "error.banned-title": "Account suspended",
+  "error.banned-description-1": "Your account has been suspended due to violation of our community standards.",
+  "error.banned-description-2": "Contact us for more information."
 }

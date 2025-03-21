@@ -6,7 +6,6 @@ import {
   Flex,
   Image,
   Popover,
-  SimpleGrid,
   Stack,
   Text,
   TextInput,
@@ -42,22 +41,25 @@ export default function NavBar() {
   const { t } = useTranslation();
 
   const location = useLocation();
+
   const hideSearchBar = ["/welcome"].includes(location.pathname);
   const hideLogins = ["/welcome"].includes(location.pathname);
 
   return (
     <>
-      <SimpleGrid cols={3} spacing="lg" className={styles.navbar}>
+      <div className={styles.navbar}>
         {/* Home button */}
         <Box>
           <Link to="/" className={styles.homeButton}>
-            <Image src={logo} h={32} w={32} />
-            <span>AskDev</span>
+            <Image hidden src={logo} h={32} w={32} />
+            <Text visibleFrom="sm" size="xl" fw="bold">
+              AskDev
+            </Text>
           </Link>
         </Box>
 
-        {/* Search bar with search tips*/}
-        <Center>
+        {/* Search bar with search tips */}
+        <Center flex={1}>
           {!hideSearchBar && (
             <Popover width="target">
               <Popover.Target>
@@ -101,16 +103,13 @@ export default function NavBar() {
                 variant="default">
                 {t("login")}
               </Button>
-              <Button
-                component={Link}
-                to="/welcome?tab=signup"
-                variant="default">
+              <Button component={Link} to="/welcome?tab=signup">
                 {t("signup")}
               </Button>
             </Fragment>
           )}
         </Flex>
-      </SimpleGrid>
+      </div>
     </>
   );
 }

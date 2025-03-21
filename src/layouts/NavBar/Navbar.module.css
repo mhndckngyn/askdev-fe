@@ -1,4 +1,7 @@
 .navbar {
+  /* change to grid on big screen, flex on small screen with xl spacing  */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   position: sticky;
   top: 0;
   padding-top: var(--mantine-spacing-md);
@@ -12,18 +15,11 @@
   align-items: center;
   gap: var(--mantine-spacing-sm);
   text-decoration: none;
-  font-size: var(--mantine-font-size-xl);
   color: var(--mantine-color-text);
-  font-weight: bold;
 }
 
 .search {
-  flex: 1;
-  max-width: 400px;
-}
-
-.searchPopover {
-  max-width: 400px;
+  width: clamp(500px, 100%, 800px);
 }
 
 .helper {
@@ -35,4 +31,17 @@
 
 .helperDescription {
   font-size: var(--mantine-font-size-sm);
+}
+
+@media (max-width: 62em) {
+  /* md */
+  .navbar {
+    display: flex;
+    gap: var(--mantine-spacing-xl);
+  }
+
+  .search {
+    width: auto;
+    flex-grow: 1;
+  }
 }
