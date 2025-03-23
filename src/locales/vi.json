@@ -32,5 +32,9 @@
   "go-home": "Quay về trang chủ",
   "error.banned-title": "Tài khoản bị tạm dừng",
   "error.banned-description-1": "Tài khoản của bạn đã bị tạm dừng do vi phạm tiêu chuẩn cộng đồng.",
-  "error.banned-description-2": "Liên hệ với chúng tôi để biết thêm thông tin."
+  "error.banned-description-2": "Liên hệ với chúng tôi để biết thêm thông tin.",
+  "tags-title": "Thẻ chủ đề",
+  "tags-title-description": "Thẻ là một từ khóa hoặc nhãn dùng để phân loại câu hỏi của bạn cùng với các câu hỏi tương tự khác. Sử dụng thẻ phù hợp giúp người khác dễ dàng tìm thấy và trả lời câu hỏi của bạn.",
+  "search-tags": "Tìm kiếm tên thẻ",
+  "questions-count": "câu hỏi"
 }

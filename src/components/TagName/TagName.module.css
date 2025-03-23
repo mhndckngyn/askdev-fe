@@ -1,0 +1,13 @@
+.tag {
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--mantine-color-text);
+  background-color: var(--mantine-color-gray-light);
+  padding: 0.3em 0.5em;
+  border-radius: var(--mantine-radius-sm);
+}
+
+.tag:hover {
+  background-color: var(--mantine-color-gray-light-hover);
+}

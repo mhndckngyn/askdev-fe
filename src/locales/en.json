@@ -32,5 +32,9 @@
   "go-home": "Go back to Home",
   "error.banned-title": "Account suspended",
   "error.banned-description-1": "Your account has been suspended due to violation of our community standards.",
-  "error.banned-description-2": "Contact us for more information."
+  "error.banned-description-2": "Contact us for more information.",
+  "tags-title": "Tags",
+  "tags-title-description": "A tag is a keyword or label that categorizes your question with other, similar questions. Using the right tags makes it easier for others to find and answer your question.",
+  "search-tags": "Filter by tag name",
+  "questions-count": "questions"
 }

@@ -7,6 +7,8 @@
 .app > * {
   padding-left: 150px;
   padding-right: 150px;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 
 @media (max-width: 75em) {

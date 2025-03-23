@@ -1,13 +1,13 @@
 .navbar {
-  /* change to grid on big screen, flex on small screen with xl spacing  */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   position: sticky;
+  z-index: var(--mantine-z-index-app);
   top: 0;
-  padding-top: var(--mantine-spacing-md);
-  padding-bottom: var(--mantine-spacing-md);
-  background-color: rgba(var(--mantine-color-body-rgb), 0.8);
-  backdrop-filter: blur(10px);
+  padding-top: var(--mantine-spacing-sm);
+  padding-bottom: var(--mantine-spacing-sm);
+  background-color: var(--mantine-color-body);
+  border-bottom: 1px solid var(--mantine-color-default-border);
 }
 
 .homeButton {
