@@ -1,10 +1,10 @@
-import { TagsListExample } from "@/mocks";
-import { TagType } from "@/types/type";
+import { mockTagList } from "@/mocks";
+import Tag from "@/types/Tag";
 import { Pagination, Text, TextInput, Title } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import TagsList from "./TagsList";
+import TagsList from "./partials/TagsList";
 import styles from "./TagsPage.module.css";
 
 const timeout = 700;
@@ -14,7 +14,7 @@ export default function TagsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
-  const [tags, setTags] = useState<TagType[]>(TagsListExample);
+  const [tags, setTags] = useState<Tag[]>(mockTagList);
   const [page, setPage] = useState(1);
 
   const handleInput = () => {
@@ -49,18 +49,14 @@ export default function TagsPage() {
       <TextInput
         ref={searchInputRef}
         onChange={handleInput}
-        placeholder={t("search-tags")}
+        placeholder={t("filter-tag")}
         leftSection={<IconSearch size={16} />}
         radius="md"
         className={styles.search}
       />
       <TagsList tags={tags} />
       {/* change total */}
-      <Pagination
-        total={20}
-        onChange={setPage}
-        className={styles.pagination}
-      />{" "}
+      <Pagination total={20} onChange={setPage} className={styles.pagination} />
     </div>
   );
 }

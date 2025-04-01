@@ -1,11 +1,11 @@
-import TagName from "@/components/TagName";
-import { TagType } from "@/types/type";
+import TagHoverCard from "@/components/TagHoverCard";
+import Tag from "@/types/Tag";
 import { Grid, Group, Text } from "@mantine/core";
-import styles from "./TagsPage.module.css";
+import styles from "../TagsPage.module.css";
 import { useTranslation } from "react-i18next";
 
 type TagsListProps = {
-  tags: TagType[];
+  tags: Tag[];
 };
 
 export default function TagsList({ tags }: TagsListProps) {
@@ -17,7 +17,7 @@ export default function TagsList({ tags }: TagsListProps) {
         <Grid.Col key={tag.id} span={{ base: 6, md: 4, lg: 3 }}>
           <div className={styles.tagItem}>
             <Group gap="xs">
-              <TagName name={tag.name} />
+              <TagHoverCard id={tag.name} name={tag.name} />
               <Text size="sm">
                 {tag.questionsAllTime} {t("questions-count")}
               </Text>

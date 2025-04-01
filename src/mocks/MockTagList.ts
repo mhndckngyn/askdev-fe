@@ -1,6 +1,6 @@
-import { TagType } from "../types/type";
+import Tag from "@/types/Tag";
 
-const TagsListExample: TagType[] = [
+const mockTagList: Tag[] = [
   {
     id: "1",
     name: "javascript",
@@ -147,4 +147,4 @@ const TagsListExample: TagType[] = [
   },
 ];
 
-export default TagsListExample;
+export default mockTagList;

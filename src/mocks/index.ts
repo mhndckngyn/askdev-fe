@@ -1,1 +1,1 @@
-export { default as TagsListExample } from "./TagsListExample";
+export { default as mockTagList } from "./MockTagList";
