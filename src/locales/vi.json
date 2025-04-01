@@ -113,5 +113,16 @@
     "noTags": "Bạn cần chọn ít nhất một thẻ chủ đề cho câu hỏi.",
     "maxTags": "Bạn chỉ có thể chọn tối đa 5 thẻ chủ đề. Xóa một thẻ để thêm thẻ khác.",
     "submit": "Đăng câu hỏi"
+  },
+  "profilePage": {
+    "editProfile": "Chỉnh sửa hồ sơ",
+    "aboutMe": "Về tôi",
+    "featuredQuestions": "Câu hỏi tiêu biểu",
+    "featuredAnswers": "Câu trả lời tiêu biểu",
+    "memberSince": "Thành viên kể từ",
+    "questionPosted": "Số câu hỏi",
+    "answerGiven": "Số trả lời",
+    "upvoteReceived": "Upvote đã nhận",
+    "tagsOfInterest": "Chủ đề quan tâm"
   }
 }

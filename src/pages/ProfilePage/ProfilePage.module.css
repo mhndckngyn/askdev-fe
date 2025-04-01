@@ -1,0 +1,74 @@
+.loader {
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.name {
+  font-size: var(--mantine-h2-font-size);
+  font-weight: var(--mantine-h2-font-weight);
+}
+
+.stats {
+  align-self: stretch;
+}
+
+.statLabel {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  color: var(--mantine-color-dimmed);
+  font-size: var(--mantine-font-size-sm);
+}
+
+.statNumber {
+  font-size: var(--mantine-h4-font-size);
+  font-weight: var(--mantine-h4-font-weight);
+}
+
+.github {
+  display: inline-flex;
+  text-align: center;
+  gap: 6px;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 2.5fr;
+  gap: var(--mantine-spacing-md);
+}
+
+.sectionTitle {
+  font-size: var(--mantine-h3-font-size);
+  font-weight: var(--mantine-h3-font-weight);
+  margin-bottom: var(--mantine-spacing-md);
+}
+
+.box {
+  padding: var(--mantine-spacing-md);
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-default);
+}
+
+.postContainer {
+  padding: var(--mantine-spacing-md);
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-default);
+}
+
+.postItem:not(:last-child) {
+  margin-bottom: var(--mantine-spacing-sm);
+}
+
+.postTitle {
+  flex: 1;
+}
+
+.postUpvoteBadge {
+  min-width: 50px;
+}
+
+.subtext {
+  color: var(--mantine-color-dimmed);
+  font-size: var(--mantine-font-size-sm);
+}

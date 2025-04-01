@@ -30,6 +30,7 @@
     "@tiptap/pm": "^2.11.5",
     "@tiptap/react": "^2.11.6",
     "@tiptap/starter-kit": "^2.11.5",
+    "clsx": "^2.1.1",
     "dompurify": "^3.2.4",
     "i18next": "^24.2.3",
     "i18next-browser-languagedetector": "^8.0.4",

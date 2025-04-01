@@ -113,5 +113,16 @@
     "noTags": "You need to choose at least 1 tag for your question.",
     "maxTags": "You can only choose at most 5 tags. Remove a tag to add another.",
     "submit": "Submit question"
+  },
+  "profilePage": {
+    "editProfile": "Edit profile",
+    "aboutMe": "About me",
+    "featuredQuestions": "Featured Questions",
+    "featuredAnswers": "Featured Answers",
+    "memberSince": "Member since",
+    "questionPosted": "Questions posted",
+    "answerGiven": "Answers given",
+    "upvoteReceived": "Upvote received",
+    "tagsOfInterest": "Tags of Interest"
   }
 }

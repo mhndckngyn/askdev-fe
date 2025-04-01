@@ -11,3 +11,8 @@
 .tag:hover {
   background-color: var(--mantine-color-gray-light-hover);
 }
+
+.center {
+  display: grid;
+  place-items: center;
+}

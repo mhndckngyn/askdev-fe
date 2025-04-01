@@ -13,6 +13,8 @@ import AccountSuspended from "./layouts/AccountSuspended";
 import TagsPage from "./pages/TagsPage";
 import PostQuestion from "./pages/PostQuestion";
 import ErrorModal from "./components/ErrorModal";
+import ProfilePage from "./pages/ProfilePage";
+import ProfileRedirect from "./pages/ProfileRedirect/ProfileRedirect";
 
 export default function App() {
   return (
@@ -28,6 +30,9 @@ export default function App() {
               <Route path="/tags" element={<TagsPage />} />
 
               <Route path="/questions/post" element={<PostQuestion />} />
+
+              <Route path="/profile" element={<ProfileRedirect />} />
+              <Route path="/profile/:id" element={<ProfilePage />} />
 
               <Route path="/suspended" element={<AccountSuspended />} />
               <Route path="*" element={<NotFound />} />
