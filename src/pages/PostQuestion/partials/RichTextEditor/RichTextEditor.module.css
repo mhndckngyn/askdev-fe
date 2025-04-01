@@ -1,0 +1,65 @@
+/* ========== TOOLBAR BUTTONS ========== */
+.control {
+  border-radius: 0; /* Remove border radius on all buttons */
+}
+
+.control:not(:last-child) {
+  border-right: 0; /* Remove right border to avoid double border */
+}
+
+.control:first-child {
+  border-top-left-radius: var(--mantine-radius-sm);
+  border-bottom-left-radius: var(--mantine-radius-sm);
+}
+
+.control:last-child {
+  border-top-right-radius: var(--mantine-radius-sm);
+  border-bottom-right-radius: var(--mantine-radius-sm);
+}
+
+:where([data-mantine-color-scheme="dark"]) .control {
+  color: var(--mantine-color-dark-1) !important;
+}
+
+.controlIcon {
+  width: var(--control-icon-size, 16px);
+  height: var(--control-icon-size, 16px);
+  stroke-width: 1.5;
+}
+
+/* ========== EDITOR ========== */
+.tiptap {
+  height: 400px;
+  overflow-y: auto;
+}
+
+.tiptap table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--mantine-spacing-md);
+  background-color: var(--mantine-color-body);
+  border-radius: var(--mantine-radius-sm);
+}
+
+.tiptap th,
+.tiptap td {
+  border: 1px solid var(--mantine-color-text);
+  padding: var(--mantine-spacing-sm);
+  text-align: left;
+}
+
+.tiptap tr:hover {
+  background-color: var(--mantine-color-gray-1);
+}
+
+:where([data-mantine-color-scheme="dark"]) .tiptap tr:hover {
+  background-color: var(--mantine-color-dark-6);
+}
+
+.tiptap table {
+  overflow-x: auto;
+}
+
+.tiptap td {
+  min-width: 100px;
+}

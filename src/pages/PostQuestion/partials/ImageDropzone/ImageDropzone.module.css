@@ -1,0 +1,81 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-sm);
+}
+
+.content {
+  display: flex;
+  gap: var(--mantine-spacing-md);
+  align-items: center;
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-sm);
+  padding: var(--mantine-spacing-lg);
+}
+
+.dropzone {
+  border: 1px dashed var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-default);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--mantine-spacing-lg);
+  transition: background-color 0.2s;
+  cursor: pointer;
+  background-color: var(--mantine-color-gray-2);
+}
+
+.dropzone:hover {
+  background-color: var(--mantine-color-gray-1);
+}
+
+:where([data-mantine-color-scheme="dark"]) .dropzone {
+  background-color: var(--mantine-color-dark-6);
+}
+
+:where([data-mantine-color-scheme="dark"]) .dropzone:hover {
+  background-color: var(--mantine-color-dark-5);
+}
+
+.imageList {
+  flex-grow: 1;
+  display: flex;
+  gap: var(--mantine-spacing-sm);
+}
+
+.imageContainer {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+}
+
+.imagePreview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--mantine-radius-sm);
+}
+
+.imageDelete {
+  position: absolute;
+  top: calc(0.75 * var(--mantine-spacing-xs));
+  right: calc(0.75 * var(--mantine-spacing-xs));
+  border-radius: 50%;
+
+  > :first-child {
+    width: var(--mantine-font-size-lg);
+    height: var(--mantine-font-size-lg);
+  }
+}
+
+.divider {
+  border-left: 1px solid var(--mantine-color-default-border);
+  transform: scaleY(0.8);
+}
+
+.noImage {
+  flex-grow: 1;
+  display: grid;
+  place-items: center;
+}

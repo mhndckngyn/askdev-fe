@@ -1,0 +1,15 @@
+.aside {
+  position: relative;
+}
+
+.sticky {
+  position: sticky;
+  top: 80px;
+}
+
+.title {
+  font-size: var(--mantine-h3-font-size);
+  font-weight: var(--mantine-h3-font-weight);
+  text-align: center;
+  margin-bottom: var(--mantine-spacing-md);
+}

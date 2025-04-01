@@ -1,15 +1,19 @@
 {
+  "errorModal": {
+    "title": "Lỗi",
+    "ok": "OK"
+  },
   "search-placeholder": "Tìm kiếm...",
   "language-vietnamese": "Tiếng Việt",
   "language-english": "English (Tiếng Anh)",
   "login": "Đăng nhập",
   "signup": "Đăng ký",
-  "search-tag": "Tìm theo nội dung trong tag",
+  "search-tag": "Tìm tên thẻ chủ đề",
   "search-user": "Tìm nội dung của người dùng",
   "search-question-status": "Tìm theo trạng thái câu hỏi",
   "search-exact-phrase": "Khớp chính xác cụm từ",
   "welcome-back": "Chào mừng trở lại 🎉",
-  "join-community": "Tham gia cùng chúng tôi ",
+  "join-community": "Tham gia cùng chúng tôi 🙋",
   "enter-email": "Nhập email",
   "password": "Mật khẩu",
   "enter-password": "Nhập mật khẩu",
@@ -34,7 +38,80 @@
   "error.banned-description-1": "Tài khoản của bạn đã bị tạm dừng do vi phạm tiêu chuẩn cộng đồng.",
   "error.banned-description-2": "Liên hệ với chúng tôi để biết thêm thông tin.",
   "tags-title": "Thẻ chủ đề",
-  "tags-title-description": "Thẻ là một từ khóa hoặc nhãn dùng để phân loại câu hỏi của bạn cùng với các câu hỏi tương tự khác. Sử dụng thẻ phù hợp giúp người khác dễ dàng tìm thấy và trả lời câu hỏi của bạn.",
-  "search-tags": "Tìm kiếm tên thẻ",
-  "questions-count": "câu hỏi"
+  "tags-title-description": "Thẻ chủ đề là một từ khóa hoặc nhãn dùng để phân loại câu hỏi của bạn cùng với các câu hỏi tương tự khác. Sử dụng thẻ phù hợp giúp người khác dễ dàng tìm thấy và trả lời câu hỏi của bạn.",
+  "filter-tag": "Lọc theo thẻ chủ đề",
+  "questions-count": "câu hỏi",
+  "post-question": "Đăng câu hỏi",
+  "question-title": "Tựa đề câu hỏi",
+  "question-title-description": "Tóm tắt vấn đề của bạn một cách rõ ràng và ngắn gọn.",
+  "question-title-placeholder": "Nhập tựa đề câu hỏi",
+  "question-detail": "Chi tiết câu hỏi",
+  "question-detail-description": "Bao gồm thông tin cần thiết để  trả lời câu hỏi của bạn.",
+  "insert-table": "Chèn bảng",
+  "remove-table": "Xóa bảng",
+  "add-row": "Thêm hàng",
+  "remove-row": "Xóa hàng",
+  "add-column": "Thêm cột",
+  "remove-column": "Xóa cột",
+  "add-image": "Duyệt ảnh hoặc kéo và thả vào đây.",
+  "image-upload-limit": "Bạn có thể tải lên tối đa {{maxImages}} ảnh.",
+  "no-image-selected": "Chưa chọn ảnh nào.",
+  "tag-select": "Chọn thẻ câu hỏi",
+  "tag-description": "Thẻ chủ đề giúp người khác dễ dàng tìm thấy câu hỏi của bạn. Chọn ít nhất 1 thẻ và tối đa 5 thẻ.",
+  "search-for-tag-suggestion": "Bắt đầu nhập để xem gợi ý",
+  "add": "Thêm",
+  "remove": "Xóa",
+  "questionTips": {
+    "title": "Mẹo đặt câu hỏi",
+    "items": {
+      "question-title": {
+        "question": "Viết tựa đề câu hỏi như thế nào?",
+        "answers": [
+          "Hãy cụ thể và ngắn gọn.",
+          "Mô tả rõ ràng vấn đề của bạn.",
+          "Tránh các tiêu đề mơ hồ như \"Giúp với! Code của tôi không chạy!\""
+        ]
+      },
+      "question-tags": {
+        "question": "Làm thế nào để chọn thẻ phù hợp?",
+        "answers": [
+          "Thẻ giúp phân loại câu hỏi để người khác có thể tìm thấy.",
+          "Sử dụng các thẻ liên quan đến ngôn ngữ lập trình (ví dụ: python, reactjs).",
+          "Tránh các thẻ chung chung hoặc không liên quan (ví dụ: help, beginner)."
+        ]
+      },
+      "question-details": {
+        "question": "Nên bao gồm những thông tin gì trong câu hỏi?",
+        "answers": [
+          "Giải thích rõ ràng về vấn đề bạn gặp phải.",
+          "Kết quả mong đợi và thực tế.",
+          "Một ví dụ để tái hiện vấn đề (bao gồm code và các bước thực hiện).",
+          "Bất kỳ thông báo lỗi liên quan nào (sử dụng văn bản thay vì ảnh chụp màn hình)."
+        ]
+      },
+      "question-images": {
+        "question": "Có thể đính kèm hình ảnh vào câu hỏi không?",
+        "answers": [
+          "Có, nhưng chỉ khi thực sự cần thiết (ví dụ: lỗi phức tạp hoặc vấn đề giao diện UI).",
+          "Tránh sử dụng hình ảnh để chia sẻ code. Hãy dán code dưới dạng văn bản trong phần chi tiết câu hỏi.",
+          "Sử dụng nút tải ảnh lên để thêm hình ảnh trực tiếp."
+        ]
+      },
+      "question-after-posting": {
+        "question": "Nên làm gì sau khi đăng câu hỏi?",
+        "answers": [
+          "Kiểm tra câu trả lời—có thể ai đó sẽ yêu cầu bạn làm rõ thông tin.",
+          "Chỉnh sửa câu hỏi nếu cần (bổ sung thông tin, chỉnh sửa định dạng).",
+          "Chấp nhận câu trả lời hay nhất khi vấn đề của bạn được giải quyết.",
+          "Nếu bạn tự tìm ra giải pháp, hãy đăng một câu trả lời để giúp người khác."
+        ]
+      }
+    }
+  },
+  "questionForm": {
+    "emptyTitle": "Tiêu đề câu hỏi không được để trống.",
+    "noTags": "Bạn cần chọn ít nhất một thẻ chủ đề cho câu hỏi.",
+    "maxTags": "Bạn chỉ có thể chọn tối đa 5 thẻ chủ đề. Xóa một thẻ để thêm thẻ khác.",
+    "submit": "Đăng câu hỏi"
+  }
 }

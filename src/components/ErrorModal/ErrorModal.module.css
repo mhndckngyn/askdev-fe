@@ -1,0 +1,7 @@
+.icon {
+  color: var(--mantine-color-red-6);
+}
+
+.message {
+  color: var(--mantine-color-dimmed);
+}

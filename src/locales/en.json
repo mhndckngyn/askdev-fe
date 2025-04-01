@@ -1,10 +1,14 @@
 {
+  "errorModal": {
+    "title": "Error",
+    "ok": "OK"
+  },
   "search-placeholder": "Search...",
   "language-vietnamese": "Vietnamese (Tiếng Việt)",
   "language-english": "English",
   "login": "Log in",
   "signup": "Sign up",
-  "search-tag": "Search within a tag name",
+  "search-tag": "Search tag name",
   "search-user": "Search content by username",
   "search-question-status": "Search question status",
   "search-exact-phrase": "Search exact phrase",
@@ -35,6 +39,79 @@
   "error.banned-description-2": "Contact us for more information.",
   "tags-title": "Tags",
   "tags-title-description": "A tag is a keyword or label that categorizes your question with other, similar questions. Using the right tags makes it easier for others to find and answer your question.",
-  "search-tags": "Filter by tag name",
-  "questions-count": "questions"
+  "filter-tag": "Filter by tag name",
+  "questions-count": "questions",
+  "post-question": "Post a question",
+  "question-title": "Question title",
+  "question-title-description": "Summarize your problem clearly and briefly.",
+  "question-title-placeholder": "Choose a title for your question",
+  "question-detail": "Question detail",
+  "question-detail-description": "Include all the information someone would need to answer your question.",
+  "insert-table": "Insert table",
+  "remove-table": "Remove table",
+  "add-row": "Add table row",
+  "remove-row": "Remove row",
+  "add-column": "Add table column",
+  "remove-column": "Remove column",
+  "add-image": "Browse images or drag and drop here.",
+  "image-upload-limit": "You can upload at most {{maxImages}} images.",
+  "no-image-selected": "No images selected.",
+  "tag-select": "Question tags",
+  "tag-description": "Tags help others find your question easily. Choose at least one tag and up to five.",
+  "search-for-tag-suggestion": "Start typing to see suggestions",
+  "add": "Add",
+  "remove": "Remove",
+  "questionTips": {
+    "title": "Asking a good question",
+    "items": {
+      "question-title": {
+        "question": "How do I write a good question title?",
+        "answers": [
+          "Be specific and concise.",
+          "Clearly describe the problem.",
+          "Avoid vague titles like \"Help! My code doesn't work!\""
+        ]
+      },
+      "question-tags": {
+        "question": "How do I choose the right tags?",
+        "answers": [
+          "Tags help categorize your question so others can find it.",
+          "Use relevant programming languages (e.g., python, reactjs).",
+          "Avoid broad or unrelated tags (e.g., help, beginner)."
+        ]
+      },
+      "question-details": {
+        "question": "What details should I include in my question?",
+        "answers": [
+          "A clear explanation of the problem.",
+          "The expected vs. actual behavior.",
+          "A minimal reproducible example (code + steps to reproduce).",
+          "Any relevant error messages (as text, not screenshots)."
+        ]
+      },
+      "question-images": {
+        "question": "Can I include images in my question?",
+        "answers": [
+          "Yes, but only when necessary (e.g., complex error messages or UI issues).",
+          "Avoid using images for code. Always paste code as text in the question detail section.",
+          "Use the image upload button to add an image directly."
+        ]
+      },
+      "question-after-posting": {
+        "question": "What should I do after posting my question?",
+        "answers": [
+          "Check for answers—someone might ask for clarification.",
+          "Edit your question if needed (add details, fix formatting).",
+          "Accept the best answer once your issue is solved.",
+          "If you find a solution on your own, post it as an answer to help others."
+        ]
+      }
+    }
+  },
+  "questionForm": {
+    "emptyTitle": "Question title must not be blank.",
+    "noTags": "You need to choose at least 1 tag for your question.",
+    "maxTags": "You can only choose at most 5 tags. Remove a tag to add another.",
+    "submit": "Submit question"
+  }
 }
