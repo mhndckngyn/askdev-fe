@@ -1,6 +1,6 @@
-import { TableRemoveCoumn as IconTableRemoveColumn } from "@/assets/images";
-import { ActionIcon, Input, Space } from "@mantine/core";
-import { Link, RichTextEditor as MantineRichTextEditor } from "@mantine/tiptap";
+import { TableRemoveCoumn as IconTableRemoveColumn } from '@/assets/images';
+import { ActionIcon, Input, Space } from '@mantine/core';
+import { Link, RichTextEditor as MantineRichTextEditor } from '@mantine/tiptap';
 import {
   IconSourceCode,
   IconTableDown,
@@ -8,17 +8,17 @@ import {
   IconTableImport,
   IconTableOff,
   IconTablePlus,
-} from "@tabler/icons-react";
-import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
-import Table from "@tiptap/extension-table";
-import TableCell from "@tiptap/extension-table-cell";
-import TableHeader from "@tiptap/extension-table-header";
-import TableRow from "@tiptap/extension-table-row";
-import { JSONContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import { common, createLowlight } from "lowlight";
-import { useTranslation } from "react-i18next";
-import styles from "./RichTextEditor.module.css";
+} from '@tabler/icons-react';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import Table from '@tiptap/extension-table';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
+import TableRow from '@tiptap/extension-table-row';
+import { JSONContent, useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import { common, createLowlight } from 'lowlight';
+import { useTranslation } from 'react-i18next';
+import styles from './RichTextEditor.module.css';
 
 type RichTextEditorProps = {
   label: string;
@@ -47,7 +47,7 @@ export default function RichTextEditor({
       TableCell,
       CodeBlockLowlight.configure({ lowlight }),
     ],
-    content: "",
+    content: '',
     onUpdate: ({ editor }) => {
       const json = editor.getJSON();
       onContentChange(json);
@@ -59,7 +59,7 @@ export default function RichTextEditor({
       return;
     }
 
-    const isInsideTable = editor.isActive("table");
+    const isInsideTable = editor.isActive('table');
 
     if (!isInsideTable) {
       editor
@@ -148,48 +148,48 @@ export default function RichTextEditor({
           </MantineRichTextEditor.ControlsGroup>
           <ActionIcon.Group>
             <ActionIcon
-              aria-label={t("insert-table")}
-              title={t("insert-table")}
+              aria-label={t('insert-table')}
+              title={t('insert-table')}
               onClick={handleInsertTable}
               variant="default"
               className={styles.control}>
               <IconTablePlus className={styles.controlIcon} />
             </ActionIcon>
             <ActionIcon
-              aria-label={t("remove-table")}
-              title={t("remove-table")}
+              aria-label={t('remove-table')}
+              title={t('remove-table')}
               onClick={handleRemoveTable}
               variant="default"
               className={styles.control}>
               <IconTableOff className={styles.controlIcon} />
             </ActionIcon>
             <ActionIcon
-              aria-label={t("add-row")}
-              title={t("add-row")}
+              aria-label={t('add-row')}
+              title={t('add-row')}
               onClick={handleAddTableRow}
               variant="default"
               className={styles.control}>
               <IconTableDown className={styles.controlIcon} />
             </ActionIcon>
             <ActionIcon
-              aria-label={t("remove-row")}
-              title={t("remove-row")}
+              aria-label={t('remove-row')}
+              title={t('remove-row')}
               onClick={handleRemoveTableRow}
               variant="default"
               className={styles.control}>
               <IconTableImport className={styles.controlIcon} />
             </ActionIcon>
             <ActionIcon
-              aria-label={t("add-column")}
-              title={t("add-column")}
+              aria-label={t('add-column')}
+              title={t('add-column')}
               onClick={handleAddTableColumn}
               variant="default"
               className={styles.control}>
               <IconTableExport className={styles.controlIcon} />
             </ActionIcon>
             <ActionIcon
-              aria-label={t("remove-column")}
-              title={t("remove-column")}
+              aria-label={t('remove-column')}
+              title={t('remove-column')}
               onClick={handleRemoveTableColumn}
               variant="default"
               className={styles.control}>

@@ -1,9 +1,9 @@
-import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
-import { initReactI18next } from "react-i18next";
+import i18n from 'i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import { initReactI18next } from 'react-i18next';
 
-import en from "./locales/en.json";
-import vi from "./locales/vi.json";
+import en from './locales/en.json';
+import vi from './locales/vi.json';
 
 i18n
   .use(LanguageDetector) // Detects user's preferred language
@@ -13,13 +13,13 @@ i18n
       en: { translation: en },
       vi: { translation: vi },
     },
-    fallbackLng: "en", // Default language
+    fallbackLng: 'vi', // Default language
     interpolation: { escapeValue: false }, // React already protects from XSS
   });
 
 export const languages = {
-  en: "language-english",
-  vi: "language-vietnamese",
+  en: 'language-english',
+  vi: 'language-vietnamese',
 };
 
 export default i18n;

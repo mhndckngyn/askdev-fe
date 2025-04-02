@@ -1,6 +1,6 @@
-import { PostPreview } from "@/types";
-import { Box, Text, Title, Group, Badge } from "@mantine/core";
-import styles from "../ProfilePage.module.css";
+import { PostPreview } from '@/types';
+import { Box, Text, Title, Group, Badge } from '@mantine/core';
+import styles from '../ProfilePage.module.css';
 
 type FeaturedPostsProps = {
   title: string;
@@ -20,7 +20,7 @@ export default function FeaturedPosts({ title, posts }: FeaturedPostsProps) {
               variant="gradient"
               size="lg"
               radius="sm"
-              gradient={{ from: "blue", to: "cyan", deg: 90 }}
+              gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
               className={styles.postUpvoteBadge}>
               {post.upvotes}
             </Badge>

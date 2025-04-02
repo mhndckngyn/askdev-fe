@@ -1,5 +1,5 @@
-import { useUserStore } from "@/stores/useUserStore";
-import { Navigate } from "react-router-dom";
+import { useUserStore } from '@/stores/useUserStore';
+import { Navigate } from 'react-router-dom';
 
 const ProfileRedirect = () => {
   const { user } = useUserStore();

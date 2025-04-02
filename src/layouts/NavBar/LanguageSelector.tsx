@@ -1,7 +1,7 @@
-import { ActionIcon, Menu } from "@mantine/core";
-import { IconCheck, IconLanguage } from "@tabler/icons-react";
-import { useTranslation } from "react-i18next";
-import { languages } from "@/i18n";
+import { ActionIcon, Menu } from '@mantine/core';
+import { IconCheck, IconLanguage } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
+import { languages } from '@/i18n';
 
 export default function LanguageSelector() {
   const { t, i18n } = useTranslation();

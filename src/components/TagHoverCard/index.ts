@@ -1,3 +1,3 @@
-import TagHoverCard from "./TagHoverCard";
+import TagHoverCard from './TagHoverCard';
 
 export default TagHoverCard;

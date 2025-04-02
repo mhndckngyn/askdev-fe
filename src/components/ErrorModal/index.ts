@@ -1,1 +1,1 @@
-export { default } from "./ErrorModal";
+export { default } from './ErrorModal';

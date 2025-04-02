@@ -1,3 +1,3 @@
-import TagsPage from "./TagsPage";
+import TagsPage from './TagsPage';
 
 export default TagsPage;

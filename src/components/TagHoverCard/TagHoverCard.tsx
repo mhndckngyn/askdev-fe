@@ -1,8 +1,8 @@
-import { Group, HoverCard, Loader, Text } from "@mantine/core";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import styles from "./TagHoverCard.module.css";
-import clsx from "clsx";
+import { Group, HoverCard, Loader, Text } from '@mantine/core';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import styles from './TagHoverCard.module.css';
+import clsx from 'clsx';
 
 type TagNameProps = {
   id: string;
@@ -26,7 +26,7 @@ export default function TagHoverCard({ id, name }: TagNameProps) {
       );
       setTagInfo(response);
     } catch (error) {
-      setTagInfo("Failed to load tag details.");
+      setTagInfo('Failed to load tag details.');
     } finally {
       setLoading(false);
     }
@@ -50,7 +50,7 @@ export default function TagHoverCard({ id, name }: TagNameProps) {
           {loading ? (
             <Loader size="sm" />
           ) : (
-            <Text size="sm">{tagInfo || "No info available"}</Text>
+            <Text size="sm">{tagInfo || 'No info available'}</Text>
           )}
         </HoverCard.Dropdown>
       </HoverCard>

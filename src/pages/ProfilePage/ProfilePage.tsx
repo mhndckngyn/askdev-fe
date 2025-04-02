@@ -1,6 +1,6 @@
-import { mockMemberProfile } from "@/mocks/";
-import { useUserStore } from "@/stores/useUserStore";
-import MemberProfile from "@/types/MemberProfile";
+import { mockMemberProfile } from '@/mocks/';
+import { useUserStore } from '@/stores/useUserStore';
+import MemberProfile from '@/types/MemberProfile';
 import {
   Anchor,
   Avatar,
@@ -11,15 +11,15 @@ import {
   Stack,
   Title,
   TypographyStylesProvider,
-} from "@mantine/core";
-import { IconBrandGithub, IconEdit } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
-import styles from "./ProfilePage.module.css";
-import FeaturedPosts from "./partials/FeaturedPosts";
-import Stats from "./partials/Stats";
-import TagsOfInterest from "./partials/TagsOfInterest";
+} from '@mantine/core';
+import { IconBrandGithub, IconEdit } from '@tabler/icons-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import styles from './ProfilePage.module.css';
+import FeaturedPosts from './partials/FeaturedPosts';
+import Stats from './partials/Stats';
+import TagsOfInterest from './partials/TagsOfInterest';
 
 export default function ProfilePage() {
   const { id } = useParams();
@@ -49,7 +49,7 @@ export default function ProfilePage() {
             <Title className={styles.name}>{profile.username}</Title>
             {allowEditing && (
               <Button leftSection={<IconEdit />}>
-                {t("profilePage.editProfile")}
+                {t('profilePage.editProfile')}
               </Button>
             )}
           </Group>
@@ -69,7 +69,7 @@ export default function ProfilePage() {
         <Stack>
           <Box className={styles.box}>
             <Title order={2} className={styles.sectionTitle}>
-              {t("profilePage.aboutMe")}
+              {t('profilePage.aboutMe')}
             </Title>
             <TypographyStylesProvider>
               <p>Xin chào các bạn, tôi là Thắng Đinh</p>
@@ -85,11 +85,11 @@ export default function ProfilePage() {
         <Stack>
           <TagsOfInterest tags={profile.interestTags} />
           <FeaturedPosts
-            title={t("profilePage.featuredQuestions")}
+            title={t('profilePage.featuredQuestions')}
             posts={profile.featuredQuestions}
           />
           <FeaturedPosts
-            title={t("profilePage.featuredAnswers")}
+            title={t('profilePage.featuredAnswers')}
             posts={profile.featuredAnswers}
           />
         </Stack>

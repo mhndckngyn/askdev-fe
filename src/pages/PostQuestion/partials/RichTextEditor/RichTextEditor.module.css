@@ -17,7 +17,7 @@
   border-bottom-right-radius: var(--mantine-radius-sm);
 }
 
-:where([data-mantine-color-scheme="dark"]) .control {
+:where([data-mantine-color-scheme='dark']) .control {
   color: var(--mantine-color-dark-1) !important;
 }
 
@@ -52,7 +52,7 @@
   background-color: var(--mantine-color-gray-1);
 }
 
-:where([data-mantine-color-scheme="dark"]) .tiptap tr:hover {
+:where([data-mantine-color-scheme='dark']) .tiptap tr:hover {
   background-color: var(--mantine-color-dark-6);
 }
 

@@ -1,4 +1,4 @@
-import { useErrorStore } from "@/stores/useErrorStore";
+import { useErrorStore } from '@/stores/useErrorStore';
 import {
   CheckIcon,
   Combobox,
@@ -9,10 +9,10 @@ import {
   PillsInput,
   Space,
   useCombobox,
-} from "@mantine/core";
-import { IconMinus, IconPlus } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+} from '@mantine/core';
+import { IconMinus, IconPlus } from '@tabler/icons-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type TagPickerProps = {
   selectedTags: string[];
@@ -20,7 +20,7 @@ type TagPickerProps = {
 };
 
 async function fetchTags(query: string): Promise<string[]> {
-  const tags = ["React", "JavaScript", "TypeScript", "C++"];
+  const tags = ['React', 'JavaScript', 'TypeScript', 'C++'];
 
   // Simulating a delay
   return new Promise((resolve) => {
@@ -44,11 +44,11 @@ export default function TagPicker({
 
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
-    onDropdownOpen: () => combobox.updateSelectedOptionIndex("active"),
+    onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
   });
 
-  const [inputValue, setInputValue] = useState(""); // search term, updated when user types
-  const [query, setQuery] = useState(""); // actual search term, sent to backend after delay
+  const [inputValue, setInputValue] = useState(''); // search term, updated when user types
+  const [query, setQuery] = useState(''); // actual search term, sent to backend after delay
   const [queryResults, setQueryResults] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -63,7 +63,7 @@ export default function TagPicker({
 
   // Search for tags
   useEffect(() => {
-    if (query.trim() === "") return;
+    if (query.trim() === '') return;
     setLoading(true);
 
     fetchTags(query).then((data) => {
@@ -84,7 +84,7 @@ export default function TagPicker({
       handleTagRemove(value);
     } else {
       if (selectedTags.length === MAX_TAGS) {
-        setError(t("questionForm.maxTags"));
+        setError(t('questionForm.maxTags'));
       } else {
         onSelectedTagChange([...selectedTags, value]);
       }
@@ -111,8 +111,8 @@ export default function TagPicker({
 
   return (
     <div>
-      <Input.Label required>{t("tag-select")}</Input.Label>
-      <Input.Description>{t("tag-description")}</Input.Description>
+      <Input.Label required>{t('tag-select')}</Input.Label>
+      <Input.Description>{t('tag-description')}</Input.Description>
       <Space h="xs" />
       <Combobox store={combobox} onOptionSubmit={handleTagSelect}>
         <Combobox.DropdownTarget>
@@ -124,14 +124,14 @@ export default function TagPicker({
                   onFocus={() => combobox.openDropdown()}
                   onBlur={() => combobox.closeDropdown()}
                   value={inputValue}
-                  placeholder={t("search-tag")}
+                  placeholder={t('search-tag')}
                   onChange={(event) => {
                     combobox.updateSelectedOptionIndex();
                     setInputValue(event.currentTarget.value);
                   }}
                   onKeyDown={(event) => {
                     if (
-                      event.key === "Backspace" &&
+                      event.key === 'Backspace' &&
                       inputValue.length === 0 &&
                       selectedTags.length > 0
                     ) {
@@ -150,8 +150,8 @@ export default function TagPicker({
               <Combobox.Empty>
                 <Loader size="xs" />
               </Combobox.Empty>
-            ) : query.trim() === "" ? (
-              <Combobox.Empty>{t("search-for-tag-suggestion")}</Combobox.Empty>
+            ) : query.trim() === '' ? (
+              <Combobox.Empty>{t('search-for-tag-suggestion')}</Combobox.Empty>
             ) : options.length > 0 ? (
               options
             ) : (
@@ -163,11 +163,11 @@ export default function TagPicker({
                 <Group>
                   {!selectedTags.includes(query) ? (
                     <>
-                      <IconPlus size="16" /> {t("add")} "{query}"
+                      <IconPlus size="16" /> {t('add')} "{query}"
                     </>
                   ) : (
                     <>
-                      <IconMinus size="16" /> {t("remove")} "{query}"
+                      <IconMinus size="16" /> {t('remove')} "{query}"
                     </>
                   )}
                 </Group>

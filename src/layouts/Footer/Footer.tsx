@@ -5,17 +5,17 @@ import {
   Stack,
   Text,
   useMantineColorScheme,
-} from "@mantine/core";
-import { IconBrandGithub, IconBrandTwitter } from "@tabler/icons-react";
-import styles from "./Footer.module.css";
-import { useTranslation } from "react-i18next";
+} from '@mantine/core';
+import { IconBrandGithub, IconBrandTwitter } from '@tabler/icons-react';
+import styles from './Footer.module.css';
+import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
   const { t } = useTranslation();
 
   const { colorScheme } = useMantineColorScheme();
   const footerClassName =
-    colorScheme === "dark" ? styles.footerDark : styles.footer;
+    colorScheme === 'dark' ? styles.footerDark : styles.footer;
 
   return (
     <Box component="footer" py="md" className={footerClassName}>
@@ -25,7 +25,7 @@ export default function Footer() {
             AskDev
           </Text>
           <Text size="sm" c="dimmed">
-            {t("dev-community")}
+            {t('dev-community')}
           </Text>
         </Stack>
 

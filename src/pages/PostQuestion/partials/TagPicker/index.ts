@@ -1,1 +1,1 @@
-export { default } from "./TagPicker";
+export { default } from './TagPicker';

@@ -1,9 +1,9 @@
-import { ActionIcon, Divider, Input, Stack, Text } from "@mantine/core";
-import { Dropzone, type FileWithPath } from "@mantine/dropzone";
-import { IconPhoto, IconUpload, IconX } from "@tabler/icons-react";
-import { useTranslation } from "react-i18next";
-import styles from "./ImageDropzone.module.css";
-import { useEffect, useMemo } from "react";
+import { ActionIcon, Divider, Input, Stack, Text } from '@mantine/core';
+import { Dropzone, type FileWithPath } from '@mantine/dropzone';
+import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
+import styles from './ImageDropzone.module.css';
+import { useEffect, useMemo } from 'react';
 
 type PhotoUploadProps = {
   currentImages: File[];
@@ -55,14 +55,14 @@ export default function PhotoUpload({
 
       <div className={styles.content}>
         <Dropzone
-          accept={{ "image/*": [] }}
+          accept={{ 'image/*': [] }}
           onDrop={handleDrop}
           className={styles.dropzone}
           disabled={currentImages.length >= maxImages}>
           <Stack
             align="center"
             justify="center"
-            style={{ pointerEvents: "none" }}
+            style={{ pointerEvents: 'none' }}
             gap="xs">
             <Dropzone.Accept>
               <IconUpload
@@ -86,10 +86,10 @@ export default function PhotoUpload({
               />
             </Dropzone.Idle>
             <Text size="sm" c="dimmed">
-              {t("add-image")}
+              {t('add-image')}
             </Text>
             <Text size="sm" c="dimmed">
-              {t("image-upload-limit", { maxImages })}
+              {t('image-upload-limit', { maxImages })}
             </Text>
           </Stack>
         </Dropzone>

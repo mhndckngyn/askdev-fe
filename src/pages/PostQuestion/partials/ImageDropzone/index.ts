@@ -1,1 +1,1 @@
-export { default } from "./ImageDropZone";
+export { default } from './ImageDropZone';

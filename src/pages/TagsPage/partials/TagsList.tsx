@@ -1,8 +1,8 @@
-import TagHoverCard from "@/components/TagHoverCard";
-import Tag from "@/types/Tag";
-import { Grid, Group, Text } from "@mantine/core";
-import styles from "../TagsPage.module.css";
-import { useTranslation } from "react-i18next";
+import TagHoverCard from '@/components/TagHoverCard';
+import Tag from '@/types/Tag';
+import { Grid, Group, Text } from '@mantine/core';
+import styles from '../TagsPage.module.css';
+import { useTranslation } from 'react-i18next';
 
 type TagsListProps = {
   tags: Tag[];
@@ -19,7 +19,7 @@ export default function TagsList({ tags }: TagsListProps) {
             <Group gap="xs">
               <TagHoverCard id={tag.name} name={tag.name} />
               <Text size="sm">
-                {tag.questionsAllTime} {t("questions-count")}
+                {tag.questionsAllTime} {t('questions-count')}
               </Text>
             </Group>
             <Text lineClamp={4} className={styles.tagDescription}>

@@ -1,3 +1,3 @@
-import AccountSuspended from "./AccountSuspended";
+import AccountSuspended from './AccountSuspended';
 
 export default AccountSuspended;

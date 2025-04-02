@@ -29,11 +29,11 @@
   background-color: var(--mantine-color-gray-1);
 }
 
-:where([data-mantine-color-scheme="dark"]) .dropzone {
+:where([data-mantine-color-scheme='dark']) .dropzone {
   background-color: var(--mantine-color-dark-6);
 }
 
-:where([data-mantine-color-scheme="dark"]) .dropzone:hover {
+:where([data-mantine-color-scheme='dark']) .dropzone:hover {
   background-color: var(--mantine-color-dark-5);
 }
 

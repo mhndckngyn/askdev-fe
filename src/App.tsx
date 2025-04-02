@@ -1,20 +1,20 @@
-import "@mantine/core/styles.css";
-import "@mantine/tiptap/styles.css";
-import "@mantine/dropzone/styles.css";
-import { MantineProvider } from "@mantine/core";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import styles from "./App.module.css";
-import Homepage from "./pages/Homepage";
-import Welcome from "./pages/Welcome";
-import NavBar from "./layouts/NavBar";
-import Footer from "./layouts/Footer";
-import NotFound from "./layouts/NotFound";
-import AccountSuspended from "./layouts/AccountSuspended";
-import TagsPage from "./pages/TagsPage";
-import PostQuestion from "./pages/PostQuestion";
-import ErrorModal from "./components/ErrorModal";
-import ProfilePage from "./pages/ProfilePage";
-import ProfileRedirect from "./pages/ProfileRedirect/ProfileRedirect";
+import '@mantine/core/styles.css';
+import '@mantine/tiptap/styles.css';
+import '@mantine/dropzone/styles.css';
+import { MantineProvider } from '@mantine/core';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import styles from './App.module.css';
+import Homepage from './pages/Homepage';
+import Welcome from './pages/Welcome';
+import NavBar from './layouts/NavBar';
+import Footer from './layouts/Footer';
+import NotFound from './layouts/NotFound';
+import AccountSuspended from './layouts/AccountSuspended';
+import TagsPage from './pages/TagsPage';
+import PostQuestion from './pages/PostQuestion';
+import ErrorModal from './components/ErrorModal';
+import ProfilePage from './pages/ProfilePage';
+import ProfileRedirect from './pages/ProfileRedirect/ProfileRedirect';
 
 export default function App() {
   return (

@@ -1,3 +1,3 @@
-import PostQuestion from "./PostQuestion";
+import PostQuestion from './PostQuestion';
 
 export default PostQuestion;

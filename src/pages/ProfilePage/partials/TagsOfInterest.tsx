@@ -1,7 +1,7 @@
-import TagHoverCard from "@/components/TagHoverCard";
-import { InterestTags } from "@/types/MemberProfile";
-import { Box, Group, Stack, Text, Title } from "@mantine/core";
-import styles from "../ProfilePage.module.css";
+import TagHoverCard from '@/components/TagHoverCard';
+import { InterestTags } from '@/types/MemberProfile';
+import { Box, Group, Stack, Text, Title } from '@mantine/core';
+import styles from '../ProfilePage.module.css';
 
 type TagsOfInterestProps = {
   tags: InterestTags[];
@@ -19,7 +19,7 @@ export default function TagsOfInterest({ tags }: TagsOfInterestProps) {
             <TagHoverCard key={tag.id} id={tag.id} name={tag.name} />
             <Group gap="sm">
               <Text>
-                {tag.contributions}{" "}
+                {tag.contributions}{' '}
                 <span className={styles.subtext}>contributions</span>
               </Text>
               <Text>

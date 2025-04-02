@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 type User = {
   id: string;
@@ -14,9 +14,9 @@ type UserState = {
 
 export const useUserStore = create<UserState>((set) => ({
   user: {
-    id: "1",
-    username: "minh",
-    avatar: "https://randomuser.me/api/portraits/men/26.jpg",
+    id: '1',
+    username: 'minh',
+    avatar: 'https://randomuser.me/api/portraits/men/26.jpg',
   },
   setUser: (user) => set({ user }),
   logout: () => set({ user: null }),

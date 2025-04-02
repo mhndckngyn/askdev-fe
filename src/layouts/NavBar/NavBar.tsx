@@ -1,4 +1,4 @@
-import { logo } from "@/assets/images";
+import { logo } from '@/assets/images';
 import {
   Box,
   Button,
@@ -9,31 +9,31 @@ import {
   Stack,
   Text,
   TextInput,
-} from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
-import { useTranslation } from "react-i18next";
-import { Link, useLocation } from "react-router-dom";
-import { Fragment } from "react/jsx-runtime";
-import LanguageSelector from "./LanguageSelector";
-import styles from "./Navbar.module.css";
-import ThemeSwitcher from "./ThemeSwitcher";
+} from '@mantine/core';
+import { IconSearch } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
+import { Link, useLocation } from 'react-router-dom';
+import { Fragment } from 'react/jsx-runtime';
+import LanguageSelector from './LanguageSelector';
+import styles from './Navbar.module.css';
+import ThemeSwitcher from './ThemeSwitcher';
 
 const searchTips = [
   {
-    label: "[tag]",
-    description: "search-tag",
+    label: '[tag]',
+    description: 'search-tag',
   },
   {
-    label: "user:abc",
-    description: "search-user",
+    label: 'user:abc',
+    description: 'search-user',
   },
   {
-    label: "answered:yes",
-    description: "search-question-status",
+    label: 'answered:yes',
+    description: 'search-question-status',
   },
   {
     label: '"keyword"',
-    description: "search-exact-phrase",
+    description: 'search-exact-phrase',
   },
 ];
 
@@ -42,8 +42,8 @@ export default function NavBar() {
 
   const location = useLocation();
 
-  const hideSearchBar = ["/welcome"].includes(location.pathname);
-  const hideLogins = ["/welcome"].includes(location.pathname);
+  const hideSearchBar = ['/welcome'].includes(location.pathname);
+  const hideLogins = ['/welcome'].includes(location.pathname);
 
   return (
     <>
@@ -64,14 +64,14 @@ export default function NavBar() {
             <Popover width="target">
               <Popover.Target>
                 <TextInput
-                  placeholder={t("search-placeholder")}
+                  placeholder={t('search-placeholder')}
                   leftSection={<IconSearch size={16} />}
                   radius="md"
                   className={styles.search}
                 />
               </Popover.Target>
 
-              <Popover.Dropdown style={{ pointerEvents: "none" }}>
+              <Popover.Dropdown style={{ pointerEvents: 'none' }}>
                 <Stack
                   align="stretch"
                   gap="xs"
@@ -101,10 +101,10 @@ export default function NavBar() {
                 component={Link}
                 to="/welcome?tab=login"
                 variant="default">
-                {t("login")}
+                {t('login')}
               </Button>
               <Button component={Link} to="/welcome?tab=signup">
-                {t("signup")}
+                {t('signup')}
               </Button>
             </Fragment>
           )}

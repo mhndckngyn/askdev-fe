@@ -1,16 +1,16 @@
-import { Container, Paper, Tabs } from "@mantine/core";
-import { IconLogin, IconUserPlus } from "@tabler/icons-react";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import Login from "./Login";
-import Signup from "./Signup";
-import styles from "./Welcome.module.css";
-import { useSearchParams } from "react-router-dom";
+import { Container, Paper, Tabs } from '@mantine/core';
+import { IconLogin, IconUserPlus } from '@tabler/icons-react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import Login from './Login';
+import Signup from './Signup';
+import styles from './Welcome.module.css';
+import { useSearchParams } from 'react-router-dom';
 
 export default function Welcome() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
-  const initialTab = searchParams.get("tab") || "login";
+  const initialTab = searchParams.get('tab') || 'login';
   const [activeTab, setActiveTab] = useState<string | null>(initialTab);
 
   return (
@@ -18,10 +18,10 @@ export default function Welcome() {
       <Tabs value={activeTab} onChange={setActiveTab} variant="outline">
         <Tabs.List grow>
           <Tabs.Tab p="sm" value="login" leftSection={<IconLogin size={16} />}>
-            {t("login")}
+            {t('login')}
           </Tabs.Tab>
           <Tabs.Tab value="signup" leftSection={<IconUserPlus size={16} />}>
-            {t("signup")}
+            {t('signup')}
           </Tabs.Tab>
         </Tabs.List>
 

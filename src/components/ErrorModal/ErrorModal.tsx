@@ -1,7 +1,7 @@
-import { useErrorStore } from "@/stores/useErrorStore";
-import { Button, Group, Modal, Stack, Text } from "@mantine/core";
-import { useTranslation } from "react-i18next";
-import styles from "./ErrorModal.module.css";
+import { useErrorStore } from '@/stores/useErrorStore';
+import { Button, Group, Modal, Stack, Text } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
+import styles from './ErrorModal.module.css';
 
 export default function ErrorModal() {
   const { t } = useTranslation();
@@ -11,14 +11,14 @@ export default function ErrorModal() {
     <Modal
       opened={showError}
       onClose={clearError}
-      title={<Text>{t("errorModal.title")}</Text>}
+      title={<Text>{t('errorModal.title')}</Text>}
       centered
       withCloseButton={false}>
       <Stack gap="xl">
         <Text className={styles.message}>{errorMessage}</Text>
         <Group justify="flex-end">
           <Button onClick={clearError} variant="filled">
-            {t("errorModal.ok")}
+            {t('errorModal.ok')}
           </Button>
         </Group>
       </Stack>
