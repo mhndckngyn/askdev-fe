@@ -3,6 +3,12 @@
     "title": "Lỗi",
     "ok": "OK"
   },
+  "goBack": {
+    "title": "Xác nhận thoát",
+    "description": "Bạn có thay đổi chưa được lưu. Bạn có chắc chắn muốn thoát?",
+    "yes": "Có",
+    "no": "Không"
+  },
   "search-placeholder": "Tìm kiếm...",
   "language-vietnamese": "Tiếng Việt",
   "language-english": "English (Tiếng Anh)",
@@ -124,5 +130,18 @@
     "answerGiven": "Số trả lời",
     "upvoteReceived": "Upvote đã nhận",
     "tagsOfInterest": "Chủ đề quan tâm"
+  },
+  "editProfile": {
+    "title": "Chỉnh sửa hồ sơ",
+    "uploadProfilePicture": "Thay đổi",
+    "reset": "Đặt lại",
+    "usernameLabel": "Tên người dùng",
+    "usernamePlaceholder": "Nhập tên người dùng",
+    "githubLabel": "Tên người dùng Github",
+    "githubPlaceholder": "Nhập tên Github",
+    "showGithubLabel": "Hiển thị Github của tôi",
+    "aboutMeLabel": "Về tôi",
+    "aboutMeDescription": "Chia sẻ thông tin về bản thân",
+    "saveChanges": "Lưu thay đổi"
   }
 }

@@ -15,6 +15,7 @@ import PostQuestion from './pages/PostQuestion';
 import ErrorModal from './components/ErrorModal';
 import ProfilePage from './pages/ProfilePage';
 import ProfileRedirect from './pages/ProfileRedirect/ProfileRedirect';
+import EditProfile from './pages/EditProfile';
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
 
               <Route path="/profile" element={<ProfileRedirect />} />
               <Route path="/profile/:id" element={<ProfilePage />} />
+              <Route path="/profile/edit" element={<EditProfile />} />
 
               <Route path="/suspended" element={<AccountSuspended />} />
               <Route path="*" element={<NotFound />} />

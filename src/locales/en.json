@@ -3,6 +3,12 @@
     "title": "Error",
     "ok": "OK"
   },
+  "goBack": {
+    "title": "Leave confirmation",
+    "description": "You have unsaved changes. Are you sure you want to leave?",
+    "yes": "Yes",
+    "no": "No"
+  },
   "search-placeholder": "Search...",
   "language-vietnamese": "Vietnamese (Tiếng Việt)",
   "language-english": "English",
@@ -124,5 +130,18 @@
     "answerGiven": "Answers given",
     "upvoteReceived": "Upvote received",
     "tagsOfInterest": "Tags of Interest"
+  },
+  "editProfile": {
+    "title": "Edit profile",
+    "uploadProfilePicture": "Change",
+    "reset": "Reset",
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "githubLabel": "GitHub username",
+    "githubPlaceholder": "Your Github Username",
+    "showGithubLabel": "Display my GitHub",
+    "aboutMeLabel": "About me",
+    "aboutMeDescription": "Share details about yourself",
+    "saveChanges": "Save changes"
   }
 }

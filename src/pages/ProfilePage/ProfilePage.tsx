@@ -20,9 +20,10 @@ import styles from './ProfilePage.module.css';
 import FeaturedPosts from './partials/FeaturedPosts';
 import Stats from './partials/Stats';
 import TagsOfInterest from './partials/TagsOfInterest';
+import PageLoader from '@/components/PageLoader';
 
 export default function ProfilePage() {
-  const { id } = useParams();
+  const { id } = useParams(); // use param to fetch user
   const { t } = useTranslation();
   const userId = useUserStore((state) => state.user?.id);
   const [profile, setProfile] = useState<MemberProfile | null>(null);
@@ -30,15 +31,16 @@ export default function ProfilePage() {
   const allowEditing = id === userId;
 
   useEffect(() => {
-    setProfile(mockMemberProfile);
+    const fetchProfile = async () => {
+      setTimeout(() => {
+        setProfile(mockMemberProfile);
+      }, 1200);
+    };
+
+    fetchProfile();
   }, [id]);
 
-  if (!profile)
-    return (
-      <Box className={styles.loader}>
-        <Loader color="blue" />
-      </Box>
-    );
+  if (!profile) return <PageLoader />;
 
   return (
     <Stack gap="md">

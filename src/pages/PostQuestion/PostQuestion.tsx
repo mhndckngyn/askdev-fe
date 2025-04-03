@@ -1,5 +1,5 @@
 import ImageDropzone from '@/pages/PostQuestion/partials/ImageDropzone';
-import RichTextEditor from '@/pages/PostQuestion/partials/RichTextEditor';
+import RichTextEditor from '@/components/RichTextEditor';
 import { useErrorStore } from '@/stores/useErrorStore';
 import { Button, Stack, TextInput, Title } from '@mantine/core';
 import { JSONContent } from '@tiptap/core';
@@ -83,6 +83,15 @@ export default function PostQuestion() {
               onContentChange={updateDetail}
               label={t('question-detail')}
               description={t('question-detail-description')}
+              plugins={{
+                inline: true,
+                code: true,
+                heading: true,
+                block: true,
+                link: true,
+                table: true,
+              }}
+              required
             />
             <ImageDropzone
               currentImages={formData.images}

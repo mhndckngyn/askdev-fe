@@ -1,9 +1,3 @@
-.loader {
-  height: 100%;
-  display: grid;
-  place-items: center;
-}
-
 .name {
   font-size: var(--mantine-h2-font-size);
   font-weight: var(--mantine-h2-font-weight);

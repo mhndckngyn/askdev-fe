@@ -11,7 +11,7 @@ export default function ErrorModal() {
     <Modal
       opened={showError}
       onClose={clearError}
-      title={<Text>{t('errorModal.title')}</Text>}
+      title={t('errorModal.title')}
       centered
       withCloseButton={false}>
       <Stack gap="xl">

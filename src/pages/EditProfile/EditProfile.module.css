@@ -1,0 +1,21 @@
+.container {
+  margin: 0 auto;
+  max-width: 800px; /* delete later when there's sidebar */
+}
+
+.title {
+  font-size: var(--mantine-h2-font-size);
+  font-weight: var(--mantine-h2-font-weight);
+  line-height: var(--mantine-h2-line-height);
+  margin-bottom: var(--mantine-spacing-lg);
+}
+
+.content {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: max(var(--mantine-spacing-xl), 100px);
+}
+
+.avatarInput {
+  display: none;
+}
