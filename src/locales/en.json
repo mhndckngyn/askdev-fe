@@ -143,5 +143,16 @@
     "aboutMeLabel": "About me",
     "aboutMeDescription": "Share details about yourself",
     "saveChanges": "Save changes"
+  },
+  "changePassword": {
+    "change-password": "Change password",
+    "current-password": "Current password",
+    "enter-current-password": "Enter your current password",
+    "new-password": "New password",
+    "enter-new-password": "Enter your new password",
+    "confirm-new-password": "Confirm new password",
+    "password-mismatch": "Passwords do not match",
+    "invalid-password": "Password does not meet requirements",
+    "current-password-required": "Current password is required"
   }
 }
