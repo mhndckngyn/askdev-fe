@@ -38,7 +38,8 @@ const searchTips = [
 ];
 
 export default function NavBar() {
-  const { t } = useTranslation();
+  const { t: tCommon } = useTranslation('common');
+  const { t } = useTranslation('navbar');
 
   const location = useLocation();
 
@@ -101,10 +102,10 @@ export default function NavBar() {
                 component={Link}
                 to="/welcome?tab=login"
                 variant="default">
-                {t('login')}
+                {tCommon('login')}
               </Button>
               <Button component={Link} to="/welcome?tab=signup">
-                {t('signup')}
+                {tCommon('signup')}
               </Button>
             </Fragment>
           )}

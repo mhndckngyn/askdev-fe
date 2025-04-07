@@ -2,13 +2,13 @@ import { Container, Paper, Tabs } from '@mantine/core';
 import { IconLogin, IconUserPlus } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Login from './Login';
-import Signup from './Signup';
+import Login from './partials/Login';
+import Signup from './partials/Signup';
 import styles from './Welcome.module.css';
 import { useSearchParams } from 'react-router-dom';
 
 export default function Welcome() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get('tab') || 'login';
   const [activeTab, setActiveTab] = useState<string | null>(initialTab);

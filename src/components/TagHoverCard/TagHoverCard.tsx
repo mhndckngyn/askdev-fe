@@ -10,7 +10,7 @@ type TagNameProps = {
 };
 
 export default function TagHoverCard({ id, name }: TagNameProps) {
-  const [tagInfo, setTagInfo] = useState<string | null>(null);
+  const [tagInfo, setTagInfo] = useState<string | null>(null); // it returns an object
   const [loading, setLoading] = useState(false);
   const safeUriName = encodeURIComponent(id);
 

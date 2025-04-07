@@ -1,0 +1,10 @@
+{
+  "table": {
+    "insert-table": "Chèn bảng",
+    "remove-table": "Xóa bảng",
+    "add-row": "Thêm hàng",
+    "remove-row": "Xóa hàng",
+    "add-column": "Thêm cột",
+    "remove-column": "Xóa cột"
+  }
+}

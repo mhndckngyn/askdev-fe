@@ -11,14 +11,14 @@ export default function ErrorModal() {
     <Modal
       opened={showError}
       onClose={clearError}
-      title={t('errorModal.title')}
+      title={t('error-modal.title')}
       centered
       withCloseButton={false}>
       <Stack gap="xl">
         <Text className={styles.message}>{errorMessage}</Text>
         <Group justify="flex-end">
           <Button onClick={clearError} variant="filled">
-            {t('errorModal.ok')}
+            {t('error-modal.ok')}
           </Button>
         </Group>
       </Stack>

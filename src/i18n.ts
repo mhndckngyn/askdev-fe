@@ -2,18 +2,18 @@ import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 
-import en from './locales/en.json';
-import vi from './locales/vi.json';
+import en from './locales/en';
+import vi from './locales/vi';
 
 i18n
   .use(LanguageDetector) // Detects user's preferred language
   .use(initReactI18next) // Initializes i18next with React
   .init({
     resources: {
-      en: { translation: en },
-      vi: { translation: vi },
+      en,
+      vi,
     },
-    fallbackLng: 'vi', // Default language
+    fallbackLng: 'en', // Default language
     interpolation: { escapeValue: false }, // React already protects from XSS
   });
 

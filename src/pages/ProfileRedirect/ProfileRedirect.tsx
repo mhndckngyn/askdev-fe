@@ -6,7 +6,7 @@ const ProfileRedirect = () => {
 
   // If logged in, redirect to the correct profile page.
   if (user?.id) {
-    return <Navigate to={`/profile/${user.id}`} replace />;
+    return <Navigate to={`/profile/${user.id}`} replace />; // replace = replaces tab's history stack
   }
 
   return <Navigate to="/welcome" replace />;

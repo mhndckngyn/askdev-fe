@@ -1,0 +1,16 @@
+{
+  "welcome-back": "Welcome back 🎉",
+  "join-community": "Join our community 🙋",
+  "enter-email": "Enter your email",
+  "password": "Password",
+  "enter-password": "Enter your password",
+  "forgot-password": "Forgot password?",
+  "continue-with": "Or continue with",
+  "no-account": "Don't have an account?",
+  "invalid-email": "Invalid email.",
+  "username": "Username",
+  "choose-username": "Pick a username",
+  "username-length": "Username has at least 4 letters.",
+  "confirm-password": "Confirm password",
+  "password-mismatch": "Passwords do not match."
+}

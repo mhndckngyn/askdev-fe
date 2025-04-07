@@ -16,7 +16,7 @@ export default function PhotoUpload({
   onImageChange,
   maxImages,
 }: PhotoUploadProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('postQuestion');
 
   const handleDrop = (newImages: FileWithPath[]): void => {
     const availableSlots = maxImages - currentImages.length;
@@ -47,9 +47,9 @@ export default function PhotoUpload({
   return (
     <div className={styles.container}>
       <div>
-        <Input.Label>Image upload</Input.Label>
+        <Input.Label>{t('image.image-upload')}</Input.Label>
         <Input.Description>
-          Use images to illustrate your post
+          {t('image.image-upload-description')}
         </Input.Description>
       </div>
 
@@ -86,10 +86,10 @@ export default function PhotoUpload({
               />
             </Dropzone.Idle>
             <Text size="sm" c="dimmed">
-              {t('add-image')}
+              {t('image.add-image')}
             </Text>
             <Text size="sm" c="dimmed">
-              {t('image-upload-limit', { maxImages })}
+              {t('image.image-upload-limit', { maxImages })}
             </Text>
           </Stack>
         </Dropzone>
@@ -114,7 +114,7 @@ export default function PhotoUpload({
           </div>
         ) : (
           <div className={styles.noImage}>
-            <Text size="sm">No images selected.</Text>
+            <Text size="sm">{t('image.no-image-selected')}</Text>
           </div>
         )}
       </div>

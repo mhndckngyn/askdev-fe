@@ -1,0 +1,11 @@
+{
+  "suspended": {
+    "banned-title": "Account suspended",
+    "banned-description-1": "Your account has been suspended due to violation of our community standards.",
+    "banned-description-2": "Contact us for more information."
+  },
+  "not-found": {
+    "page-not-found": "Hmmm. The page you're looking for doesn't exist."
+  },
+  "go-home": "Go back to Home"
+}

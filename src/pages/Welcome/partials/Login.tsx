@@ -16,10 +16,12 @@ import {
 } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import styles from './Welcome.module.css';
+import styles from '../Welcome.module.css';
+import { getEmailLoginError } from '../schemas';
 
 export default function Login() {
-  const { t } = useTranslation();
+  const { t: tCommon } = useTranslation('common');
+  const { t } = useTranslation('welcome');
 
   const form = useForm({
     initialValues: {
@@ -27,8 +29,7 @@ export default function Login() {
       password: '',
     },
     validate: {
-      email: (value) =>
-        /^\S+@\S+\.\S+$/.test(value) ? null : t('invalid-email'),
+      email: getEmailLoginError,
     },
   });
 
@@ -60,7 +61,7 @@ export default function Login() {
           </Flex>
 
           <Button fullWidth type="submit">
-            {t('login')}
+            {tCommon('login')}
           </Button>
 
           <Divider label={t('continue-with')} labelPosition="center" />

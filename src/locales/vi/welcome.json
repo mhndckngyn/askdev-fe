@@ -1,0 +1,16 @@
+{
+  "welcome-back": "Chào mừng trở lại 🎉",
+  "join-community": "Tham gia cùng chúng tôi 🙋",
+  "enter-email": "Nhập email của bạn",
+  "password": "Mật khẩu",
+  "enter-password": "Nhập mật khẩu của bạn",
+  "forgot-password": "Quên mật khẩu?",
+  "continue-with": "Hoặc tiếp tục với",
+  "no-account": "Chưa có tài khoản?",
+  "invalid-email": "Email không hợp lệ.",
+  "username": "Tên người dùng",
+  "choose-username": "Chọn tên người dùng",
+  "username-length": "Tên người dùng có ít nhất 4 ký tự.",
+  "confirm-password": "Xác nhận mật khẩu",
+  "password-mismatch": "Mật khẩu không khớp."
+}

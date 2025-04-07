@@ -1,0 +1,15 @@
+{
+  "dev-community": "A community for developers",
+  "login": "Log in",
+  "signup": "Sign up",
+  "error-modal": {
+    "title": "Error",
+    "ok": "OK"
+  },
+  "go-back": {
+    "title": "Leave confirmation",
+    "description": "You have unsaved changes. Are you sure you want to leave?",
+    "yes": "Yes",
+    "no": "No"
+  }
+}

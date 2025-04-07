@@ -1,0 +1,10 @@
+{
+  "table": {
+    "insert-table": "Insert table",
+    "remove-table": "Remove table",
+    "add-row": "Add table row",
+    "remove-row": "Remove row",
+    "add-column": "Add table column",
+    "remove-column": "Remove column"
+  }
+}

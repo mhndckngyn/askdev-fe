@@ -1,0 +1,80 @@
+{
+  "post-question": "Đăng câu hỏi",
+  "submit": "Gửi câu hỏi",
+  "title": {
+    "question-title": "Tựa đề câu hỏi",
+    "question-title-description": "Tóm tắt vấn đề của bạn một cách rõ ràng và ngắn gọn.",
+    "question-title-placeholder": "Chọn tựa đề cho câu hỏi của bạn"
+  },
+  "detail": {
+    "question-detail": "Chi tiết câu hỏi",
+    "question-detail-description": "Bao gồm tất cả thông tin cần thiết để người khác có thể trả lời câu hỏi của bạn."
+  },
+  "image": {
+    "image-upload": "Tải ảnh lên",
+    "image-upload-description": "Sử dụng hình ảnh để minh họa bài đăng của bạn",
+    "add-image": "Duyệt ảnh hoặc kéo và thả vào đây.",
+    "image-upload-limit": "Bạn có thể tải lên tối đa {{maxImages}} ảnh.",
+    "no-image-selected": "Chưa chọn ảnh nào."
+  },
+  "tags": {
+    "tag-select": "Thẻ chủ đề",
+    "tag-description": "Thẻ giúp người khác dễ dàng tìm thấy câu hỏi của bạn. Chọn ít nhất một thẻ và tối đa năm thẻ.",
+    "search-tag": "Tìm kiếm thẻ theo tên",
+    "search-for-tag-suggestion": "Bắt đầu nhập để xem gợi ý",
+    "max-tags": "Bạn chỉ có thể chọn tối đa 5 thẻ. Hãy xóa bớt thẻ để thêm thẻ mới.",
+    "add": "Thêm",
+    "remove": "Xóa"
+  },
+  "validate": {
+    "empty-title": "Tựa đề câu hỏi không được để trống.",
+    "no-tags": "Bạn cần chọn ít nhất 1 thẻ cho câu hỏi."
+  },
+  "question-tips": {
+    "title": "Mẹo để đặt câu hỏi hay",
+    "items": {
+      "title": {
+        "question": "Làm sao để viết tựa đề câu hỏi tốt?",
+        "answers": [
+          "Hãy cụ thể và ngắn gọn.",
+          "Mô tả rõ ràng vấn đề bạn đang gặp phải.",
+          "Tránh dùng tiêu đề mơ hồ như \"Giúp với! Code không chạy!\""
+        ]
+      },
+      "tags": {
+        "question": "Làm sao để chọn đúng thẻ?",
+        "answers": [
+          "Thẻ giúp phân loại câu hỏi để người khác dễ dàng tìm thấy.",
+          "Dùng các thẻ liên quan đến ngôn ngữ lập trình (ví dụ: python, reactjs).",
+          "Tránh các thẻ chung chung hoặc không liên quan (ví dụ: help, beginner)."
+        ]
+      },
+      "details": {
+        "question": "Cần bao gồm những chi tiết nào trong câu hỏi?",
+        "answers": [
+          "Giải thích rõ ràng vấn đề bạn đang gặp.",
+          "So sánh kết quả mong đợi và kết quả thực tế.",
+          "Một ví dụ có thể tái hiện vấn đề (bao gồm mã nguồn và các bước thực hiện).",
+          "Thông báo lỗi liên quan (dưới dạng văn bản, không dùng ảnh chụp màn hình)."
+        ]
+      },
+      "images": {
+        "question": "Có thể đính kèm hình ảnh không?",
+        "answers": [
+          "Có, nhưng chỉ khi thực sự cần thiết (ví dụ: lỗi phức tạp hoặc vấn đề về giao diện UI).",
+          "Tránh dùng hình ảnh để chia sẻ mã nguồn. Hãy dán mã dưới dạng văn bản.",
+          "Sử dụng nút tải ảnh lên để đính kèm trực tiếp."
+        ]
+      },
+      "after-posting": {
+        "question": "Sau khi đăng câu hỏi thì nên làm gì?",
+        "answers": [
+          "Theo dõi câu hỏi—có thể ai đó sẽ yêu cầu bạn làm rõ thông tin.",
+          "Chỉnh sửa câu hỏi nếu cần (bổ sung thông tin, định dạng lại).",
+          "Chấp nhận câu trả lời hay nhất khi vấn đề được giải quyết.",
+          "Nếu bạn tự tìm được giải pháp, hãy đăng nó để giúp người khác."
+        ]
+      }
+    }
+  }
+}
