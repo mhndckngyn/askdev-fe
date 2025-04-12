@@ -94,8 +94,8 @@ export default function EditProfile() {
 
   const handleSubmit = (values: ProfileFormData) => {
     // mantine validates before running this function
-    console.log(values);
     setSubmitting(true);
+    console.log(values);
   };
 
   if (isFetching) return <PageLoader />;

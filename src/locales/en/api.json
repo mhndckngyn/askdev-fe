@@ -1,0 +1,21 @@
+{
+  "common": {
+    "something-went-wrong": "Something went wrong.",
+    "internal-server-error": "Internal server error."
+  },
+  "auth": {
+    "login-successful": "Logged in succesfully.",
+    "login-first": "You have to log in first.",
+    "incorrect-login-data": "Email or passport is not correct.",
+    "user-not-found": "User not found. Please log in again",
+    "not-authenticated": "Not authenticated.",
+    "login-error": "Error while logging in.",
+    "logout-sucessful": "Logged out sucessfully."
+  },
+  "user": {
+    "signup-error": "Error while signing up.",
+    "user-already-exist": "User already exists. Try logging in.",
+    "username-already-taken": "Username already taken. Please try another one.",
+    "getme-successful": "Get user information sucessfully."
+  }
+}

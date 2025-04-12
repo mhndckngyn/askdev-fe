@@ -45,3 +45,29 @@
     flex-grow: 1;
   }
 }
+
+.userMenuButton {
+  display: flex;
+  align-items: center;
+  padding: 6px;
+  border-radius: 8px;
+  transition: background-color 100ms ease;
+  background-color: var(--mantine-color-body);
+  cursor: pointer;
+}
+
+.userMenuButton:hover {
+  background-color: var(--mantine-color-gray-1);
+}
+
+.userMenuButton:active {
+  background-color: var(--mantine-color-gray-2);
+}
+
+[data-mantine-color-scheme='dark'] .userMenuButton:hover {
+  background-color: var(--mantine-color-dark-4);
+}
+
+[data-mantine-color-scheme='dark'] .userMenuButton:active {
+  background-color: var(--mantine-color-dark-3);
+}

@@ -3,3 +3,4 @@ export {
   type default as MemberProfile,
   type PostPreview,
 } from './MemberProfile';
+export { type ApiResponse } from './ApiResponse';

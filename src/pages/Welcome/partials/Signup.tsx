@@ -22,12 +22,25 @@ import {
   getEmailLoginError,
   getUsernameLoginError,
 } from '../schemas';
+import { SignupFormValues, SignupPayload } from '../types';
+import { submitSignupForm } from '../services';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useErrorStore } from '@/stores/useErrorStore';
+import { useActionStore } from '@/stores/useActionModalStore';
 
 export default function Signup() {
   const { t: tCommon } = useTranslation('common');
   const { t } = useTranslation('welcome');
+  const { t: tApi } = useTranslation('api');
 
-  const form = useForm({
+  const setError = useErrorStore((state) => state.setError);
+  const setAction = useActionStore((state) => state.setAction);
+
+  const navigate = useNavigate();
+  const [isSubmitting, setSubmitting] = useState(false);
+
+  const form = useForm<SignupFormValues>({
     initialValues: {
       email: '',
       username: '',
@@ -47,13 +60,39 @@ export default function Signup() {
     form.setFieldValue('password', value);
   };
 
+  const handleSubmit = async (values: SignupFormValues) => {
+    setSubmitting(true);
+
+    const payload: SignupPayload = {
+      email: values.email,
+      username: values.username,
+      password: values.password,
+    };
+
+    const response = await submitSignupForm(payload);
+
+    if (response.success) {
+      form.reset();
+
+      setAction(t('account-created'), tCommon('login'), () =>
+        navigate('/welcome/?tab=login', {
+          replace: true,
+        }),
+      );
+    } else {
+      setError(tApi(response.error) || tApi('user.signup-error'));
+    }
+
+    setSubmitting(false);
+  };
+
   return (
     <Stack>
       <Title size="h2" className={styles.welcomeMessage}>
         {t('join-community')}
       </Title>
 
-      <form onSubmit={form.onSubmit((values) => console.log(values))}>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           <TextInput
             label="Email"
@@ -84,7 +123,7 @@ export default function Signup() {
             required
           />
 
-          <Button fullWidth type="submit" mt="sm">
+          <Button fullWidth type="submit" mt="sm" loading={isSubmitting}>
             {tCommon('signup')}
           </Button>
 
@@ -93,11 +132,15 @@ export default function Signup() {
           {/* Social Login */}
           <Group grow>
             <Button
+              component="a"
+              href="http://localhost:3000/auth/google"
               leftSection={<IconBrandGoogleFilled size={16} />}
               variant="default">
               Google
             </Button>
             <Button
+              component="a"
+              href="http://localhost:3000/auth/github"
               leftSection={<IconBrandGithubFilled size={16} />}
               variant="default">
               GitHub

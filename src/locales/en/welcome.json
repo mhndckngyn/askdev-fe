@@ -12,5 +12,6 @@
   "choose-username": "Pick a username",
   "username-length": "Username has at least 4 letters.",
   "confirm-password": "Confirm password",
-  "password-mismatch": "Passwords do not match."
+  "password-mismatch": "Passwords do not match.",
+  "account-created": "Account created"
 }

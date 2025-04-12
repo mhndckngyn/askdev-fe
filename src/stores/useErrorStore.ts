@@ -1,15 +1,16 @@
 import { create } from 'zustand';
 
 type ErrorState = {
-  errorMessage: string | null;
-  showError: boolean;
+  message: string | null;
+  opened: boolean;
   setError: (message: string) => void;
   clearError: () => void;
 };
 
 export const useErrorStore = create<ErrorState>((set) => ({
-  errorMessage: null,
-  showError: false,
-  setError: (message) => set({ errorMessage: message, showError: true }),
-  clearError: () => set({ errorMessage: null, showError: false }),
+  message: null,
+  opened: false,
+  
+  setError: (message) => set({ message: message, opened: true }),
+  clearError: () => set({ message: null, opened: false }),
 }));

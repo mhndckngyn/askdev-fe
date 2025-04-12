@@ -1,2 +1,2 @@
-export { default } from './PasswordInput';
+export { default } from './PasswordStrengthInput';
 export { getPasswordStrengthError } from './schemas';

@@ -27,7 +27,7 @@ export default function PasswordStrengthInput({
   label,
   placeholder
 }: Props) {
-  const { t } = useTranslation('welcome');
+  const { t } = useTranslation('passwordStrengthInput');
   const [opened, { open, close }] = useDisclosure();
   const strength = getStrength(value);
   const color = strength === 100 ? 'teal' : strength > 50 ? 'yellow' : 'red';
@@ -49,9 +49,9 @@ export default function PasswordStrengthInput({
       <Popover.Dropdown>
         <Progress color={color} value={strength} size={5} mb="xs" />
         <SimpleGrid cols={2} spacing="xs">
-          {passwordChecks.map((check) => (
+          {passwordChecks.map((check, index) => (
             <PasswordRequirement
-              key={check.label}
+              key={index}
               label={t(check.label)}
               meets={new RegExp(check.re).test(value)}
             />

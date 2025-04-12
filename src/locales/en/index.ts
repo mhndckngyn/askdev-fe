@@ -1,4 +1,5 @@
 import statics from './account-suspended.json';
+import api from './api.json';
 import changePassword from './change-password.json';
 import common from './common.json';
 import editProfile from './edit-profile.json';
@@ -11,6 +12,7 @@ import tagsPage from './tags-page.json';
 import welcome from './welcome.json';
 
 export default {
+  api,
   changePassword,
   common,
   editProfile,

@@ -12,5 +12,6 @@
   "choose-username": "Chọn tên người dùng",
   "username-length": "Tên người dùng có ít nhất 4 ký tự.",
   "confirm-password": "Xác nhận mật khẩu",
-  "password-mismatch": "Mật khẩu không khớp."
+  "password-mismatch": "Mật khẩu không khớp.",
+  "account-created": "Tạo thành khoản thành công"
 }

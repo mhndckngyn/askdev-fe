@@ -1,0 +1,21 @@
+{
+  "common": {
+    "something-went-wrong": "Đã có lỗi xảy ra.",
+    "internal-server-error": "Lỗi máy chủ nội bộ."
+  },
+  "auth": {
+    "login-successful": "Đăng nhập thành công.",
+    "login-first": "Bạn cần đăng nhập trước.",
+    "incorrect-login-data": "Email hoặc mật khẩu không đúng.",
+    "user-not-found": "Không tìm thấy người dùng. Vui lòng đăng nhập lại.",
+    "not-authenticated": "Chưa được xác thực.",
+    "login-error": "Lỗi bất ngờ khi đăng nhập.",
+    "logout-sucessful": "Đăng xuất thành công."
+  },
+  "user": {
+    "signup-error": "Lỗi bất ngờ khi đăng ký.",
+    "already-exist": "Người dùng đã tồn tại. Vui lòng đăng nhập.",
+    "username-already-taken": "Tên người dùng đã được sử dụng. Vui lòng chọn tên khác.",
+    "getme-successful": "Lấy thông tin người dùng thành công."
+  }
+}
