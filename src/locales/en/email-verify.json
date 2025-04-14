@@ -1,0 +1,17 @@
+{
+  "title-success": "Email verified successfully",
+  "subtitle-success": "You can now log in to your account.",
+  "loginButton": "Go to Login",
+
+  "title-invalid": "Invalid verification link",
+  "subtitle-invalid": "The verification link is invalid or has already been used.",
+
+  "title-expired": "Verification link expired",
+  "subtitle-expired": "This verification link has expired. You can request a new one below or by logging in again.",
+  "resendButton": "Send a new verification link",
+  "subtitle-expired-no-email": "This verification link has expired. Please try logging in again to request a new one",
+  "toHomepage": "Go back to homepage",
+
+  "resend-successful": "A new verification email has been sent to your inbox.",
+  "resend-failed": "We couldn't resend the verification email. Please try again later."
+}

@@ -3,6 +3,7 @@ import api from './api.json';
 import changePassword from './change-password.json';
 import common from './common.json';
 import editProfile from './edit-profile.json';
+import emailVerify from './email-verify.json';
 import navbar from './navbar.json';
 import passwordStrengthInput from './password-strength-input.json';
 import postQuestion from './post-question.json';
@@ -16,6 +17,7 @@ export default {
   changePassword,
   common,
   editProfile,
+  emailVerify,
   navbar,
   passwordStrengthInput,
   postQuestion,

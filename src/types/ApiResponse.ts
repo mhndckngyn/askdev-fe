@@ -1,3 +1,4 @@
+// response body data
 export type ApiResponse<T = any> = {
   success: boolean;
   message?: string;

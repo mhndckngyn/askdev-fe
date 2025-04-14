@@ -24,7 +24,7 @@ export default function ErrorModal() {
         
         <Group justify="flex-end">
           <Button variant="light" onClick={clearError} color="red.7">
-            {t('error-modal.ok')}
+            {t('ok')}
           </Button>
         </Group>
       </Stack>

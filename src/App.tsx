@@ -20,6 +20,7 @@ import ChangePassword from './pages/ChangePassword';
 import { ActionModal } from './components/ActionModal/ActionModal';
 import { useUserStore } from './stores/useUserStore';
 import { Fragment, useEffect } from 'react';
+import EmailVerify from './pages/EmailVerify';
 
 export default function App() {
   const { fetchUser, loading } = useUserStore();
@@ -49,6 +50,7 @@ export default function App() {
                   <Route
                     path="/change-password"
                     element={<ChangePassword />}></Route>
+                  <Route path="/verify-email" element={<EmailVerify />} />
                   <Route path="/suspended" element={<AccountSuspended />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>

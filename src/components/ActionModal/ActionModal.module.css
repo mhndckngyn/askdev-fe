@@ -1,5 +1,6 @@
 .message {
-  padding: 4px;
+  flex: 1;
+  padding: 2px;
   font-weight: 500;
   color: var(--mantine-color-gray-7);
 }

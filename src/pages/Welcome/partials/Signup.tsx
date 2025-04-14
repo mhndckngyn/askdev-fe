@@ -1,6 +1,8 @@
 import PasswordStrengthInput, {
   getPasswordStrengthError,
 } from '@/components/PasswordStrengthInput';
+import { useActionStore } from '@/stores/useActionModalStore';
+import { useErrorStore } from '@/stores/useErrorStore';
 import {
   Button,
   Divider,
@@ -15,6 +17,7 @@ import {
   IconBrandGithubFilled,
   IconBrandGoogleFilled,
 } from '@tabler/icons-react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from '../Welcome.module.css';
 import {
@@ -22,12 +25,9 @@ import {
   getEmailLoginError,
   getUsernameLoginError,
 } from '../schemas';
-import { SignupFormValues, SignupPayload } from '../types';
 import { submitSignupForm } from '../services';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useErrorStore } from '@/stores/useErrorStore';
-import { useActionStore } from '@/stores/useActionModalStore';
+import { SignupFormValues, SignupPayload } from '../types';
+import { ApiResponse } from '@/types';
 
 export default function Signup() {
   const { t: tCommon } = useTranslation('common');
@@ -37,7 +37,6 @@ export default function Signup() {
   const setError = useErrorStore((state) => state.setError);
   const setAction = useActionStore((state) => state.setAction);
 
-  const navigate = useNavigate();
   const [isSubmitting, setSubmitting] = useState(false);
 
   const form = useForm<SignupFormValues>({
@@ -69,18 +68,13 @@ export default function Signup() {
       password: values.password,
     };
 
-    const response = await submitSignupForm(payload);
+    const response: ApiResponse = await submitSignupForm(payload);
 
     if (response.success) {
       form.reset();
-
-      setAction(t('account-created'), tCommon('login'), () =>
-        navigate('/welcome/?tab=login', {
-          replace: true,
-        }),
-      );
+      setAction(tApi('user.signup-check-email'), tCommon('ok'));
     } else {
-      setError(tApi(response.error) || tApi('user.signup-error'));
+      setError(tApi(response.message) || tApi('user.signup-error'));
     }
 
     setSubmitting(false);

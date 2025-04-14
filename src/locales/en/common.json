@@ -2,9 +2,9 @@
   "dev-community": "A community for developers",
   "login": "Log in",
   "signup": "Sign up",
+  "ok": "OK",
   "error-modal": {
-    "title": "Error",
-    "ok": "OK"
+    "title": "Error"
   },
   "go-back": {
     "title": "Leave confirmation",

@@ -1,0 +1,23 @@
+import { Button, Text, Title } from '@mantine/core';
+import { IconProgressCheck } from '@tabler/icons-react';
+import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import styles from '../EmailVerify.module.css';
+
+export default function Success() {
+  const { t } = useTranslation('emailVerify');
+
+  return (
+    <>
+      <IconProgressCheck className={clsx(styles.icon, styles.iconSuccess)} />
+      <Title size="h2">{t('title-success')}</Title>
+      <Text size="sm" c="dimmed" mt="sm">
+        {t('subtitle-success')}
+      </Text>
+      <Button component={Link} to="/" variant="filled" mt="lg">
+        {t('loginButton')}
+      </Button>
+    </>
+  );
+}

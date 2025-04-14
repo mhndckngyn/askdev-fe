@@ -13,6 +13,8 @@
     "logout-sucessful": "Logged out sucessfully."
   },
   "user": {
+    "signup-check-email": "Account created. Please check your email to verify your account.",
+    "cannot-send-email": "We couldn't send the verification email. Please try logging in again to resend it.",
     "signup-error": "Error while signing up.",
     "user-already-exist": "User already exists. Try logging in.",
     "username-already-taken": "Username already taken. Please try another one.",
