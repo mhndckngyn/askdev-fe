@@ -15,13 +15,13 @@ type StatsProps = {
 };
 
 export default function Stats({ profile }: StatsProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('profilePage');
 
   return (
     <SimpleGrid cols={2} className={clsx(styles.box, styles.stats)}>
       <Stack gap="xs">
         <Text className={styles.statLabel}>
-          <IconClockHour12 /> {t('profilePage.memberSince')}
+          <IconClockHour12 /> {t('member-since')}
         </Text>
         <Text className={styles.statNumber}>
           {new Date(profile.joinedOn).toLocaleDateString()}
@@ -29,7 +29,7 @@ export default function Stats({ profile }: StatsProps) {
       </Stack>
       <Stack gap="xs">
         <Text className={styles.statLabel}>
-          <IconQuestionMark /> {t('profilePage.questionPosted')}
+          <IconQuestionMark /> {t('question-posted')}
         </Text>
         <Text className={styles.statNumber}>
           {profile.questions.toLocaleString()}
@@ -37,7 +37,7 @@ export default function Stats({ profile }: StatsProps) {
       </Stack>
       <Stack gap="xs">
         <Text className={styles.statLabel}>
-          <IconMessages /> {t('profilePage.answerGiven')}
+          <IconMessages /> {t('answer-given')}
         </Text>
         <Text className={styles.statNumber}>
           {profile.answers.toLocaleString()}
@@ -45,7 +45,7 @@ export default function Stats({ profile }: StatsProps) {
       </Stack>
       <Stack gap="xs">
         <Text className={styles.statLabel}>
-          <IconStar /> {t('profilePage.upvoteReceived')}
+          <IconStar /> {t('upvote-received')}
         </Text>
         <Text className={styles.statNumber}>
           {profile.upvotesReceived.toLocaleString()}

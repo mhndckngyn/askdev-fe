@@ -1,3 +1,4 @@
+import PageLoader from '@/components/PageLoader';
 import { mockMemberProfile } from '@/mocks/';
 import { useUserStore } from '@/stores/useUserStore';
 import MemberProfile from '@/types/MemberProfile';
@@ -7,7 +8,6 @@ import {
   Box,
   Button,
   Group,
-  Loader,
   Stack,
   Title,
   TypographyStylesProvider,
@@ -20,11 +20,10 @@ import styles from './ProfilePage.module.css';
 import FeaturedPosts from './partials/FeaturedPosts';
 import Stats from './partials/Stats';
 import TagsOfInterest from './partials/TagsOfInterest';
-import PageLoader from '@/components/PageLoader';
 
 export default function ProfilePage() {
   const { id } = useParams(); // use param to fetch user
-  const { t } = useTranslation();
+  const { t } = useTranslation('profilePage');
   const userId = useUserStore((state) => state.user?.id);
   const [profile, setProfile] = useState<MemberProfile | null>(null);
 
@@ -50,9 +49,7 @@ export default function ProfilePage() {
           <Group>
             <Title className={styles.name}>{profile.username}</Title>
             {allowEditing && (
-              <Button leftSection={<IconEdit />}>
-                {t('profilePage.editProfile')}
-              </Button>
+              <Button leftSection={<IconEdit />}>{t('edit-profile')}</Button>
             )}
           </Group>
           {profile.github && (
@@ -71,7 +68,7 @@ export default function ProfilePage() {
         <Stack>
           <Box className={styles.box}>
             <Title order={2} className={styles.sectionTitle}>
-              {t('profilePage.aboutMe')}
+              {t('about-me')}
             </Title>
             <TypographyStylesProvider>
               <p>Xin chào các bạn, tôi là Thắng Đinh</p>
@@ -87,11 +84,11 @@ export default function ProfilePage() {
         <Stack>
           <TagsOfInterest tags={profile.interestTags} />
           <FeaturedPosts
-            title={t('profilePage.featuredQuestions')}
+            title={t('featured-questions')}
             posts={profile.featuredQuestions}
           />
           <FeaturedPosts
-            title={t('profilePage.featuredAnswers')}
+            title={t('featured-answers')}
             posts={profile.featuredAnswers}
           />
         </Stack>

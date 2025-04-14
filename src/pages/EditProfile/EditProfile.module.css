@@ -13,7 +13,7 @@
 .content {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: max(var(--mantine-spacing-xl), 100px);
+  gap: max(var(--mantine-spacing-xl), 50px);
 }
 
 .avatarInput {

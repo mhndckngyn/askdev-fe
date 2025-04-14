@@ -1,0 +1,16 @@
+{
+  "title": "Chỉnh sửa hồ sơ",
+  "upload-profile-picture": "Thay đổi",
+  "reset": "Đặt lại",
+  "username-label": "Tên người dùng",
+  "username-placeholder": "Nhập tên người dùng",
+  "github-label": "Tên người dùng Github",
+  "github-placeholder": "Nhập tên Github",
+  "show-github-label": "Hiển thị Github của tôi",
+  "about-me-label": "Về tôi",
+  "about-me-description": "Chia sẻ thông tin về bản thân",
+  "save-changes": "Lưu thay đổi",
+  "username-length-error": "Tên người dùng phải có độ dài từ 5 đến 24 ký tự.",
+  "github-length-error": "Tên người dùng GitHub phải có ít hơn 39 ký tự.",
+  "github-empty-error": "Tên người dùng GitHub không thể để trống khi được hiển thị."
+}

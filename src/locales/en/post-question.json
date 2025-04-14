@@ -1,0 +1,80 @@
+{
+  "post-question": "Post a question",
+  "submit": "Submit question",
+  "title": {
+    "question-title": "Question title",
+    "question-title-description": "Summarize your problem clearly and briefly.",
+    "question-title-placeholder": "Choose a title for your question"
+  },
+  "detail": {
+    "question-detail": "Question detail",
+    "question-detail-description": "Include all the information someone would need to answer your question."
+  },
+  "image": {
+    "image-upload": "Image upload",
+    "image-upload-description": "Use images to illustrate your post",
+    "add-image": "Browse images or drag and drop here.",
+    "image-upload-limit": "You can upload at most {{maxImages}} images.",
+    "no-image-selected": "No images selected."
+  },
+  "tags": {
+    "tag-select": "Question tags",
+    "search-tag": "Search by tag name",
+    "tag-description": "Tags help others find your question easily. Choose at least one tag and up to five.",
+    "search-for-tag-suggestion": "Start typing to see suggestions",
+    "max-tags": "You can only choose at most 5 tags. Remove a tag to add another.",
+    "add": "Add",
+    "remove": "Remove"
+  },
+  "validate": {
+    "empty-title": "Question title must not be blank.",
+    "no-tags": "You need to choose at least 1 tag for your question."
+  },
+  "question-tips": {
+    "title": "Asking a good question",
+    "items": {
+      "title": {
+        "question": "How do I write a good question title?",
+        "answers": [
+          "Be specific and concise.",
+          "Clearly describe the problem.",
+          "Avoid vague titles like \"Help! My code doesn't work!\""
+        ]
+      },
+      "tags": {
+        "question": "How do I choose the right tags?",
+        "answers": [
+          "Tags help categorize your question so others can find it.",
+          "Use relevant programming languages (e.g., python, reactjs).",
+          "Avoid broad or unrelated tags (e.g., help, beginner)."
+        ]
+      },
+      "details": {
+        "question": "What details should I include in my question?",
+        "answers": [
+          "A clear explanation of the problem.",
+          "The expected vs. actual behavior.",
+          "A minimal reproducible example (code + steps to reproduce).",
+          "Any relevant error messages (as text, not screenshots)."
+        ]
+      },
+      "images": {
+        "question": "Can I include images in my question?",
+        "answers": [
+          "Yes, but only when necessary (e.g., complex error messages or UI issues).",
+          "Avoid using images for code. Always paste code as text in the question detail section.",
+          "Use the image upload button to add an image directly."
+        ]
+      },
+      "after-posting": {
+        "question": "What should I do after posting my question?",
+        "answers": [
+          "Check for answers—someone might ask for clarification.",
+          "Edit your question if needed (add details, fix formatting).",
+          "Accept the best answer once your issue is solved.",
+          "If you find a solution on your own, post it as an answer to help others."
+        ]
+      }
+    }
+  }
+}

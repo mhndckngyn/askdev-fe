@@ -1,0 +1,17 @@
+.message {
+  flex: 1;
+  padding: 2px;
+  font-weight: 500;
+  color: var(--mantine-color-gray-7);
+}
+
+:where([data-mantine-color-scheme='dark']) .message {
+  color: var(--mantine-color-dark-1);
+}
+
+.icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  color: var(--mantine-color-blue-6);
+}

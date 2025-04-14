@@ -28,7 +28,7 @@ type ProfileFormData = {
 };
 
 export default function EditProfile() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('editProfile');
   const user = useUserStore((state) => state.user); // use user.id to fetch
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -45,9 +45,8 @@ export default function EditProfile() {
       about: null,
     },
     validate: {
-      username: (value) => getUsernameError(value) || null,
-      github: (value, values) =>
-        getGithubError(value, values.showGithub) || null,
+      username: getUsernameError,
+      github: (value, values) => getGithubError(value, values.showGithub),
     },
   });
 
@@ -95,8 +94,8 @@ export default function EditProfile() {
 
   const handleSubmit = (values: ProfileFormData) => {
     // mantine validates before running this function
-    console.log(values);
     setSubmitting(true);
+    console.log(values);
   };
 
   if (isFetching) return <PageLoader />;
@@ -104,7 +103,7 @@ export default function EditProfile() {
   return (
     <div className={styles.container}>
       <GoBack />
-      <Title className={styles.title}>{t('editProfile.title')}</Title>
+      <Title className={styles.title}>{t('title')}</Title>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <div className={styles.content}>
           <Stack>
@@ -117,36 +116,36 @@ export default function EditProfile() {
               className={styles.avatarInput}
             />
             <Button onClick={() => fileInputRef.current?.click()}>
-              {t('editProfile.uploadProfilePicture')}
+              {t('upload-profile-picture')}
             </Button>
             <Button
               onClick={handleResetAvatar}
               disabled={form.values.avatar == null}>
-              {t('editProfile.reset')}
+              {t('reset')}
             </Button>
           </Stack>
           <Stack gap="md">
             <TextInput
-              label={t('editProfile.usernameLabel')}
-              placeholder={t('editProfile.usernamePlaceholder')}
+              label={t('username-label')}
+              placeholder={t('username-placeholder')}
               {...form.getInputProps('username')}
             />
             <TextInput
-              label={t('editProfile.githubLabel')}
-              placeholder={t('editProfile.githubPlaceholder')}
+              label={t('github-label')}
+              placeholder={t('github-placeholder')}
               {...form.getInputProps('github')}
               disabled={!form.values.showGithub}
             />
             <Group justify="flex-end">
               <Checkbox
-                label={t('editProfile.showGithubLabel')}
+                label={t('show-github-label')}
                 {...form.getInputProps('showGithub', { type: 'checkbox' })}
               />
             </Group>
             <RichTextEditor
               onContentChange={(value) => form.setFieldValue('about', value)}
-              label={t('editProfile.aboutMeLabel')}
-              description={t('editProfile.aboutMeDescription')}
+              label={t('about-me-label')}
+              description={t('about-me-description')}
               plugins={{
                 link: true,
               }}
@@ -154,7 +153,7 @@ export default function EditProfile() {
             />
             <Group justify="flex-end">
               <Button type="submit" loading={isSubmitting}>
-                {t('editProfile.saveChanges')}
+                {t('save-changes')}
               </Button>
             </Group>
           </Stack>

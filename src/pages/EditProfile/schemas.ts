@@ -1,15 +1,23 @@
-export const getUsernameError = (value: string): string => {
-  if (value.length < 5) {
-    return 'Username must be more than 5 characters.';
+import i18next from 'i18next';
+
+const ns = 'editProfile';
+
+export const getUsernameError = (value: string): string | null => {
+  if (value.length < 5 || value.length > 24) {
+    return i18next.t(`${ns}:username-length-error`);
   }
 
-  return '';
+  return null;
 };
 
-export const getGithubError = (value: string, isDisplay: boolean): string => {
+export const getGithubError = (value: string, isDisplay: boolean): string | null => {
   if (isDisplay && value === '') {
-    return 'GitHub username cannot be empty when display is enabled.';
+    return i18next.t(`${ns}:github-empty-error`);
   }
 
-  return '';
+  if (value.length > 39) {
+    return i18next.t(`${ns}:github-length-error`);
+  }
+
+  return null;
 };

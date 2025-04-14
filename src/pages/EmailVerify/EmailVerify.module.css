@@ -1,0 +1,21 @@
+.container {
+  text-align: center;
+  margin-top: 10vh;
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+}
+
+.iconSuccess {
+  stroke: var(--mantine-color-teal-5);
+}
+
+.iconInvalid {
+  stroke: var(--mantine-color-red-9);
+}
+
+.iconExpired {
+  stroke: var(--mantine-color-gray-5);
+}

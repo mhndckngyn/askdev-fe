@@ -1,0 +1,17 @@
+{
+  "title-success": "Xác thực email thành công",
+  "subtitle-success": "Bây giờ bạn có thể đăng nhập vào tài khoản của mình.",
+  "loginButton": "Đi đến trang đăng nhập",
+
+  "title-invalid": "Liên kết xác thực không hợp lệ",
+  "subtitle-invalid": "Liên kết xác thực không hợp lệ hoặc đã được sử dụng.",
+
+  "title-expired": "Liên kết xác thực đã hết hạn",
+  "subtitle-expired": "Liên kết xác thực này đã hết hạn. Bạn có thể yêu cầu liên kết mới bên dưới hoặc đăng nhập lại.",
+  "resendButton": "Gửi lại liên kết xác thực mới",
+  "subtitle-expired-no-email": "Liên kết xác thực này đã hết hạn. Vui lòng thử đăng nhập lại để yêu cầu liên kết mới.",
+  "toHomepage": "Quay lại trang chủ",
+
+  "resend-successful": "Email xác thực mới đã được gửi đến hộp thư của bạn.",
+  "resend-failed": "Không thể gửi email xác thực. Vui lòng thử lại sau."
+}

@@ -9,7 +9,7 @@ type TagsListProps = {
 };
 
 export default function TagsList({ tags }: TagsListProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('tagsPage');
 
   return (
     <Grid>

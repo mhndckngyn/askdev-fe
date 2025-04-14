@@ -42,14 +42,14 @@ export default function GoBack({ warnOnExit = false }: GoBackProps) {
         Go Back
       </Anchor>
 
-      <Modal opened={opened} onClose={close} title={t('goBack.title')}>
+      <Modal opened={opened} onClose={close} title={t('go-back.title')}>
         <Stack gap="xl">
-          <Text>{t('goBack.description')}</Text>
+          <Text>{t('go-back.description')}</Text>
           <Group justify="flex-end">
             <Button variant="default" onClick={close}>
-              {t('goBack.no')}
+              {t('go-back.no')}
             </Button>
-            <Button onClick={confirmNavigation}>{t('goBack.yes')}</Button>
+            <Button onClick={confirmNavigation}>{t('go-back.yes')}</Button>
           </Group>
         </Stack>
       </Modal>

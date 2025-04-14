@@ -7,11 +7,11 @@ import {
   useMantineColorScheme,
 } from '@mantine/core';
 import { IconBrandGithub, IconBrandTwitter } from '@tabler/icons-react';
-import styles from './Footer.module.css';
 import { useTranslation } from 'react-i18next';
+import styles from './Footer.module.css';
 
 export default function Footer() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   const { colorScheme } = useMantineColorScheme();
   const footerClassName =

@@ -4,10 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { languages } from '@/i18n';
 
 export default function LanguageSelector() {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('navbar');
 
   function selectLanguage(languageCode: string) {
-    i18n.changeLanguage(languageCode);
+    if (i18n.language !== languageCode) {
+      i18n.changeLanguage(languageCode);
+    }
   }
 
   return (
@@ -18,14 +20,14 @@ export default function LanguageSelector() {
         </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>
-        {Object.entries(languages).map(([code, str]) => (
+        {Object.entries(languages).map(([code, label]) => (
           <Menu.Item
             key={code}
             onClick={() => selectLanguage(code)}
             rightSection={
               i18n.language === code ? <IconCheck size={14} /> : null
             }>
-            {t(str)}
+            {t(label)}
           </Menu.Item>
         ))}
       </Menu.Dropdown>

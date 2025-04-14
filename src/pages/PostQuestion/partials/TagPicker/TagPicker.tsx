@@ -39,7 +39,7 @@ export default function TagPicker({
   selectedTags,
   onSelectedTagChange,
 }: TagPickerProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('postQuestion');
   const setError = useErrorStore((state) => state.setError);
 
   const combobox = useCombobox({
@@ -84,7 +84,7 @@ export default function TagPicker({
       handleTagRemove(value);
     } else {
       if (selectedTags.length === MAX_TAGS) {
-        setError(t('questionForm.maxTags'));
+        setError(t('tags.max-tags'));
       } else {
         onSelectedTagChange([...selectedTags, value]);
       }
@@ -111,8 +111,8 @@ export default function TagPicker({
 
   return (
     <div>
-      <Input.Label required>{t('tag-select')}</Input.Label>
-      <Input.Description>{t('tag-description')}</Input.Description>
+      <Input.Label required>{t('tags.tag-select')}</Input.Label>
+      <Input.Description>{t('tags.tag-description')}</Input.Description>
       <Space h="xs" />
       <Combobox store={combobox} onOptionSubmit={handleTagSelect}>
         <Combobox.DropdownTarget>
@@ -124,7 +124,7 @@ export default function TagPicker({
                   onFocus={() => combobox.openDropdown()}
                   onBlur={() => combobox.closeDropdown()}
                   value={inputValue}
-                  placeholder={t('search-tag')}
+                  placeholder={t('tags.search-tag')}
                   onChange={(event) => {
                     combobox.updateSelectedOptionIndex();
                     setInputValue(event.currentTarget.value);
@@ -151,7 +151,9 @@ export default function TagPicker({
                 <Loader size="xs" />
               </Combobox.Empty>
             ) : query.trim() === '' ? (
-              <Combobox.Empty>{t('search-for-tag-suggestion')}</Combobox.Empty>
+              <Combobox.Empty>
+                {t('tags.search-for-tag-suggestion')}
+              </Combobox.Empty>
             ) : options.length > 0 ? (
               options
             ) : (
@@ -163,11 +165,11 @@ export default function TagPicker({
                 <Group>
                   {!selectedTags.includes(query) ? (
                     <>
-                      <IconPlus size="16" /> {t('add')} "{query}"
+                      <IconPlus size="16" /> {t('tags.add')} "{query}"
                     </>
                   ) : (
                     <>
-                      <IconMinus size="16" /> {t('remove')} "{query}"
+                      <IconMinus size="16" /> {t('tags.remove')} "{query}"
                     </>
                   )}
                 </Group>

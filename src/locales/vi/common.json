@@ -1,0 +1,15 @@
+{
+  "dev-community": "Cộng đồng dành cho lập trình viên",
+  "login": "Đăng nhập",
+  "signup": "Đăng ký",
+  "error-modal": {
+    "title": "Lỗi",
+    "ok": "OK"
+  },
+  "go-back": {
+    "title": "Xác nhận thoát",
+    "description": "Bạn có thay đổi chưa được lưu. Bạn có chắc chắn muốn thoát?",
+    "yes": "Có",
+    "no": "Không"
+  }
+}

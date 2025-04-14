@@ -55,7 +55,7 @@ export default function RichTextEditor({
   height,
   required = false,
 }: RichTextEditorProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('richTextEditor');
 
   const editor = useEditor({
     extensions: [
@@ -170,7 +170,7 @@ export default function RichTextEditor({
           )}
           {plugins.block && (
             <MantineRichTextEditor.ControlsGroup>
-              <MantineRichTextEditor.Blockquote />
+              <MantineRichTextEditor.Blockquote/>
               <MantineRichTextEditor.Hr />
               <MantineRichTextEditor.BulletList />
               <MantineRichTextEditor.OrderedList />
@@ -193,48 +193,48 @@ export default function RichTextEditor({
           {plugins.table && (
             <ActionIcon.Group>
               <ActionIcon
-                aria-label={t('insert-table')}
-                title={t('insert-table')}
+                aria-label={t('table.insert-table')}
+                title={t('table.insert-table')}
                 onClick={handleInsertTable}
                 variant="default"
                 className={styles.control}>
                 <IconTablePlus className={styles.controlIcon} />
               </ActionIcon>
               <ActionIcon
-                aria-label={t('remove-table')}
-                title={t('remove-table')}
+                aria-label={t('table.remove-table')}
+                title={t('table.remove-table')}
                 onClick={handleRemoveTable}
                 variant="default"
                 className={styles.control}>
                 <IconTableOff className={styles.controlIcon} />
               </ActionIcon>
               <ActionIcon
-                aria-label={t('add-row')}
-                title={t('add-row')}
+                aria-label={t('table.add-row')}
+                title={t('table.add-row')}
                 onClick={handleAddTableRow}
                 variant="default"
                 className={styles.control}>
                 <IconTableDown className={styles.controlIcon} />
               </ActionIcon>
               <ActionIcon
-                aria-label={t('remove-row')}
-                title={t('remove-row')}
+                aria-label={t('table.remove-row')}
+                title={t('table.remove-row')}
                 onClick={handleRemoveTableRow}
                 variant="default"
                 className={styles.control}>
                 <IconTableImport className={styles.controlIcon} />
               </ActionIcon>
               <ActionIcon
-                aria-label={t('add-column')}
-                title={t('add-column')}
+                aria-label={t('table.add-column')}
+                title={t('table.add-column')}
                 onClick={handleAddTableColumn}
                 variant="default"
                 className={styles.control}>
                 <IconTableExport className={styles.controlIcon} />
               </ActionIcon>
               <ActionIcon
-                aria-label={t('remove-column')}
-                title={t('remove-column')}
+                aria-label={t('table.remove-column')}
+                title={t('table.remove-column')}
                 onClick={handleRemoveTableColumn}
                 variant="default"
                 className={styles.control}>

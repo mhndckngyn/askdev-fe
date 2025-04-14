@@ -1,13 +1,14 @@
-import ImageDropzone from '@/pages/PostQuestion/partials/ImageDropzone';
 import RichTextEditor from '@/components/RichTextEditor';
-import { useErrorStore } from '@/stores/useErrorStore';
+import ImageDropzone from '@/pages/PostQuestion/partials/ImageDropzone';
 import { Button, Stack, TextInput, Title } from '@mantine/core';
+import { useForm } from '@mantine/form';
 import { JSONContent } from '@tiptap/core';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './PostQuestion.module.css';
 import QuestionTips from './partials/QuestionTips';
 import TagPicker from './partials/TagPicker';
+import { getTagsError, getTitleError } from './schemas';
 
 type QuestionFormData = {
   title: string;
@@ -17,58 +18,40 @@ type QuestionFormData = {
 };
 
 export default function PostQuestion() {
-  const { t } = useTranslation();
-  const setError = useErrorStore((state) => state.setError);
+  const { t } = useTranslation('postQuestion');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [formData, setFormData] = useState<QuestionFormData>({
-    title: '',
-    detail: {} as JSONContent,
-    tags: [],
-    images: [],
+  const form = useForm<QuestionFormData>({
+    initialValues: {
+      title: '',
+      detail: {} as JSONContent,
+      tags: [],
+      images: [],
+    },
+    validate: {
+      title: getTitleError,
+      tags: getTagsError,
+      // validate detail not empty
+    },
   });
 
-  const handleSubmitQuestion = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (formData.title === '') {
-      setError(t('questionForm.emptyTitle'));
-    } else if (formData.tags.length === 0) {
-      setError(t('questionForm.noTags'));
-    } else {
-      console.log(formData);
-      setIsSubmitting(true);
-    }
-  };
-
-  const updateTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setFormData({ ...formData, title: value });
-  };
-
-  const updateDetail = (value: JSONContent) => {
-    setFormData({ ...formData, detail: value });
-  };
-
-  const updateTags = (value: string[]) => {
-    setFormData({ ...formData, tags: value });
-  };
-
-  const updateImages = (value: File[]) => {
-    setFormData({ ...formData, images: value });
+  const handleSubmitQuestion = (values: QuestionFormData) => {
+    console.log(values);
+    setIsSubmitting(true);
   };
 
   return (
     <div>
       <Title className={styles.title}>{t('post-question')}</Title>
       <div className={styles.content}>
-        <form onSubmit={handleSubmitQuestion}>
+        <form onSubmit={form.onSubmit(handleSubmitQuestion)}>
           <Stack gap="lg" pos="relative">
             <TextInput
               withAsterisk
-              onChange={updateTitle}
-              label={t('question-title')}
-              description={t('question-title-description')}
-              placeholder={t('question-title-placeholder')}
+              {...form.getInputProps('title')}
+              label={t('title.question-title')}
+              description={t('title.question-title-description')}
+              placeholder={t('title.question-title-placeholder')}
               descriptionProps={{
                 style: {
                   marginBottom: 'calc(0.85 * var(--mantine-spacing-xs))',
@@ -76,13 +59,13 @@ export default function PostQuestion() {
               }}
             />
             <TagPicker
-              selectedTags={formData.tags}
-              onSelectedTagChange={updateTags}
+              selectedTags={form.values.tags}
+              onSelectedTagChange={(value) => form.setFieldValue('tags', value)}
             />
             <RichTextEditor
-              onContentChange={updateDetail}
-              label={t('question-detail')}
-              description={t('question-detail-description')}
+              onContentChange={(value) => form.setFieldValue('detail', value)}
+              label={t('detail.question-detail')}
+              description={t('detail.question-detail-description')}
               plugins={{
                 inline: true,
                 code: true,
@@ -94,12 +77,12 @@ export default function PostQuestion() {
               required
             />
             <ImageDropzone
-              currentImages={formData.images}
-              onImageChange={updateImages}
+              currentImages={form.values.images}
+              onImageChange={(value) => form.setFieldValue('images', value)}
               maxImages={4}
             />
             <Button type="submit" variant="filled" loading={isSubmitting}>
-              {t('questionForm.submit')}
+              {t('submit')}
             </Button>
           </Stack>
         </form>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 export default function NotFound() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('statics');
 
   return (
     <Container size="sm" style={{ textAlign: 'center', marginTop: '10vh' }}>
@@ -12,7 +12,7 @@ export default function NotFound() {
       </Title>
 
       <Text size="lg" c="dimmed" mt="sm">
-        {t('page-not-found')}
+        {t('not-found.page-not-found')}
       </Text>
 
       <Button component={Link} to="/" variant="filled" mt="lg">

@@ -1,0 +1,16 @@
+{
+  "title": "Edit profile",
+  "upload-profile-picture": "Change",
+  "reset": "Reset",
+  "username-label": "Username",
+  "username-placeholder": "Enter your username",
+  "github-label": "GitHub username",
+  "github-placeholder": "Your Github Username",
+  "show-github-label": "Display my GitHub",
+  "about-me-label": "About me",
+  "about-me-description": "Share details about yourself",
+  "save-changes": "Save changes",
+  "username-length-error": "Username must be between 5 and 24 characters.",
+  "github-length-error": "GitHub username is less than 39 characters.",
+  "github-empty-error": "GitHub username cannot be empty when display is enabled."
+}
