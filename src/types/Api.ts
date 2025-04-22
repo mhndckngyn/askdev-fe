@@ -6,3 +6,5 @@ export type ApiResponse<T = any> = {
   error?: string;
   statusCode: number;
 };
+
+export type ApiMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';

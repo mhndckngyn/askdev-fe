@@ -74,7 +74,7 @@ export default function Signup() {
       form.reset();
       setAction(tApi('user.signup-check-email'), tCommon('ok'));
     } else {
-      setError(tApi(response.message) || tApi('user.signup-error'));
+      setError(tApi(response.error) || tApi('user.signup-error'));
     }
 
     setSubmitting(false);

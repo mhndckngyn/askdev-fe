@@ -10,7 +10,7 @@ import QuestionTips from './partials/QuestionTips';
 import TagPicker from './partials/TagPicker';
 import { getTagsError, getTitleError } from './schemas';
 
-type QuestionFormData = {
+export type QuestionFormData = {
   title: string;
   detail: JSONContent;
   tags: string[];
