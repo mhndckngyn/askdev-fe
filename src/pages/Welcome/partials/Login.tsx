@@ -9,7 +9,6 @@ import {
   PasswordInput,
   Stack,
   TextInput,
-  Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import {
@@ -19,7 +18,6 @@ import {
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-import styles from '../Welcome.module.css';
 import { getEmailLoginError } from '../schemas';
 import { submitLoginForm } from '../services';
 import { LoginFormValues } from '../types';
@@ -56,62 +54,57 @@ export default function Login() {
         replace: true,
       });
     } else {
-      setError(tApi(response.error) || tApi('auth.login-error'));
+      setError(tApi(response.message) || tApi('auth.login-error'));
     }
 
     setSubmitting(false);
   };
 
   return (
-    <Stack>
-      <Title size="h2" className={styles.welcomeMessage}>
-        {t('welcome-back')}
-      </Title>
+    <form onSubmit={form.onSubmit(handleSubmit)}>
+      <Stack>
+        <TextInput
+          label="Email"
+          placeholder={t('enter-email')}
+          {...form.getInputProps('email')}
+          required
+        />
 
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Stack>
-          <TextInput
-            label="Email"
-            placeholder={t('enter-email')}
-            {...form.getInputProps('email')}
-            required
-          />
+        <PasswordInput
+          label={t('password')}
+          placeholder={t('enter-password')}
+          {...form.getInputProps('password')}
+          required
+        />
 
-          <PasswordInput
-            label={t('password')}
-            placeholder={t('enter-password')}
-            {...form.getInputProps('password')}
-            required
-          />
-          <Flex justify="flex-end">
-            <Anchor component={Link} to="/password-reset" size="sm">
-              {t('forgot-password')}
-            </Anchor>
-          </Flex>
+        <Button fullWidth type="submit" loading={isSubmitting}>
+          {tCommon('login')}
+        </Button>
 
-          <Button fullWidth type="submit" loading={isSubmitting}>
-            {tCommon('login')}
+        <Flex justify="flex-end">
+          <Anchor component={Link} to="/password-reset" size="sm">
+            {t('forgot-password')}
+          </Anchor>
+        </Flex>
+
+        <Divider label={t('continue-with')} labelPosition="center" />
+        <Group grow>
+          <Button
+            component="a"
+            href="http://localhost:3000/auth/google"
+            leftSection={<IconBrandGoogleFilled size={16} />}
+            variant="default">
+            Google
           </Button>
-
-          <Divider label={t('continue-with')} labelPosition="center" />
-          <Group grow>
-            <Button
-              component="a"
-              href="http://localhost:3000/auth/google"
-              leftSection={<IconBrandGoogleFilled size={16} />}
-              variant="default">
-              Google
-            </Button>
-            <Button
-              component="a"
-              href="http://localhost:3000/auth/github"
-              leftSection={<IconBrandGithubFilled size={16} />}
-              variant="default">
-              GitHub
-            </Button>
-          </Group>
-        </Stack>
-      </form>
-    </Stack>
+          <Button
+            component="a"
+            href="http://localhost:3000/auth/github"
+            leftSection={<IconBrandGithubFilled size={16} />}
+            variant="default">
+            GitHub
+          </Button>
+        </Group>
+      </Stack>
+    </form>
   );
 }

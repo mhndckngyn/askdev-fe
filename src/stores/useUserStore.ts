@@ -1,4 +1,4 @@
-import axiosInstance from '@/utils/axiosInstance';
+import fetcher from '@/utils/fetcher';
 import { create } from 'zustand';
 
 type User = {
@@ -10,7 +10,6 @@ type User = {
 
 type UserState = {
   user: User | null;
-  loading: boolean;
 
   setUser: (user: User) => void;
   fetchUser: () => Promise<void>;
@@ -19,29 +18,23 @@ type UserState = {
 
 export const useUserStore = create<UserState>((set) => ({
   user: null,
-  loading: true,
 
   setUser: (user) => set({ user }),
 
   fetchUser: async () => {
-    try {
-      set({ loading: true });
-      const { data: body } = await axiosInstance.get('user/me');
-      set({ user: body.content.user });
-    } catch (err) {
+    const responseBody = await fetcher('GET', 'user/me');
+    if (responseBody.success) {
+      set({ user: responseBody.content.user });
+    } else {
+      // !responseBody.success hoặc lỗi bất ngờ (ko có responsebody)
       set({ user: null });
-    } finally {
-      set({ loading: false });
     }
   },
 
   logout: async () => {
-    try {
-      await axiosInstance.post('auth/logout');
-    } catch (error) {
-      console.log(error);
-    } finally {
-      set({ user: null, loading: false });
+    const responseBody = await fetcher('POST', 'auth/logout');
+    if (responseBody.success) {
+      set({ user: null });
     }
   },
 }));

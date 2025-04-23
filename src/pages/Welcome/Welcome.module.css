@@ -1,13 +1,20 @@
-.title {
-  text-align: center;
+.header { 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.iconContainer {
+  margin-top: var(--mantine-spacing-xs);
+
+  & > * {
+    width: 28px;
+    height: 28px;
+  }
 }
 
 .createAccount {
   text-align: center;
-}
-
-.passwordHintLabel {
-  translate: 0 -2px;
 }
 
 .paper {

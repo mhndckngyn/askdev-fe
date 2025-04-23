@@ -3,7 +3,7 @@ import { IconInfoCircle } from '@tabler/icons-react';
 import { useActionStore } from '@/stores/useActionModalStore';
 import styles from './ActionModal.module.css';
 
-export const ActionModal = () => {
+const ActionModal = () => {
   const { opened, message, actionName, clearAction, confirmAction } = useActionStore();
 
   return (
@@ -33,3 +33,5 @@ export const ActionModal = () => {
     </Modal>
   );
 };
+
+export default ActionModal;
