@@ -21,6 +21,7 @@ import { ActionModal } from './components/ActionModal/ActionModal';
 import { useUserStore } from './stores/useUserStore';
 import { Fragment, useEffect } from 'react';
 import EmailVerify from './pages/EmailVerify';
+import Questions from './pages/Question/Detail';
 
 export default function App() {
   const { fetchUser, loading } = useUserStore();
@@ -41,6 +42,7 @@ export default function App() {
               <div className={styles.content}>
                 <Routes>
                   <Route path="/welcome" element={<Welcome />} />
+                  <Route path="/questions/detail" element={<Questions />} />
                   <Route path="/" element={<Homepage />} />
                   <Route path="/tags" element={<TagsPage />} />
                   <Route path="/questions/post" element={<PostQuestion />} />
