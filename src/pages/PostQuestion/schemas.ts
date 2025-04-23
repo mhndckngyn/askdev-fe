@@ -1,4 +1,5 @@
 import i18next from 'i18next';
+import { TagData } from './PostQuestion';
 
 export function getTitleError(value: string): string | null {
   if (value === '') {
@@ -8,7 +9,7 @@ export function getTitleError(value: string): string | null {
   return null;
 }
 
-export function getTagsError(value: string[]): string | null {
+export function getTagsError(value: (string | TagData)[]): string | null {
   if (value.length === 0) {
     return i18next.t('postQuestion:validate.no-tags');
   }

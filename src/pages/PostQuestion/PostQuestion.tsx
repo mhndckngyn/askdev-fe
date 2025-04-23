@@ -1,5 +1,6 @@
 import RichTextEditor from '@/components/RichTextEditor';
 import ImageDropzone from '@/pages/PostQuestion/partials/ImageDropzone';
+import { useErrorStore } from '@/stores/useErrorStore';
 import { Button, Stack, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { JSONContent } from '@tiptap/core';
@@ -9,35 +10,58 @@ import styles from './PostQuestion.module.css';
 import QuestionTips from './partials/QuestionTips';
 import TagPicker from './partials/TagPicker';
 import { getTagsError, getTitleError } from './schemas';
+import { postQuestion } from './services';
+
+export type TagData = {
+  id: string;
+  name: string;
+};
 
 export type QuestionFormData = {
   title: string;
-  detail: JSONContent;
-  tags: string[];
+  content: JSONContent;
+  existingTags: TagData[];
+  newTags: string[];
   images: File[];
 };
 
 export default function PostQuestion() {
   const { t } = useTranslation('postQuestion');
+  const setError = useErrorStore((state) => state.setError);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<QuestionFormData>({
     initialValues: {
       title: '',
-      detail: {} as JSONContent,
-      tags: [],
+      content: {} as JSONContent,
+      existingTags: [],
+      newTags: [],
       images: [],
     },
     validate: {
       title: getTitleError,
-      tags: getTagsError,
-      // validate detail not empty
+      existingTags: (_, values) => {
+        const error = getTagsError([...values.existingTags, ...values.newTags]);
+        if (error) {
+          setError(error);
+        }
+        return error;
+      },
     },
   });
 
-  const handleSubmitQuestion = (values: QuestionFormData) => {
-    console.log(values);
+  const handleSubmitQuestion = async (values: QuestionFormData) => {
     setIsSubmitting(true);
+
+    const response = await postQuestion(values);
+
+    if (response.success) {
+      // chuyển hướng về trang câu hỏi
+    } else if (response.message) {
+      setError(response.message);
+    }
+
+    setIsSubmitting(false);
   };
 
   return (
@@ -59,11 +83,17 @@ export default function PostQuestion() {
               }}
             />
             <TagPicker
-              selectedTags={form.values.tags}
-              onSelectedTagChange={(value) => form.setFieldValue('tags', value)}
+              existingTags={form.values.existingTags}
+              newTags={form.values.newTags}
+              updateChosenExistingTags={(value) =>
+                form.setFieldValue('existingTags', value)
+              }
+              updateChosenNewTags={(value) =>
+                form.setFieldValue('newTags', value)
+              }
             />
             <RichTextEditor
-              onContentChange={(value) => form.setFieldValue('detail', value)}
+              onContentChange={(value) => form.setFieldValue('content', value)}
               label={t('detail.question-detail')}
               description={t('detail.question-detail-description')}
               plugins={{
