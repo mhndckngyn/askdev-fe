@@ -13,32 +13,30 @@ import {
 import { IconMinus, IconPlus } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { searchTags } from '../../services';
+import { TagData } from '../../PostQuestion';
 
 type TagPickerProps = {
-  selectedTags: string[];
-  onSelectedTagChange: (tags: string[]) => void;
+  existingTags: TagData[]; // 1 mục gồm tên và id
+  newTags: string[]; // được người dùng tự thêm
+  updateChosenExistingTags: (value: TagData[]) => void;
+  updateChosenNewTags: (value: string[]) => void;
 };
 
-async function fetchTags(query: string): Promise<string[]> {
-  const tags = ['React', 'JavaScript', 'TypeScript', 'C++'];
-
-  // Simulating a delay
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(
-        tags.filter((item) => item.toLowerCase().includes(query.toLowerCase())),
-      );
-    }, 300);
-  });
-}
+type TagResult = TagData;
 
 const SEARCH_DELAY_MS = 300;
 const MAX_TAGS = 5;
 
 export default function TagPicker({
-  selectedTags,
-  onSelectedTagChange,
+  existingTags,
+  newTags,
+  updateChosenExistingTags,
+  updateChosenNewTags,
 }: TagPickerProps) {
+  console.log(existingTags);
+  console.log(newTags)
+
   const { t } = useTranslation('postQuestion');
   const setError = useErrorStore((state) => state.setError);
 
@@ -47,10 +45,19 @@ export default function TagPicker({
     onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
   });
 
-  const [inputValue, setInputValue] = useState(''); // search term, updated when user types
-  const [query, setQuery] = useState(''); // actual search term, sent to backend after delay
-  const [queryResults, setQueryResults] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState(''); // cập nhật khi user gõ
+  const [query, setQuery] = useState(''); // cụm từ cần tìm kiếm (set bằng giá trị inputValue sau delay)
+  const [tagSearchResults, setTagSearchResults] = useState<TagResult[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const handleQuery = async () => {
+    const response = await searchTags(query);
+    if (response.success) {
+      setTagSearchResults(response.content);
+    } else {
+      console.log(response);
+    }
+  };
 
   // Delay search
   useEffect(() => {
@@ -63,62 +70,88 @@ export default function TagPicker({
 
   // Search for tags
   useEffect(() => {
-    if (query.trim() === '') return;
+    if (query.trim() === '') {
+      return;
+    }
     setLoading(true);
-
-    fetchTags(query).then((data) => {
-      setQueryResults(data);
-      setLoading(false);
-    });
+    handleQuery();
+    setLoading(false);
   }, [query]);
 
-  // Remove existing tag
-  const handleTagRemove = (value: string) => {
-    const current = selectedTags.filter((tag) => tag !== value);
-    onSelectedTagChange(current);
+  const isInSelectedExistingTags = (value: string) => {
+    return !!existingTags.find((tag) => tag.name === value); // !! để chuyển đổi sang boolean
   };
 
-  // Add tag/remove existing tag
-  const handleTagSelect = (value: string) => {
-    if (selectedTags.includes(value)) {
-      handleTagRemove(value);
+  const isInSelectedNewTags = (value: string) => {
+    return newTags.includes(value);
+  };
+
+  // Remove existing tag
+  const handleTagRemove = (tag: string | TagData) => {
+    if (typeof tag === 'string') {
+      const filtered = newTags.filter((name) => tag !== name);
+      updateChosenNewTags(filtered);
     } else {
-      if (selectedTags.length === MAX_TAGS) {
+      const filtered = existingTags.filter((t) => t.name !== tag.name);
+      updateChosenExistingTags(filtered);
+    }
+  };
+
+  const isExceedingTagLimit = existingTags.length + newTags.length >= MAX_TAGS;
+
+  // Chọn tag từ danh sách dropdown
+  const handleTagSelect = (tag: string | TagData) => {
+    const name = typeof tag === 'string' ? tag : tag.name;
+    if (isInSelectedExistingTags(name) || isInSelectedNewTags(name)) {
+      handleTagRemove(name); // nếu chọn cái đã có thì xóa
+    } else {
+      if (isExceedingTagLimit) {
         setError(t('tags.max-tags'));
       } else {
-        onSelectedTagChange([...selectedTags, value]);
+        if (typeof tag === 'string') {
+          updateChosenNewTags([...newTags, tag]);
+        } else {
+          updateChosenExistingTags([...existingTags, tag]);
+        }
       }
     }
   };
 
-  const values = selectedTags.map((item) => (
-    <Pill key={item} withRemoveButton onRemove={() => handleTagRemove(item)}>
-      {item}
+  const selectedTags = [...existingTags, ...newTags].map((tag, index) => (
+    <Pill key={index} withRemoveButton onRemove={() => handleTagRemove(tag)}>
+      {typeof tag === 'string' ? tag : tag.name}
     </Pill>
   ));
 
-  const options = queryResults.map((item) => (
-    <Combobox.Option
-      value={item}
-      key={item}
-      active={selectedTags.includes(item)}>
-      <Group gap="sm">
-        {selectedTags.includes(item) ? <CheckIcon size={12} /> : null}
-        <span>{item}</span>
-      </Group>
-    </Combobox.Option>
-  ));
+  // Mục dropdown tag được trả về từ kết quả tìm kiếm
+  const tagResults = tagSearchResults.map((item) => {
+    const isActive = isInSelectedExistingTags(item.name);
+
+    return (
+      <Combobox.Option
+        key={item.id}
+        value={item.name}
+        active={isActive}
+        onClick={() => handleTagSelect(item)}>
+        <Group gap="sm">
+          {isActive ? <CheckIcon size={12} /> : null}
+          <span>{item.name}</span>
+        </Group>
+      </Combobox.Option>
+    );
+  });
 
   return (
     <div>
       <Input.Label required>{t('tags.tag-select')}</Input.Label>
       <Input.Description>{t('tags.tag-description')}</Input.Description>
       <Space h="xs" />
-      <Combobox store={combobox} onOptionSubmit={handleTagSelect}>
+      <Combobox store={combobox}>
         <Combobox.DropdownTarget>
           <PillsInput onClick={() => combobox.openDropdown()}>
             <Pill.Group>
-              {values}
+              {selectedTags}{' '}
+              {/* danh sach tag đã chọn, bao gồm có và chưa có trong db */}
               <Combobox.EventsTarget>
                 <PillsInput.Field
                   onFocus={() => combobox.openDropdown()}
@@ -128,16 +161,6 @@ export default function TagPicker({
                   onChange={(event) => {
                     combobox.updateSelectedOptionIndex();
                     setInputValue(event.currentTarget.value);
-                  }}
-                  onKeyDown={(event) => {
-                    if (
-                      event.key === 'Backspace' &&
-                      inputValue.length === 0 &&
-                      selectedTags.length > 0
-                    ) {
-                      event.preventDefault();
-                      handleTagRemove(selectedTags[selectedTags.length - 1]);
-                    }
                   }}
                 />
               </Combobox.EventsTarget>
@@ -154,8 +177,8 @@ export default function TagPicker({
               <Combobox.Empty>
                 {t('tags.search-for-tag-suggestion')}
               </Combobox.Empty>
-            ) : options.length > 0 ? (
-              options
+            ) : tagResults.length > 0 ? (
+              tagResults
             ) : (
               <Combobox.Option
                 value={query}
@@ -163,13 +186,15 @@ export default function TagPicker({
                   handleTagSelect(query);
                 }}>
                 <Group>
-                  {!selectedTags.includes(query) ? (
+                  {isInSelectedNewTags(query) ? (
                     <>
-                      <IconPlus size="16" /> {t('tags.add')} "{query}"
+                      <IconMinus size="16" /> {t('tags.remove')} "{query}"{' '}
+                      {/* nếu đã tồn tại thì cho phép xóa */}
                     </>
                   ) : (
                     <>
-                      <IconMinus size="16" /> {t('tags.remove')} "{query}"
+                      <IconPlus size="16" /> {t('tags.add')} "{query}"{' '}
+                      {/* nếu không tồn tại thì cho phép thêm */}
                     </>
                   )}
                 </Group>

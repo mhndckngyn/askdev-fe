@@ -3,14 +3,14 @@ import PasswordStrengthInput, {
 } from '@/components/PasswordStrengthInput';
 import { useActionStore } from '@/stores/useActionModalStore';
 import { useErrorStore } from '@/stores/useErrorStore';
+import { ApiResponse } from '@/types';
 import {
   Button,
   Divider,
   Group,
   PasswordInput,
   Stack,
-  TextInput,
-  Title,
+  TextInput
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import {
@@ -19,7 +19,6 @@ import {
 } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import styles from '../Welcome.module.css';
 import {
   getConfirmPasswordError,
   getEmailLoginError,
@@ -27,7 +26,6 @@ import {
 } from '../schemas';
 import { submitSignupForm } from '../services';
 import { SignupFormValues, SignupPayload } from '../types';
-import { ApiResponse } from '@/types';
 
 export default function Signup() {
   const { t: tCommon } = useTranslation('common');
@@ -81,67 +79,61 @@ export default function Signup() {
   };
 
   return (
-    <Stack>
-      <Title size="h2" className={styles.welcomeMessage}>
-        {t('join-community')}
-      </Title>
+    <form onSubmit={form.onSubmit(handleSubmit)}>
+      <Stack>
+        <TextInput
+          label="Email"
+          placeholder={t('enter-email')}
+          {...form.getInputProps('email')}
+          required
+        />
 
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Stack>
-          <TextInput
-            label="Email"
-            placeholder={t('enter-email')}
-            {...form.getInputProps('email')}
-            required
-          />
+        <TextInput
+          label={t('username')}
+          placeholder={t('choose-username')}
+          {...form.getInputProps('username')}
+          required
+        />
 
-          <TextInput
-            label={t('username')}
-            placeholder={t('choose-username')}
-            {...form.getInputProps('username')}
-            required
-          />
+        <PasswordStrengthInput
+          value={form.values.password}
+          onChange={onPasswordChange}
+          error={form.errors.password}
+          label={t('password')}
+          placeholder={t('enter-password')}
+        />
 
-          <PasswordStrengthInput
-            value={form.values.password}
-            onChange={onPasswordChange}
-            error={form.errors.password}
-            label={t('password')}
-            placeholder={t('enter-password')}
-          />
+        <PasswordInput
+          label={t('confirm-password')}
+          placeholder={t('confirm-password')}
+          {...form.getInputProps('confirmPassword')}
+          required
+        />
 
-          <PasswordInput
-            label={t('confirm-password')}
-            placeholder={t('confirm-password')}
-            {...form.getInputProps('confirmPassword')}
-            required
-          />
+        <Button fullWidth type="submit" mt="sm" loading={isSubmitting}>
+          {tCommon('signup')}
+        </Button>
 
-          <Button fullWidth type="submit" mt="sm" loading={isSubmitting}>
-            {tCommon('signup')}
+        <Divider label={t('continue-with')} labelPosition="center" />
+
+        {/* Social Login */}
+        <Group grow>
+          <Button
+            component="a"
+            href="http://localhost:3000/auth/google"
+            leftSection={<IconBrandGoogleFilled size={16} />}
+            variant="default">
+            Google
           </Button>
-
-          <Divider label={t('continue-with')} labelPosition="center" />
-
-          {/* Social Login */}
-          <Group grow>
-            <Button
-              component="a"
-              href="http://localhost:3000/auth/google"
-              leftSection={<IconBrandGoogleFilled size={16} />}
-              variant="default">
-              Google
-            </Button>
-            <Button
-              component="a"
-              href="http://localhost:3000/auth/github"
-              leftSection={<IconBrandGithubFilled size={16} />}
-              variant="default">
-              GitHub
-            </Button>
-          </Group>
-        </Stack>
-      </form>
-    </Stack>
+          <Button
+            component="a"
+            href="http://localhost:3000/auth/github"
+            leftSection={<IconBrandGithubFilled size={16} />}
+            variant="default">
+            GitHub
+          </Button>
+        </Group>
+      </Stack>
+    </form>
   );
 }
