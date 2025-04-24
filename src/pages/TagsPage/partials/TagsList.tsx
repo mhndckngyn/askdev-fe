@@ -9,25 +9,24 @@ type TagsListProps = {
 };
 
 export default function TagsList({ tags }: TagsListProps) {
-  const { t } = useTranslation('tagsPage');
+  const { t, i18n } = useTranslation('tagsPage');
+  const currentLang = i18n.language;
 
-  return (
-    <Grid>
-      {tags.map((tag) => (
-        <Grid.Col key={tag.id} span={{ base: 6, md: 4, lg: 3 }}>
-          <div className={styles.tagItem}>
-            <Group gap="xs">
-              <TagHoverCard id={tag.name} name={tag.name} />
-              <Text size="sm">
-                {tag.questionsAllTime} {t('questions-count')}
-              </Text>
-            </Group>
-            <Text lineClamp={4} className={styles.tagDescription}>
-              {tag.description}
-            </Text>
-          </div>
-        </Grid.Col>
-      ))}
-    </Grid>
-  );
+  const tagCards = tags.map((tag) => (
+    <Grid.Col key={tag.id} span={{ base: 6, md: 4, lg: 3 }}>
+      <div className={styles.tagItem}>
+        <Group gap="xs">
+          <TagHoverCard id={tag.name} name={tag.name} />
+          <Text size="sm">
+            {tag.questionCount} {t('questions-count')}
+          </Text>
+        </Group>
+        <Text lineClamp={4} className={styles.tagDescription}>
+          {currentLang === 'vi' ? tag.descriptionVi : tag.descriptionEn}
+        </Text>
+      </div>
+    </Grid.Col>
+  ));
+
+  return <Grid>{tagCards}</Grid>;
 }

@@ -23,6 +23,7 @@
   max-width: 300px;
   margin-top: var(--mantine-spacing-xl);
   margin-bottom: var(--mantine-spacing-lg);
+  border-radius: var(--mantine-radius-md);
 }
 
 .tagItem {
