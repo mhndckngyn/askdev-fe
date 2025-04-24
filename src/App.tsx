@@ -41,7 +41,7 @@ export default function App() {
                 <Route path="/welcome" element={<Welcome />} />
                 <Route path="/" element={<Homepage />} />
                 <Route path="/tags" element={<TagsPage />} />
-                <Route path="/questions/detail" element={<QuestionsDetail />} />
+                <Route path="/questions/detail/:id" element={<QuestionsDetail />} />
                 <Route path="/questions/post" element={<PostQuestion />} />
                 <Route path="/profile" element={<ProfileRedirect />} />
                 <Route path="/profile/:id" element={<ProfilePage />} />

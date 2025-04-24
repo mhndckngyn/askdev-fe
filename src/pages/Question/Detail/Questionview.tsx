@@ -1,16 +1,45 @@
+import { useEffect, useState } from 'react';
 import { Box, Paper, Typography, Avatar, Divider } from '@mui/material';
-import DOMPurify from 'dompurify';
+import QuestionContent from './QuestionContent';
 import ImageGrid from './ImageGrid';
+import { getQuestion } from './services';
+import { ApiResponse } from '@/types';
+import { useParams } from 'react-router-dom';
+import FormatTime from './formatTime';
 
-function QuestionView() {
-  const QuestionViewData = {
-    ListFile: [
-      'https://demos.creative-tim.com/material-dashboard-react/static/media/home-decor-1.05e218fd495ccc65c99d.jpg',
-      'https://demos.creative-tim.com/material-dashboard-react/static/media/home-decor-1.05e218fd495ccc65c99d.jpg',
-      'https://demos.creative-tim.com/material-dashboard-react/static/media/home-decor-1.05e218fd495ccc65c99d.jpg',
-      'https://demos.creative-tim.com/material-dashboard-react/static/media/home-decor-1.05e218fd495ccc65c99d.jpg',
-    ],
-  };
+const QuestionView = () => {
+  const { id } = useParams<{ id: string }>();
+  const [data, setData] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!id) {
+      setError('Không có ID trong URL.');
+      return;
+    }
+    const fetchQuestion = async () => {
+      try {
+        const response: ApiResponse = await getQuestion(id);
+        if (response.success) {
+          setData(response.content);
+        } else {
+          setError('Không thể tải câu hỏi.');
+        }
+      } catch (err) {
+        setError('Đã xảy ra lỗi trong khi tải câu hỏi.');
+      }
+    };
+
+    fetchQuestion();
+  }, [id]);
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!data) {
+    return <div>Đang tải...</div>;
+  }
 
   return (
     <Paper>
@@ -27,9 +56,7 @@ function QuestionView() {
         <Box width="100%" height="100%" display="flex" flexDirection="column">
           <Box sx={{ display: 'flex', alignContent: 'center' }}>
             <Avatar
-              src={
-                'https://demos.creative-tim.com/material-dashboard-react/static/media/home-decor-1.05e218fd495ccc65c99d.jpg'
-              }
+              src={'https://i.pravatar.cc/150?img=7'}
               alt=""
               style={{
                 width: '60px',
@@ -57,7 +84,7 @@ function QuestionView() {
                       whiteSpace: 'nowrap',
                       color: 'black',
                     }}>
-                    {'Lê Ngọc Ngà'}
+                    {data.username}
                   </Typography>
 
                   <Typography
@@ -70,23 +97,25 @@ function QuestionView() {
                       fontWeight: 'medium',
                       height: 'fit-content',
                     }}>
-                    {'20:11 20/11/2004'}
+                    <FormatTime createdAt={data.createdAt} />
                   </Typography>
                 </Box>
 
                 <Typography
                   variant="h6"
                   sx={{
+                    mt:'10px',
+                    ml:'6px',
                     backgroundColor: 'yellow',
                     color: 'black',
-                    padding: '3px 9px',
+                    padding: '3px 10px',
                     borderRadius: '13px',
                     fontSize: '13px',
                     fontWeight: 'medium',
                     height: 'fit-content',
                     display: 'inline-block',
                   }}>
-                  {'c++'}
+                  {data.tags?.map((tag: any) => tag.name).join(', ')}
                 </Typography>
               </Box>
             </Box>
@@ -101,55 +130,20 @@ function QuestionView() {
               fontWeight: 'Bold',
               color: 'black',
             }}>
-            {'"Sử dụng map(), filter() và reduce() hiệu quả trong JavaScript"'}
+            {data.title}
           </Typography>
 
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{
-              fontSize: '15px',
-              mt: '10px',
-              mb: '6px',
-              color: 'gray',
-              '& p': { marginBottom: '0.5rem' },
-              '& ul': {
-                paddingLeft: '1.5rem',
-                marginBottom: '0.5rem',
-              },
-              '& li': { marginBottom: '0.3rem' },
-              '& strong': { fontWeight: 600 },
-              '& br': { display: 'block', marginBottom: '0.5rem' },
-              '& a': {
-                color: 'var(--text-color)',
-                textDecoration: 'none',
-                '&:hover': {
-                  textDecoration: 'underline',
-                },
-              },
-            }}
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(`
-                    Các hàm xử lý mảng như <strong>map()</strong>, <strong>filter()</strong> và <strong>reduce()</strong> là công cụ cực kỳ mạnh mẽ giúp viết code ngắn gọn và dễ đọc hơn.
-                    <ul>
-                      <li><strong>map()</strong> được dùng để chuyển đổi từng phần tử trong mảng.</li>
-                      <li><strong>filter()</strong> lọc ra những phần tử thỏa điều kiện.</li>
-                      <li><strong>reduce()</strong> tổng hợp hoặc rút gọn mảng thành một giá trị duy nhất (ví dụ: tính tổng, gộp object, v.v).</li>
-                    </ul>
-                  `),
-            }}
-          />
+          <QuestionContent content={data.content} />
 
-          {QuestionViewData?.ListFile &&
-            QuestionViewData.ListFile.length > 0 && (
-              <Box>
-                <ImageGrid files={QuestionViewData.ListFile} />
-              </Box>
-            )}
+          {data.images?.length > 0 && (
+            <Box>
+              <ImageGrid files={data.images} />
+            </Box>
+          )}
         </Box>
       </Box>
     </Paper>
   );
-}
+};
 
 export default QuestionView;
