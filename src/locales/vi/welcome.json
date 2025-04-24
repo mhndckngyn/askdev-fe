@@ -14,5 +14,7 @@
   "username-length": "Tên người dùng có ít nhất 4 ký tự.",
   "confirm-password": "Xác nhận mật khẩu",
   "password-mismatch": "Mật khẩu không khớp.",
-  "account-created": "Tạo thành khoản thành công"
+  "account-created": "Tạo thành khoản thành công",
+  "login-error": "Đã có lỗi xảy ra khi đăng nhập.",
+  "signup-error": "Đã có lỗi xảy ra khi đăng ký tài khoản."
 }

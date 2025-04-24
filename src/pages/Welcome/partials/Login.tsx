@@ -54,7 +54,14 @@ export default function Login() {
         replace: true,
       });
     } else {
-      setError(tApi(response.message) || tApi('auth.login-error'));
+      const message = response.message;
+      switch (message) {
+        case 'auth.incorrect-login-data':
+          setError(tApi(message));
+          break;
+        default:
+          setError(t('login-error'));
+      }
     }
 
     setSubmitting(false);

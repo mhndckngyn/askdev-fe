@@ -14,5 +14,7 @@
   "username-length": "Username has at least 4 letters.",
   "confirm-password": "Confirm password",
   "password-mismatch": "Passwords do not match.",
-  "account-created": "Account created"
+  "account-created": "Account created",
+  "login-error": "Error while logging in.",
+  "signup-error": "Error while signing up."
 }

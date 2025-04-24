@@ -37,8 +37,6 @@ export default function EmailVerify() {
     const handleSubmitToken = async () => {
       const response: ApiResponse = await submitVerificationToken(token);
 
-      console.log(response);
-
       if (response.success) {
         setState('SUCCESS');
         return;
@@ -46,6 +44,7 @@ export default function EmailVerify() {
 
       if (response.statusCode === 410) {
         setState('EXPIRED');
+        // thử đọc email từ response, nếu có thì cho người dùng lựa chọn để gửi lại
         const email = response.content.email;
         if (email) {
           setResendEmail(email);
@@ -61,7 +60,6 @@ export default function EmailVerify() {
   const handleResend = async () => {
     setResending(true);
 
-    console.log(resendEmail);
     const response: ApiResponse = await submitResendVerification(resendEmail);
 
     console.log(response);

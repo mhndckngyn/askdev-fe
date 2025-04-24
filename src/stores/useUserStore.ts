@@ -22,7 +22,7 @@ export const useUserStore = create<UserState>((set) => ({
   setUser: (user) => set({ user }),
 
   fetchUser: async () => {
-    const responseBody = await fetcher('GET', 'user/me');
+    const responseBody = await fetcher({ method: 'GET', route: 'user/me' });
     if (responseBody.success) {
       set({ user: responseBody.content.user });
     } else {
@@ -32,7 +32,10 @@ export const useUserStore = create<UserState>((set) => ({
   },
 
   logout: async () => {
-    const responseBody = await fetcher('POST', 'auth/logout');
+    const responseBody = await fetcher({
+      method: 'POST',
+      route: 'auth/logout',
+    });
     if (responseBody.success) {
       set({ user: null });
     }
