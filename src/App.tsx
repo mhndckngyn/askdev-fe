@@ -21,6 +21,7 @@ import ProfileRedirect from './pages/ProfileRedirect/ProfileRedirect';
 import TagsPage from './pages/TagsPage';
 import Welcome from './pages/Welcome';
 import { useUserStore } from './stores/useUserStore';
+import QuestionsDetail from './pages/Question/Detail';
 
 export default function App() {
   const { fetchUser } = useUserStore();
@@ -40,6 +41,7 @@ export default function App() {
                 <Route path="/welcome" element={<Welcome />} />
                 <Route path="/" element={<Homepage />} />
                 <Route path="/tags" element={<TagsPage />} />
+                <Route path="/questions/detail/:id" element={<QuestionsDetail />} />
                 <Route path="/questions/post" element={<PostQuestion />} />
                 <Route path="/profile" element={<ProfileRedirect />} />
                 <Route path="/profile/:id" element={<ProfilePage />} />
