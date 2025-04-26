@@ -1,35 +1,35 @@
 import { logo } from '@/assets/images';
+import LanguageSelector from '@/components/LanguageSelector';
+import ThemeSwitcher from '@/components/ThemeSwitcher';
+import UserMenu from '@/components/UserMenu';
 import { useUserStore } from '@/stores/useUserStore';
 import {
-  Avatar,
   Box,
   Button,
   Center,
   Flex,
-  Group,
   Image,
-  Menu,
   Popover,
   Stack,
   Text,
   TextInput,
-  UnstyledButton,
 } from '@mantine/core';
-import {
-  IconChevronDown,
-  IconLogout,
-  IconSearch,
-  IconSettings,
-  IconUser,
-} from '@tabler/icons-react';
+import { IconSearch } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Fragment } from 'react/jsx-runtime';
-import LanguageSelector from './LanguageSelector';
 import styles from './Navbar.module.css';
-import ThemeSwitcher from './ThemeSwitcher';
 
-const searchTips = [
+const descriptions = {
+  tag: 'search-tag',
+  user: 'search-user',
+  answered: 'search-question-status',
+  keyword: 'search-exact-phrase',
+} as const;
+
+type Description = (typeof descriptions)[keyof typeof descriptions];
+
+const searchTips: { label: string; description: Description }[] = [
   {
     label: '[tag]',
     description: 'search-tag',
@@ -52,17 +52,11 @@ export default function NavBar() {
   const { t: tCommon } = useTranslation('common');
   const { t } = useTranslation('navbar');
 
-  const { user, logout } = useUserStore();
-  const navigate = useNavigate();
+  const { user } = useUserStore();
   const location = useLocation();
 
   const hideSearchBar = ['/welcome'].includes(location.pathname);
   const hideLogins = ['/welcome'].includes(location.pathname);
-
-  const handleLogout = () => {
-    logout();
-    navigate('/welcome');
-  };
 
   return (
     <>
@@ -128,43 +122,7 @@ export default function NavBar() {
             </Fragment>
           )}
 
-          {user && (
-            <Menu shadow="md" width={220} position="bottom-end">
-              <Menu.Target>
-                <UnstyledButton className={styles.userMenuButton}>
-                  <Group gap="xs">
-                    <Avatar src={user.avatar} size="sm" />
-                    <IconChevronDown size={16} />
-                  </Group>
-                </UnstyledButton>
-              </Menu.Target>
-
-              <Menu.Dropdown>
-                <Group gap="xs" px="sm" py="xs">
-                  <Avatar src={user.avatar} size="sm" radius="xl" />
-                  <Text fw={500}>{user.username}</Text>
-                </Group>
-
-                <Menu.Divider />
-
-                <Menu.Item leftSection={<IconUser size={16} />}>
-                  Profile
-                </Menu.Item>
-                <Menu.Item leftSection={<IconSettings size={16} />}>
-                  Account Settings
-                </Menu.Item>
-
-                <Menu.Divider />
-
-                <Menu.Item
-                  color="red"
-                  leftSection={<IconLogout size={16} />}
-                  onClick={handleLogout}>
-                  Logout
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-          )}
+          <UserMenu bottom={false} />
         </Flex>
       </div>
     </>
