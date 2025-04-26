@@ -66,13 +66,22 @@ export default function Signup() {
       password: values.password,
     };
 
-    const response: ApiResponse = await submitSignupForm(payload);
+    const resBody: ApiResponse = await submitSignupForm(payload);
 
-    if (response.success) {
+    if (resBody.success) {
       form.reset();
       setAction(tApi('user.signup-check-email'), tCommon('ok'));
     } else {
-      setError(tApi(response.message) || tApi('user.signup-error'));
+      const message = resBody.message;
+      switch (message) {
+        case 'user.already-exist':
+        case 'user.username-already-taken':
+        case 'auth.verification-send-failed':
+          setError(tApi(message));
+          break;
+        default:
+          setError(t('signup-error'));
+      }
     }
 
     setSubmitting(false);

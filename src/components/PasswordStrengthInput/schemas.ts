@@ -2,7 +2,17 @@ import i18next from 'i18next';
 
 const ns = 'passwordStrengthInput';
 
-export const passwordChecks = [
+const passwordRequirements = {
+  lowercase: 'password-lowercase',
+  uppercase: 'password-uppercase',
+  numberSymbol: 'password-number-symbol',
+  length: 'password-length',
+} as const;
+
+type PasswordLabel =
+  (typeof passwordRequirements)[keyof typeof passwordRequirements];
+
+export const passwordChecks: { label: PasswordLabel; re: string }[] = [
   { label: 'password-lowercase', re: '[a-z]' },
   { label: 'password-uppercase', re: '[A-Z]' },
   {

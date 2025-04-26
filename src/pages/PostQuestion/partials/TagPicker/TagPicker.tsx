@@ -23,7 +23,7 @@ type TagPickerProps = {
   updateChosenNewTags: (value: string[]) => void;
 };
 
-type TagResult = TagData;
+interface TagResult extends TagData {} // interface vì kết quả trả về sẽ có nhiều data hơn
 
 const SEARCH_DELAY_MS = 300;
 const MAX_TAGS = 5;
@@ -34,9 +34,6 @@ export default function TagPicker({
   updateChosenExistingTags,
   updateChosenNewTags,
 }: TagPickerProps) {
-  console.log(existingTags);
-  console.log(newTags)
-
   const { t } = useTranslation('postQuestion');
   const setError = useErrorStore((state) => state.setError);
 
@@ -53,7 +50,7 @@ export default function TagPicker({
   const handleQuery = async () => {
     const response = await searchTags(query);
     if (response.success) {
-      setTagSearchResults(response.content);
+      setTagSearchResults(response.content.tags);
     } else {
       console.log(response);
     }

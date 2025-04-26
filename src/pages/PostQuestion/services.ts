@@ -40,11 +40,17 @@ export async function postQuestion(
   }
 }
 
-const MAX_TAGS_TO_FIND = 5;
+const TAGS_TO_FIND = 5;
 
 export function searchTags(query: string): Promise<ApiResponse> {
-  return fetcher(
-    'GET',
-    `tag?term=${encodeURIComponent(query)}&count=${MAX_TAGS_TO_FIND}`,
-  );
+  return fetcher({
+    method: 'GET',
+    route: 'tag',
+    options: {
+      params: {
+        keyword: query,
+        count: TAGS_TO_FIND,
+      },
+    },
+  });
 }

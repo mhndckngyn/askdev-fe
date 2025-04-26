@@ -3,7 +3,7 @@ import QuestionView from './Questionview';
 import InteractionBar from './InteractionBar';
 import CommentView from './CommentView';
 
-export default function Questionpage() {
+export default function QuestionDetail() {
   return (
     <Paper
       sx={{

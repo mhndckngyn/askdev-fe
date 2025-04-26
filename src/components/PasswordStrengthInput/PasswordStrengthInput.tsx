@@ -15,7 +15,7 @@ import { ReactNode } from 'react';
 type Props = {
   value: string;
   onChange: (value: string) => void;
-  error?: ReactNode; // Mantine allows React nodes, but it will only be a string
+  error?: ReactNode; // For error message on inputs, Mantine requires any react node or string (but only string will be used here)
   label: string;
   placeholder: string;
 };
@@ -25,7 +25,7 @@ export default function PasswordStrengthInput({
   onChange,
   error,
   label,
-  placeholder
+  placeholder,
 }: Props) {
   const { t } = useTranslation('passwordStrengthInput');
   const [opened, { open, close }] = useDisclosure();

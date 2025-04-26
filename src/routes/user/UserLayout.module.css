@@ -1,0 +1,31 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app > * {
+  padding-left: 150px;
+  padding-right: 150px;
+}
+
+.content {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+@media (max-width: 75em) {
+  /* --mantine-breakpoint-lg */
+  .app > * {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+}
+
+@media (max-width: 62em) {
+  /* --mantine-breakpoint-md */
+  .app > * {
+    padding-left: var(--mantine-spacing-lg);
+    padding-right: var(--mantine-spacing-lg);
+  }
+}

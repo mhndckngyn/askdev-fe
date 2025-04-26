@@ -56,7 +56,8 @@ export default function PostQuestion() {
     const response = await postQuestion(values);
 
     if (response.success) {
-      // chuyển hướng về trang câu hỏi
+      // TODO: chuyển hướng về trang câu hỏi
+      form.reset();
     } else if (response.message) {
       setError(response.message);
     }

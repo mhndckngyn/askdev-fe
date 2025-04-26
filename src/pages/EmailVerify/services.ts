@@ -4,11 +4,19 @@ import fetcher from '@/utils/fetcher';
 export async function submitVerificationToken(
   token: string,
 ): Promise<ApiResponse> {
-  return fetcher('POST', 'auth/verify-email', { token });
+  return fetcher({
+    method: 'POST',
+    route: 'auth/verify-email',
+    payload: { token },
+  });
 }
 
 export async function submitResendVerification(
   email: string,
 ): Promise<ApiResponse> {
-  return fetcher('POST', 'auth/resend-verification-email', { email });
+  return fetcher({
+    method: 'POST',
+    route: 'auth/resend-verification-email',
+    payload: { email },
+  });
 }

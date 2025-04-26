@@ -9,13 +9,18 @@
     "incorrect-login-data": "Email hoặc mật khẩu không đúng.",
     "user-not-found": "Không tìm thấy người dùng. Vui lòng đăng nhập lại.",
     "not-authenticated": "Chưa được xác thực.",
-    "login-error": "Lỗi bất ngờ khi đăng nhập.",
-    "logout-sucessful": "Đăng xuất thành công."
+    "logout-sucessful": "Đăng xuất thành công.",
+    "verification-send-failed": "Chúng tôi không thể gửi email xác thực. Vui lòng đăng nhập lại để thử lại."
   },
   "user": {
     "signup-error": "Lỗi bất ngờ khi đăng ký.",
     "already-exist": "Người dùng đã tồn tại. Vui lòng đăng nhập.",
     "username-already-taken": "Tên người dùng đã được sử dụng. Vui lòng chọn tên khác.",
-    "getme-successful": "Lấy thông tin người dùng thành công."
+    "getme-successful": "Lấy thông tin người dùng thành công.",
+    "signup-check-email": "Tạo tài khoản thành công. Vui lòng kiểm tra email để xác minh tài khoản.",
+    "cannot-send-email": "Chúng tôi không thể gửi email xác minh. Vui lòng đăng nhập lại để gửi lại."
+  },
+  "question": {
+    "not-found": "Không tìm thấy câu hỏi này."
   }
 }
