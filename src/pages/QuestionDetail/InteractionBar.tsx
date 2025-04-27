@@ -1,34 +1,88 @@
+import { useState, useEffect } from 'react';
 import { Box, IconButton, Typography, Popover } from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import CommentIcon from '@mui/icons-material/Comment';
-import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import {
+  voteQuestion,
+  getQuestion,
+  getVoteStatus,
+} from './Services/QuestionServices';
+import { ApiResponse } from '@/types';
 
 export default function InteractionBar() {
+  const [data, setData] = useState<any>(null);
+  const { id } = useParams<{ id: string }>();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const [interaction, setInteraction] = useState<'like' | 'dislike' | null>(null);
+  const [interaction, setInteraction] = useState<'like' | 'dislike' | null>(
+    null,
+  );
 
-  const handleMouseEnter = (event: React.MouseEvent<HTMLDivElement>) => {
-    setAnchorEl(event.currentTarget);
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+    const fetchQuestion = async () => {
+      try {
+        const response: ApiResponse = await getQuestion(id);
+        if (response.success) {
+          setData(response.content);
+        }
+
+        const voteStatusResponse: ApiResponse = await getVoteStatus(id);
+        if (voteStatusResponse.success) {
+          setInteraction(voteStatusResponse.content.status);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchQuestion();
+  }, [id]);
+
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    setAnchorEl((prevAnchorEl) => (prevAnchorEl ? null : event.currentTarget));
   };
 
   const handleMouseLeave = () => {
     setAnchorEl(null);
   };
 
-  const handleLike = () => {
-    setInteraction((prev) => (prev === 'like' ? null : 'like'));
-    setAnchorEl(null);
+  const handleLike = async () => {
+    if (!id || id.trim() === '') return;
+
+    try {
+      await voteQuestion(id, 1);
+      const response: ApiResponse = await getQuestion(id);
+      if (response.success) {
+        setData(response.content);
+      }
+      setInteraction((prev) => (prev === 'like' ? null : 'like'));
+      setAnchorEl(null);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleDislike = () => {
-    setInteraction((prev) => (prev === 'dislike' ? null : 'dislike'));
-    setAnchorEl(null);
+  const handleDislike = async () => {
+    if (!id || id.trim() === '') return;
+
+    try {
+      await voteQuestion(id, -1);
+      const response: ApiResponse = await getQuestion(id);
+      if (response.success) {
+        setData(response.content);
+      }
+      setInteraction((prev) => (prev === 'dislike' ? null : 'dislike'));
+      setAnchorEl(null);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'interaction-popover' : undefined;
+  const popoverId = open ? 'interaction-popover' : undefined;
 
   return (
     <Box
@@ -38,7 +92,6 @@ export default function InteractionBar() {
         alignItems: 'center',
         width: '100%',
       }}>
-   
       <Box
         sx={{
           display: 'flex',
@@ -46,15 +99,14 @@ export default function InteractionBar() {
           alignItems: 'center',
           position: 'relative',
         }}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}>
+        onClick={handleClick}>
         <IconButton sx={{ fontSize: '32px', cursor: 'pointer' }}>
           {interaction === 'like' ? (
             <ThumbUpIcon sx={{ fontSize: '32px', color: 'green' }} />
           ) : interaction === 'dislike' ? (
             <ThumbDownIcon sx={{ fontSize: '32px', color: 'red' }} />
           ) : (
-            <FavoriteIcon sx={{ fontSize: '32px' }} />
+            <ThumbUpIcon sx={{ fontSize: '32px' }} />
           )}
           <Typography
             variant="body1"
@@ -65,41 +117,64 @@ export default function InteractionBar() {
                 interaction === 'like'
                   ? 'green'
                   : interaction === 'dislike'
-                  ? 'red'
-                  : 'grey',
+                    ? 'red'
+                    : 'grey',
             }}>
             Tương tác
           </Typography>
         </IconButton>
 
-      
         <Popover
-          id={id}
+          id={popoverId}
           open={open}
           anchorEl={anchorEl}
           onClose={handleMouseLeave}
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+          transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          aria-hidden={!open}>
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <IconButton onClick={handleLike}>
-              <ThumbUpIcon
-                sx={{ fontSize: '32px', color: interaction === 'like' ? 'green' : 'grey' }}
-              />
-            </IconButton>
-            <IconButton onClick={handleDislike}>
-              <ThumbDownIcon
-                sx={{ fontSize: '32px', color: interaction === 'dislike' ? 'red' : 'grey' }}
-              />
-            </IconButton>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <IconButton onClick={handleLike}>
+                <ThumbUpIcon
+                  sx={{
+                    fontSize: '32px',
+                    color: interaction === 'like' ? 'green' : 'grey',
+                  }}
+                />
+              </IconButton>
+              <IconButton onClick={handleDislike}>
+                <ThumbDownIcon
+                  sx={{
+                    fontSize: '32px',
+                    color: interaction === 'dislike' ? 'red' : 'grey',
+                  }}
+                />
+              </IconButton>
+            </Box>
+          </Box>
+          <Box
+            sx={{ display: 'flex', justifyContent: 'center', marginTop: -1 }}>
+            <Typography variant="body2" sx={{ marginX: 2 }}>
+              {data ? data.upvotes : 0}
+            </Typography>
+            <Typography variant="body2" sx={{ marginX: 2 }}>
+              {data ? data.downvotes : 0}
+            </Typography>
           </Box>
         </Popover>
       </Box>
 
-     
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <IconButton sx={{ fontSize: '32px', cursor: 'pointer' }}>
           <CommentIcon sx={{ fontSize: '32px' }} />
-          <Typography variant="body1" sx={{ marginLeft: '8px', fontSize: '18px' }}>
+          <Typography
+            variant="body1"
+            sx={{ marginLeft: '8px', fontSize: '18px' }}>
             Bình luận
           </Typography>
         </IconButton>
