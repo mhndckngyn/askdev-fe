@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Box, Paper, Typography, Avatar, Divider } from '@mui/material';
 import QuestionContent from './QuestionContent';
 import ImageGrid from './ImageGrid';
-import { getQuestion } from './services';
+import { getQuestion } from './Services/QuestionServices';
 import { ApiResponse } from '@/types';
 import { useParams } from 'react-router-dom';
 import FormatTime from './formatTime';
@@ -10,32 +10,22 @@ import FormatTime from './formatTime';
 const QuestionView = () => {
   const { id } = useParams<{ id: string }>();
   const [data, setData] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!id) {
-      setError('Không có ID trong URL.');
-      return;
-    }
+    if (!id) return;
+
     const fetchQuestion = async () => {
       try {
         const response: ApiResponse = await getQuestion(id);
         if (response.success) {
           setData(response.content);
         } else {
-          setError('Không thể tải câu hỏi.');
         }
-      } catch (err) {
-        setError('Đã xảy ra lỗi trong khi tải câu hỏi.');
-      }
+      } catch (err) {}
     };
 
     fetchQuestion();
   }, [id]);
-
-  if (error) {
-    return <div>{error}</div>;
-  }
 
   if (!data) {
     return <div>Đang tải...</div>;
@@ -104,8 +94,8 @@ const QuestionView = () => {
                 <Typography
                   variant="h6"
                   sx={{
-                    mt:'10px',
-                    ml:'6px',
+                    mt: '10px',
+                    ml: '6px',
                     backgroundColor: 'yellow',
                     color: 'black',
                     padding: '3px 10px',
