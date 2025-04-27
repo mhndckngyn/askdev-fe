@@ -1,26 +1,19 @@
 .navbar {
+  position: relative;
   width: 280px;
-  padding: var(--mantine-spacing-md);
   display: flex;
   flex-direction: column;
+  padding: var(--mantine-spacing-md);
   border-right: 1px solid var(--mantine-color-default-border);
 }
 
 .navMain {
-  flex: 1;
+  position: sticky;
+  top: calc(61px + var(--mantine-spacing-md));
 }
 
-.header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  margin-bottom: calc(var(--mantine-spacing-md) * 1.5);
-  padding-bottom: var(--mantine-spacing-md);
-  border-bottom: 1px solid var(--mantine-color-default-border);
-  gap: var(--mantine-spacing-sm);
-  text-decoration: none;
-  color: var(--mantine-color-text);
+.actionButton {
+  margin-bottom: var(--mantine-spacing-md);
 }
 
 .navFooter {

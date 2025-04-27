@@ -8,12 +8,12 @@ export default function Invalid() {
   const { t } = useTranslation('emailVerify');
 
   return (
-    <>
+    <div>
       <IconFaceIdError className={clsx(styles.icon, styles.iconInvalid)} />
       <Title size="h2">{t('title-invalid')}</Title>
       <Text size="sm" c="dimmed" mt="sm">
         {t('subtitle-invalid')}
       </Text>
-    </>
+    </div>
   );
 }

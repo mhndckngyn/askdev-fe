@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import styles from '../EmailVerify.module.css';
+import { visitorRoutePaths } from '@/routes/user/visitor';
 
 type ExpiredProps = {
   email: string;
@@ -19,7 +20,7 @@ export default function Expired({
   const { t } = useTranslation('emailVerify');
 
   return (
-    <>
+    <div>
       <IconTimeDurationOff className={clsx(styles.icon, styles.iconExpired)} />
       <Title size="h2">{t('title-expired')}</Title>
 
@@ -42,6 +43,6 @@ export default function Expired({
           </Button>
         </>
       )}
-    </>
+    </div>
   );
 }

@@ -4,8 +4,7 @@
   position: sticky;
   z-index: var(--mantine-z-index-app);
   top: 0;
-  padding-top: var(--mantine-spacing-sm);
-  padding-bottom: var(--mantine-spacing-sm);
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
   background-color: var(--mantine-color-body);
   border-bottom: 1px solid var(--mantine-color-default-border);
 }

@@ -9,7 +9,7 @@ import {
   IconMessage,
   IconQuestionMark,
   IconTags,
-  IconUsers
+  IconUsers,
 } from '@tabler/icons-react';
 import clsx from 'clsx';
 import { useState } from 'react';
@@ -17,25 +17,30 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import styles from './AdminSidebar.module.css';
 
-type AdminSidebarKey = 'dashboard' | 'questions' | 'answers' | 'tags' | 'users' | 'reports';
+type AdminSidebarKey =
+  | 'dashboard'
+  | 'questions'
+  | 'answers'
+  | 'tags'
+  | 'members'
+  | 'reports';
 
 const data: {
   link: string;
   label: AdminSidebarKey;
-  icon: any; // any thay vì TablerIcon để có thể dễ thay thế 
+  icon: any; // any thay vì TablerIcon để có thể dễ thay thế
 }[] = [
   { link: '', label: 'dashboard', icon: IconLayoutDashboard },
   { link: '', label: 'questions', icon: IconQuestionMark },
   { link: '', label: 'answers', icon: IconMessage },
   { link: '', label: 'tags', icon: IconTags },
-  { link: '', label: 'users', icon: IconUsers },
+  { link: '', label: 'members', icon: IconUsers },
   { link: '', label: 'reports', icon: IconFlag },
 ];
 
-
 export default function AdminSidebar() {
   const { t } = useTranslation('adminSidebar');
-  const [active, setActive] = useState('Dashboard');
+  const [active, setActive] = useState<AdminSidebarKey>('dashboard');
 
   const links = data.map((item) => (
     <Link

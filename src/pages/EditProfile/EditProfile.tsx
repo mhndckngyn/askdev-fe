@@ -95,6 +95,7 @@ export default function EditProfile() {
   const handleSubmit = (values: ProfileFormData) => {
     // mantine validates before running this function
     setSubmitting(true);
+    // TODO
     console.log(values);
   };
 
