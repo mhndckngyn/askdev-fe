@@ -37,7 +37,7 @@ export default function Expired({
           <Text size="sm" c="dimmed" mt="sm">
             {t('subtitle-expired-no-email')}
           </Text>
-          <Button component={Link} to="/" mt="lg">
+          <Button component={Link} to={visitorRoutePaths.welcome} mt="lg">
             {t('toHomepage')}
           </Button>
         </>

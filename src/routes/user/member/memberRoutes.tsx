@@ -4,12 +4,21 @@ import PostQuestion from '@/pages/PostQuestion';
 import EditProfile from '@/pages/EditProfile';
 import ChangePassword from '@/pages/ChangePassword';
 
+const memberRoutePaths = {
+  postQueston: '/post-question',
+  editProfile: '/edit-profile',
+  changePassword: '/change-password',
+};
+
 const memberRoutes = (
   <Route element={<MemberGuard />}>
-    <Route path="/post-question" element={<PostQuestion />} />
-    <Route path="/edit-profile" element={<EditProfile />} />
-    <Route path="/change-password" element={<ChangePassword />} />
+    <Route path={memberRoutePaths.postQueston} element={<PostQuestion />} />
+    <Route path={memberRoutePaths.editProfile} element={<EditProfile />} />
+    <Route
+      path={memberRoutePaths.changePassword}
+      element={<ChangePassword />}
+    />
   </Route>
 );
 
-export default memberRoutes;
+export { memberRoutePaths, memberRoutes };

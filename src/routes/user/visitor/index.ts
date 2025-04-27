@@ -1,1 +1,1 @@
-export { default } from './visitorRoutes';
+export { visitorRoutePaths, visitorRoutes } from './visitorRoutes';

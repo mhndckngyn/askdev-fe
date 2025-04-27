@@ -1,16 +1,26 @@
-import { Route } from 'react-router-dom';
 import Homepage from '@/pages/Homepage';
-import TagsPage from '@/pages/TagsPage';
-import QuestionDetail from '@/pages/QuestionDetail';
 import ProfilePage from '@/pages/ProfilePage';
+import QuestionDetail from '@/pages/QuestionDetail';
+import TagsPage from '@/pages/TagsPage';
+import { Route } from 'react-router-dom';
+
+const publicRoutePaths = {
+  homepage: '/',
+  tagsPage: '/tags',
+  questionDetail: '/questions/:id',
+  profilePage: '/profile/:id',
+};
 
 const publicRoutes = (
   <>
-    <Route path="/" element={<Homepage />} />
-    <Route path="/tags" element={<TagsPage />} />
-    <Route path="/questions/:id" element={<QuestionDetail />} />
-    <Route path="/profile/:id" element={<ProfilePage />} />
+    <Route path={publicRoutePaths.homepage} element={<Homepage />} />
+    <Route path={publicRoutePaths.tagsPage} element={<TagsPage />} />
+    <Route
+      path={publicRoutePaths.questionDetail}
+      element={<QuestionDetail />}
+    />
+    <Route path={publicRoutePaths.profilePage} element={<ProfilePage />} />
   </>
 );
 
-export default publicRoutes;
+export { publicRoutePaths, publicRoutes };

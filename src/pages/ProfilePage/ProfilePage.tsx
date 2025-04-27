@@ -49,7 +49,12 @@ export default function ProfilePage() {
           <Group>
             <Title className={styles.name}>{profile.username}</Title>
             {allowEditing && (
-              <Button leftSection={<IconEdit />}>{t('edit-profile')}</Button>
+              <Button
+                component={Link}
+                to={memberRoutePaths.editProfile}
+                leftSection={<IconEdit />}>
+                {t('edit-profile')}
+              </Button>
             )}
           </Group>
           {profile.github && (

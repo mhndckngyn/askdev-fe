@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { Fragment } from 'react/jsx-runtime';
 import styles from './Navbar.module.css';
+import { visitorRoutePaths } from '@/routes/user/visitor';
 
 const descriptions = {
   tag: 'search-tag',
@@ -112,11 +113,13 @@ export default function NavBar() {
             <Fragment>
               <Button
                 component={Link}
-                to="/welcome?tab=login"
+                to={`${visitorRoutePaths.welcome}?tab=login`}
                 variant="default">
                 {tCommon('login')}
               </Button>
-              <Button component={Link} to="/welcome?tab=signup">
+              <Button
+                component={Link}
+                to={`${visitorRoutePaths.welcome}?tab=signup`}>
                 {tCommon('signup')}
               </Button>
             </Fragment>

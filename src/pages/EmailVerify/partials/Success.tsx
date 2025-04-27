@@ -15,7 +15,7 @@ export default function Success() {
       <Text size="sm" c="dimmed" mt="sm">
         {t('subtitle-success')}
       </Text>
-      <Button component={Link} to="/" variant="filled" mt="lg">
+      <Button component={Link} to={visitorRoutePaths.welcome} variant="filled" mt="lg">
         {t('loginButton')}
       </Button>
     </>
