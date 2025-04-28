@@ -21,3 +21,14 @@ export async function getVoteStatus(id: string): Promise<ApiResponse> {
     route: `question/${id}/vote-status`,
   });
 }
+
+export async function getEditHistory(
+  id: string,
+  createdAt: Date,
+  direction: number
+): Promise<ApiResponse> {
+  return fetcher({
+    method: 'GET',
+    route: `question/${id}/edit-history?createdAt=${createdAt.toISOString()}&direction=${direction}`,
+  });
+}

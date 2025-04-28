@@ -6,10 +6,16 @@ import { getQuestion } from './Services/QuestionServices';
 import { ApiResponse } from '@/types';
 import { useParams } from 'react-router-dom';
 import FormatTime from './formatTime';
+import QuestionHistory from './QuestionHistory';
 
 const QuestionView = () => {
   const { id } = useParams<{ id: string }>();
   const [data, setData] = useState<any>(null);
+  const [openHistory, setOpenHistory] = useState(false);
+
+  const handleToggleHistory = () => {
+    setOpenHistory((prev) => !prev);
+  };
 
   useEffect(() => {
     if (!id) return;
@@ -55,6 +61,7 @@ const QuestionView = () => {
                 objectFit: 'cover',
                 marginRight: '12px',
               }}
+              onClick={handleToggleHistory}
             />
             <Box>
               <Box>
@@ -132,6 +139,12 @@ const QuestionView = () => {
           )}
         </Box>
       </Box>
+
+      <QuestionHistory
+        open={openHistory}
+        handleToggle={handleToggleHistory}
+        question={data}
+      />
     </Paper>
   );
 };
