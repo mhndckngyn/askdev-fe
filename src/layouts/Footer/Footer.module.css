@@ -1,3 +1,5 @@
 .footer {
   background-color: var(--mantine-color-gray-0);
+  padding-left: var(--mantine-spacing-md);
+  padding-right: var(--mantine-spacing-md);
 }

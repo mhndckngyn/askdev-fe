@@ -3,6 +3,10 @@ import { Route } from 'react-router-dom';
 import AdminGuard from './AdminGuard';
 import AdminLayout from './AdminLayout';
 
+const adminRoutePaths = {
+  dashboard: "/admin/dashboard"
+}
+
 const adminRoutes = (
   <Route
     element={
@@ -10,8 +14,8 @@ const adminRoutes = (
         <AdminLayout />
       </AdminGuard>
     }>
-    <Route path="/admin/dashboard" element={<Dashboard />} />
+    <Route path={adminRoutePaths.dashboard} element={<Dashboard />} />
   </Route>
 );
 
-export default adminRoutes;
+export { adminRoutePaths, adminRoutes };

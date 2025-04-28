@@ -4,14 +4,25 @@
   flex-direction: column;
 }
 
-.app > * {
-  padding-left: 150px;
-  padding-right: 150px;
+.content {
+  flex: 1;
+
+  > :nth-child(1) {
+    padding: 30px;
+  }
 }
 
-.content {
-  padding-top: 30px;
-  padding-bottom: 30px;
+.withSidebar {
+  display: grid;
+  grid-template-columns: auto 1fr;
+
+  > :nth-child(1) {
+    padding: var(--mantine-spacing-md); /* đặt lại giá trị bằng padding trong UserSidebar */
+  }
+
+  > :nth-child(2) {
+    padding: 30px;
+  }
 }
 
 @media (max-width: 75em) {

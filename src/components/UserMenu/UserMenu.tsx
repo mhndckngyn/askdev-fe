@@ -1,3 +1,4 @@
+import { visitorRoutePaths } from '@/routes/user/visitor';
 import { useUserStore } from '@/stores/useUserStore';
 import { Avatar, Group, Menu, Text, UnstyledButton } from '@mantine/core';
 import {
@@ -14,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import styles from './UserMenu.module.css';
 
-export default function UserMenu({ bottom }: { bottom: boolean }) {
+export default function UserMenu({ bottom = false }: { bottom: boolean }) {
   const { t } = useTranslation('userMenu');
   const navigate = useNavigate();
   const { user, logout } = useUserStore();
@@ -23,7 +24,7 @@ export default function UserMenu({ bottom }: { bottom: boolean }) {
 
   const handleLogout = () => {
     logout();
-    navigate('/welcome');
+    navigate(visitorRoutePaths.welcome);
   };
 
   const ChevronIcon = bottom ? IconChevronUp : IconChevronDown;

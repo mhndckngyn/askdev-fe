@@ -14,7 +14,7 @@ import Table from '@tiptap/extension-table';
 import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
 import TableRow from '@tiptap/extension-table-row';
-import { JSONContent, useEditor } from '@tiptap/react';
+import { ChainedCommands, JSONContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { common, createLowlight } from 'lowlight';
 import { useTranslation } from 'react-i18next';
@@ -97,7 +97,7 @@ export default function RichTextEditor({
       return;
     }
 
-    editor.chain().focus().deleteTable().run();
+    editor && editor.chain().focus().deleteTable().run();
   };
 
   const handleAddTableRow = () => {
@@ -131,6 +131,39 @@ export default function RichTextEditor({
 
     editor.chain().focus().deleteColumn().run();
   };
+
+  const tableControls = [
+    {
+      label: t('table.insert-table'),
+      handler: handleInsertTable,
+      icon: IconTablePlus,
+    },
+    {
+      label: t('table.remove-table'),
+      handler: handleRemoveTable,
+      icon: IconTableOff,
+    },
+    {
+      label: t('table.add-row'),
+      handler: handleAddTableRow,
+      icon: IconTableDown,
+    },
+    {
+      label: t('table.remove-row'),
+      handler: handleRemoveTableRow,
+      icon: IconTableImport,
+    },
+    {
+      label: t('table.add-column'),
+      handler: handleAddTableColumn,
+      icon: IconTableExport,
+    },
+    {
+      label: t('table.remove-column'),
+      handler: handleRemoveTableColumn,
+      icon: IconTableRemoveColumn,
+    },
+  ];
 
   return (
     <div>
@@ -170,7 +203,7 @@ export default function RichTextEditor({
           )}
           {plugins.block && (
             <MantineRichTextEditor.ControlsGroup>
-              <MantineRichTextEditor.Blockquote/>
+              <MantineRichTextEditor.Blockquote />
               <MantineRichTextEditor.Hr />
               <MantineRichTextEditor.BulletList />
               <MantineRichTextEditor.OrderedList />
@@ -190,58 +223,18 @@ export default function RichTextEditor({
               <MantineRichTextEditor.ClearFormatting />
             </MantineRichTextEditor.ControlsGroup>
           )}
-          {plugins.table && (
-            <ActionIcon.Group>
+          {plugins.table &&
+            tableControls.map(({ label, handler, icon: Icon }) => (
               <ActionIcon
-                aria-label={t('table.insert-table')}
-                title={t('table.insert-table')}
-                onClick={handleInsertTable}
+                key={label}
+                aria-label={label}
+                title={label}
+                onClick={handler}
                 variant="default"
                 className={styles.control}>
-                <IconTablePlus className={styles.controlIcon} />
+                <Icon className={styles.controlIcon} />
               </ActionIcon>
-              <ActionIcon
-                aria-label={t('table.remove-table')}
-                title={t('table.remove-table')}
-                onClick={handleRemoveTable}
-                variant="default"
-                className={styles.control}>
-                <IconTableOff className={styles.controlIcon} />
-              </ActionIcon>
-              <ActionIcon
-                aria-label={t('table.add-row')}
-                title={t('table.add-row')}
-                onClick={handleAddTableRow}
-                variant="default"
-                className={styles.control}>
-                <IconTableDown className={styles.controlIcon} />
-              </ActionIcon>
-              <ActionIcon
-                aria-label={t('table.remove-row')}
-                title={t('table.remove-row')}
-                onClick={handleRemoveTableRow}
-                variant="default"
-                className={styles.control}>
-                <IconTableImport className={styles.controlIcon} />
-              </ActionIcon>
-              <ActionIcon
-                aria-label={t('table.add-column')}
-                title={t('table.add-column')}
-                onClick={handleAddTableColumn}
-                variant="default"
-                className={styles.control}>
-                <IconTableExport className={styles.controlIcon} />
-              </ActionIcon>
-              <ActionIcon
-                aria-label={t('table.remove-column')}
-                title={t('table.remove-column')}
-                onClick={handleRemoveTableColumn}
-                variant="default"
-                className={styles.control}>
-                <IconTableRemoveColumn className={styles.controlIcon} />
-              </ActionIcon>
-            </ActionIcon.Group>
-          )}
+            ))}
         </MantineRichTextEditor.Toolbar>
         <MantineRichTextEditor.Content />
       </MantineRichTextEditor>

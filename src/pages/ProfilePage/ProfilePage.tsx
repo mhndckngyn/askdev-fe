@@ -15,11 +15,12 @@ import {
 import { IconBrandGithub, IconEdit } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styles from './ProfilePage.module.css';
 import FeaturedPosts from './partials/FeaturedPosts';
 import Stats from './partials/Stats';
 import TagsOfInterest from './partials/TagsOfInterest';
+import { memberRoutePaths } from '@/routes/user/member';
 
 export default function ProfilePage() {
   const { id } = useParams(); // use param to fetch user
@@ -30,6 +31,7 @@ export default function ProfilePage() {
   const allowEditing = id === userId;
 
   useEffect(() => {
+    // TODO
     const fetchProfile = async () => {
       setTimeout(() => {
         setProfile(mockMemberProfile);
@@ -49,7 +51,12 @@ export default function ProfilePage() {
           <Group>
             <Title className={styles.name}>{profile.username}</Title>
             {allowEditing && (
-              <Button leftSection={<IconEdit />}>{t('edit-profile')}</Button>
+              <Button
+                component={Link}
+                to={memberRoutePaths.editProfile}
+                leftSection={<IconEdit />}>
+                {t('edit-profile')}
+              </Button>
             )}
           </Group>
           {profile.github && (
@@ -71,6 +78,7 @@ export default function ProfilePage() {
               {t('about-me')}
             </Title>
             <TypographyStylesProvider>
+              {/* TODO */}
               <p>Xin chào các bạn, tôi là Thắng Đinh</p>
               <p>Xin chào các bạn, tôi là Thắng Đinh</p>
               <p>Xin chào các bạn, tôi là Thắng Đinh</p>

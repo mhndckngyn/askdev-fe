@@ -24,7 +24,7 @@ export default function Welcome() {
   const [activeTab, setActiveTab] = useState<string | null>(initialTab);
 
   return (
-    <>
+    <div>
       <div className={styles.header}>
         <Title className={styles.title}>AskDev</Title>
         <Text c="dimmed">{t('slogan')}</Text>
@@ -60,6 +60,6 @@ export default function Welcome() {
           </Paper>
         </Tabs>
       </Container>
-    </>
+    </div>
   );
 }

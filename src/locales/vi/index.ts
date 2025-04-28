@@ -12,6 +12,7 @@ import richTextEditor from './rich-text-editor.json';
 import statics from './static.json';
 import tagsPage from './tags-page.json';
 import userMenu from './user-menu.json';
+import userSidebar from './user-sidebar.json';
 import welcome from './welcome.json';
 
 export default {
@@ -29,5 +30,6 @@ export default {
   richTextEditor,
   tagsPage,
   userMenu,
+  userSidebar,
   welcome,
 };

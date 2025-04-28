@@ -33,7 +33,7 @@ export default function GoBack({ warnOnExit = false }: GoBackProps) {
   };
 
   return (
-    <>
+    <div>
       <Anchor
         component="button"
         onClick={handleClick}
@@ -53,6 +53,6 @@ export default function GoBack({ warnOnExit = false }: GoBackProps) {
           </Group>
         </Stack>
       </Modal>
-    </>
+    </div>
   );
 }

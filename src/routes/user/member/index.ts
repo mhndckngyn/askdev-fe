@@ -1,1 +1,1 @@
-export { default } from './memberRoutes';
+export { memberRoutePaths, memberRoutes } from './memberRoutes';

@@ -1,8 +1,8 @@
 import { Route } from 'react-router-dom';
 import UserLayout from './UserLayout';
-import memberRoutes from './member';
-import publicRoutes from './public';
-import visitorRoutes from './visitor';
+import { memberRoutes } from './member';
+import { publicRoutes } from './public';
+import { visitorRoutes } from './visitor';
 
 const userRoutes = (
   <Route element={<UserLayout />}>
