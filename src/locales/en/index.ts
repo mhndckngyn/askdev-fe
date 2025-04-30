@@ -1,3 +1,4 @@
+import adminQuestionPage from './admin-question-page.json';
 import adminSidebar from './admin-sidebar.json';
 import api from './api.json';
 import changePassword from './change-password.json';
@@ -16,6 +17,7 @@ import userSidebar from './user-sidebar.json';
 import welcome from './welcome.json';
 
 export default {
+  adminQuestionPage,
   adminSidebar,
   api,
   changePassword,

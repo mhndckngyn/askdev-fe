@@ -1,0 +1,104 @@
+import { Button, Group, Modal, Radio, Stack, Text } from '@mantine/core';
+import { DatePickerInput } from '@mantine/dates';
+import { useForm } from '@mantine/form';
+import { useTranslation } from 'react-i18next';
+import { Filter } from '../AdminQuestionPage';
+import TagPicker from './TagPickerForFilter';
+import UsernamePicker from './UsernameAutocomplete';
+
+type FilterModalType = {
+  currentFilter: Filter;
+  setFilter: (filter: Filter) => void;
+  opened: boolean;
+  onClose: () => void;
+};
+
+export default function FilterModal({
+  currentFilter,
+  setFilter,
+  opened,
+  onClose,
+}: FilterModalType) {
+  const { t } = useTranslation('adminQuestionPage');
+
+  const form = useForm<Filter>({
+    initialValues: currentFilter,
+  });
+
+  const applyFilter = (values: Filter) => {
+    setFilter(values);
+    onClose();
+  };
+
+  const handleDateChange = (dates: [Date | null, Date | null] | null) => {
+    form.setFieldValue('startDate', dates?.[0] ?? undefined);
+    form.setFieldValue('endDate', dates?.[1] ?? undefined);
+  };
+
+  const handleAnsweredChange = (value: string) => {
+    if (value === 'both') {
+      form.setFieldValue('isAnswered', undefined);
+    } else {
+      form.setFieldValue('isAnswered', value === 'yes');
+    }
+  };
+
+  return (
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title={
+        <Text size="lg" fw="bold">
+          {t('filters')}
+        </Text>
+      }>
+      <form onSubmit={form.onSubmit(applyFilter)}>
+        <Stack gap="md">
+          <TagPicker
+            value={form.values.tags || []}
+            onChange={(tags) => form.setFieldValue('tags', tags)}
+          />
+
+          <UsernamePicker
+            value={form.values.username || null}
+            onChange={(username) =>
+              form.setFieldValue('username', username ?? undefined)
+            }
+          />
+
+          <DatePickerInput
+            type="range"
+            allowSingleDateInRange
+            label={t('postedOn')}
+            description={t('postedOnDescription')}
+            value={[form.values.startDate || null, form.values.endDate || null]}
+            onChange={handleDateChange}
+          />
+
+          <Radio.Group
+            name="isAnswered"
+            label={t('answered')}
+            description={t('defaultBoth')}
+            value={
+              form.values.isAnswered === undefined
+                ? 'both'
+                : form.values.isAnswered
+                  ? 'yes'
+                  : 'no'
+            }
+            onChange={handleAnsweredChange}>
+            <Group mt="xs">
+              <Radio value="both" label={t('both')} />
+              <Radio value="yes" label={t('yes')} />
+              <Radio value="no" label={t('no')} />
+            </Group>
+          </Radio.Group>
+
+          <Group justify="flex-end" gap="xs">
+            <Button type="submit">{t('apply')}</Button>
+          </Group>
+        </Stack>
+      </form>
+    </Modal>
+  );
+}

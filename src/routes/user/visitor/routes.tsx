@@ -2,11 +2,7 @@ import { Route } from 'react-router-dom';
 import VisitorGuard from './VisitorGuard';
 import Welcome from '@/pages/Welcome';
 import EmailVerify from '@/pages/EmailVerify';
-
-const visitorRoutePaths = {
-  welcome: '/welcome',
-  verifyEmail: '/verify-email',
-};
+import visitorRoutePaths from './paths';
 
 const visitorRoutes = (
   <Route element={<VisitorGuard />}>
@@ -15,4 +11,4 @@ const visitorRoutes = (
   </Route>
 );
 
-export { visitorRoutePaths, visitorRoutes };
+export default visitorRoutes;

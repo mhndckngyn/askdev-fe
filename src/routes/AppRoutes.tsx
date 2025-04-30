@@ -1,7 +1,7 @@
 import NotFound from '@/layouts/NotFound';
 import { Route, Routes } from 'react-router-dom';
-import { adminRoutes } from './admin';
-import userRoutes from './user';
+import adminRoutes from './admin/routes';
+import userRoutes from './user/routes';
 
 export default function AppRoutes() {
   return (

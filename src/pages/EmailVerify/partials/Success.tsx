@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import styles from '../EmailVerify.module.css';
-import { visitorRoutePaths } from '@/routes/user/visitor';
+import visitorRoutePaths from '@/routes/user/visitor/paths';
 
 export default function Success() {
   const { t } = useTranslation('emailVerify');

@@ -1,4 +1,4 @@
-import { visitorRoutePaths } from '@/routes/user/visitor';
+import visitorRoutePaths from '@/routes/user/visitor/paths';
 import { useUserStore } from '@/stores/useUserStore';
 import { Avatar, Group, Menu, Text, UnstyledButton } from '@mantine/core';
 import {

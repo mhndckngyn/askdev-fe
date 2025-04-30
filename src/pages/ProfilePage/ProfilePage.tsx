@@ -20,7 +20,7 @@ import styles from './ProfilePage.module.css';
 import FeaturedPosts from './partials/FeaturedPosts';
 import Stats from './partials/Stats';
 import TagsOfInterest from './partials/TagsOfInterest';
-import { memberRoutePaths } from '@/routes/user/member';
+import memberRoutePaths from '@/routes/user/member/paths';
 
 export default function ProfilePage() {
   const { id } = useParams(); // use param to fetch user

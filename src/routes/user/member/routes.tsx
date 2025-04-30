@@ -3,12 +3,7 @@ import MemberGuard from './MemberGuard';
 import PostQuestion from '@/pages/PostQuestion';
 import EditProfile from '@/pages/EditProfile';
 import ChangePassword from '@/pages/ChangePassword';
-
-const memberRoutePaths = {
-  postQueston: '/post-question',
-  editProfile: '/edit-profile',
-  changePassword: '/change-password',
-};
+import memberRoutePaths from './paths';
 
 const memberRoutes = (
   <Route element={<MemberGuard />}>
@@ -21,4 +16,4 @@ const memberRoutes = (
   </Route>
 );
 
-export { memberRoutePaths, memberRoutes };
+export default memberRoutes;

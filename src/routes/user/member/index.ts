@@ -1,1 +1,0 @@
-export { memberRoutePaths, memberRoutes } from './memberRoutes';

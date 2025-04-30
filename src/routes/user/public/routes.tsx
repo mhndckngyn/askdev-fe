@@ -3,13 +3,7 @@ import ProfilePage from '@/pages/ProfilePage';
 import QuestionDetail from '@/pages/QuestionDetail';
 import TagsPage from '@/pages/TagsPage';
 import { Route } from 'react-router-dom';
-
-const publicRoutePaths = {
-  homepage: '/',
-  tagsPage: '/tags',
-  questionDetail: '/questions/:id',
-  profilePage: '/profile/:id',
-};
+import publicRoutePaths from './paths';
 
 const publicRoutes = (
   <>
@@ -23,4 +17,4 @@ const publicRoutes = (
   </>
 );
 
-export { publicRoutePaths, publicRoutes };
+export default publicRoutes;

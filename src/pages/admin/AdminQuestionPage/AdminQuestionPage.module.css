@@ -1,0 +1,29 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.searchInput {
+  flex: 1;
+}
+
+.tableContainer {
+  height: 100px; /* height cố định để table có thể scroll */
+  flex: 1 1 auto; /* vẫn grow dù có height cố định (idk how) */
+}
+
+/* ConfirmDeleteQuestion Modal */
+.message {
+  flex: 1;
+  padding: 2px;
+  font-weight: 500;
+  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-1));
+}
+
+.icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  color: var(--mantine-color-red-6);
+}

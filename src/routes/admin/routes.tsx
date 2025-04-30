@@ -2,10 +2,8 @@ import Dashboard from '@/pages/admin/Dashboard';
 import { Route } from 'react-router-dom';
 import AdminGuard from './AdminGuard';
 import AdminLayout from './AdminLayout';
-
-const adminRoutePaths = {
-  dashboard: "/admin/dashboard"
-}
+import AdminQuestionPage from '@/pages/admin/AdminQuestionPage';
+import adminRoutePaths from './paths';
 
 const adminRoutes = (
   <Route
@@ -15,7 +13,8 @@ const adminRoutes = (
       </AdminGuard>
     }>
     <Route path={adminRoutePaths.dashboard} element={<Dashboard />} />
+    <Route path={adminRoutePaths.questions} element={<AdminQuestionPage />} />
   </Route>
 );
 
-export { adminRoutePaths, adminRoutes };
+export default adminRoutes;
