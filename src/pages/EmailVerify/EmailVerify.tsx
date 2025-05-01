@@ -62,8 +62,6 @@ export default function EmailVerify() {
 
     const response: ApiResponse = await submitResendVerification(resendEmail);
 
-    console.log(response);
-
     if (response.success) {
       setAction(t('resend-successful'), tCommon('ok'));
     } else {

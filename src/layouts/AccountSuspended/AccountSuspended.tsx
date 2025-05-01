@@ -1,4 +1,4 @@
-import { publicRoutePaths } from '@/routes/user/public';
+import publicRoutePaths from '@/routes/user/public/paths';
 import { Button, Container, Text, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';

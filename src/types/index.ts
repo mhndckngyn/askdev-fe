@@ -6,3 +6,5 @@ export {
 } from './MemberProfile';
 
 export { type ApiResponse, type ApiMethod } from './Api';
+
+export { type QuestionAdminView } from './QuestionAdminView';

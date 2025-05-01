@@ -26,6 +26,7 @@ async function fetcher({
       data: payload,
       ...options,
     });
+
     return response.data;
   } catch (error) {
     // axios throws an AxiosError object when response status is outside of 2xx range

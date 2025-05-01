@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { Fragment } from 'react/jsx-runtime';
 import styles from './Navbar.module.css';
-import { visitorRoutePaths } from '@/routes/user/visitor';
+import visitorRoutePaths from '@/routes/user/visitor/paths';
 
 const descriptions = {
   tag: 'search-tag',

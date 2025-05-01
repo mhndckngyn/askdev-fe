@@ -11,6 +11,8 @@ import QuestionTips from './partials/QuestionTips';
 import TagPicker from './partials/TagPicker';
 import { getTagsError, getTitleError } from './schemas';
 import { postQuestion } from './services';
+import { useNavigate } from 'react-router-dom';
+import publicRoutePaths from '@/routes/user/public/paths';
 
 export type TagData = {
   id: string;
@@ -27,6 +29,8 @@ export type QuestionFormData = {
 
 export default function PostQuestion() {
   const { t } = useTranslation('postQuestion');
+  const navigate = useNavigate();
+
   const setError = useErrorStore((state) => state.setError);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -43,7 +47,7 @@ export default function PostQuestion() {
       existingTags: (_, values) => {
         const error = getTagsError([...values.existingTags, ...values.newTags]);
         if (error) {
-          setError(error);
+          setError(error); // setError bởi vì component TagPicker đang không hiển thị error trả về
         }
         return error;
       },
@@ -56,7 +60,9 @@ export default function PostQuestion() {
     const response = await postQuestion(values);
 
     if (response.success) {
-      // TODO: chuyển hướng về trang câu hỏi
+      navigate(
+        publicRoutePaths.questionDetail.replace(':id', response.content.id),
+      );
       form.reset();
     } else if (response.message) {
       setError(response.message);

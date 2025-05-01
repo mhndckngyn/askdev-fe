@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import styles from './UserSidebar.module.css';
-import { publicRoutePaths } from '@/routes/user/public';
+import publicRoutePaths from '@/routes/user/public/paths';
 
 type UserSidebarKey = 'homepage' | 'questions' | 'tags' | 'members';
 

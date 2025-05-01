@@ -12,10 +12,11 @@ import {
   IconUsers,
 } from '@tabler/icons-react';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styles from './AdminSidebar.module.css';
+import adminRoutePaths from '@/routes/admin/paths';
 
 type AdminSidebarKey =
   | 'dashboard'
@@ -30,17 +31,31 @@ const data: {
   label: AdminSidebarKey;
   icon: any; // any thay vì TablerIcon để có thể dễ thay thế
 }[] = [
-  { link: '', label: 'dashboard', icon: IconLayoutDashboard },
-  { link: '', label: 'questions', icon: IconQuestionMark },
-  { link: '', label: 'answers', icon: IconMessage },
-  { link: '', label: 'tags', icon: IconTags },
-  { link: '', label: 'members', icon: IconUsers },
-  { link: '', label: 'reports', icon: IconFlag },
+  {
+    link: adminRoutePaths.dashboard,
+    label: 'dashboard',
+    icon: IconLayoutDashboard,
+  },
+  { link: '/admin/questions', label: 'questions', icon: IconQuestionMark },
+  { link: adminRoutePaths.dashboard, label: 'answers', icon: IconMessage },
+  { link: adminRoutePaths.dashboard, label: 'tags', icon: IconTags },
+  { link: adminRoutePaths.dashboard, label: 'members', icon: IconUsers },
+  { link: adminRoutePaths.dashboard, label: 'reports', icon: IconFlag },
 ];
 
 export default function AdminSidebar() {
   const { t } = useTranslation('adminSidebar');
-  const [active, setActive] = useState<AdminSidebarKey>('dashboard');
+  const [active, setActive] = useState<AdminSidebarKey>();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const currentPath = location.pathname;
+    const activeItem = data.find((item) => item.link === currentPath);
+    if (activeItem) {
+      setActive(activeItem.label);
+    }
+  }, [location]);
 
   const links = data.map((item) => (
     <Link

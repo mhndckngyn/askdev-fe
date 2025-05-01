@@ -52,7 +52,8 @@ export default function TagPicker({
     if (response.success) {
       setTagSearchResults(response.content.tags);
     } else {
-      console.log(response);
+      console.error(response);
+      setTagSearchResults([]);
     }
   };
 

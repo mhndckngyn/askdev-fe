@@ -13,3 +13,8 @@
   text-align: center;
   margin-bottom: var(--mantine-spacing-md);
 }
+
+.image {
+  margin-top: var(--mantine-spacing-md);
+  margin-bottom: var(--mantine-spacing-md);
+}

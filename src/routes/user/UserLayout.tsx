@@ -4,7 +4,7 @@ import Footer from '@/layouts/Footer';
 import clsx from 'clsx';
 import { Outlet, useLocation } from 'react-router-dom';
 import styles from './UserLayout.module.css';
-import { visitorRoutePaths } from './visitor';
+import visitorRoutePaths from './visitor/paths';
 
 function shouldShowSidebar(path: string) {
   const noSidebar = [visitorRoutePaths.welcome];

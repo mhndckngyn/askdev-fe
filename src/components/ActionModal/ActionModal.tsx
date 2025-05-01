@@ -24,7 +24,7 @@ const ActionModal = () => {
           </Text>
         </Group>
 
-        <Group justify="flex-end">
+        <Group justify="flex-end" gap='xs'>
           <Button variant="filled" onClick={confirmAction}>
             {actionName}
           </Button>
