@@ -2,10 +2,10 @@ import Box from '@mui/material/Box';
 import DashboardCharts from './Charts/DashboardCharts';
 import DashboardStats from './Statistics/DashboardStats';
 import Rank from './RankSubject';
-import Ran from './RankUsers';
+import RankUsers from './RankUsers';
 export default function Homepage() {
   return (
-    <Box>
+    <Box width="100%">
       <DashboardStats />
       <DashboardCharts />
       <Box mt="25px" display="flex" width="100%" gap="1rem">
@@ -13,7 +13,7 @@ export default function Homepage() {
           <Rank />
         </Box>
         <Box sx={{ flex: '1' }}>
-          <Ran />
+          <RankUsers />
         </Box>
       </Box>
     </Box>

@@ -12,8 +12,14 @@ const chartData = {
 
 export default function DashboardCharts() {
   return (
-    <Box mt="25px" display="flex" gap="1rem" width="100%" justifyContent="space-between">
-      <Box sx={{ minWidth: '300px', maxWidth: '33.33%', flexGrow: 1 }}>
+    <Box
+      mt="25px"
+      display="flex"
+      flexWrap="wrap"
+      gap="1rem"
+      width="100%"
+      justifyContent="space-between">
+      <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
         <ReportsBarChart
           title="Số thành viên mới"
           description="Tăng 7% so với tuần trước"
@@ -23,7 +29,7 @@ export default function DashboardCharts() {
           }}
         />
       </Box>
-      <Box sx={{ minWidth: '300px', maxWidth: '33.33%', flexGrow: 1 }}>
+      <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
         <ReportsBarChart
           title="Số bài đăng"
           description="Tăng 7% so với tuần trước"
@@ -33,7 +39,7 @@ export default function DashboardCharts() {
           }}
         />
       </Box>
-      <Box sx={{ minWidth: '300px', maxWidth: '33.33%', flexGrow: 1 }}>
+      <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
         <ReportsBarChart
           title="Số báo cáo"
           description="Tăng 7% so với tuần trước"
