@@ -7,9 +7,14 @@ import {
   Avatar,
   Collapse,
   IconButton,
+  Tooltip,
 } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import FlagIcon from '@mui/icons-material/Flag';
+import ReplyIcon from '@mui/icons-material/Reply';
 import { useParams } from 'react-router-dom';
 import {
   createAnswer,
@@ -23,6 +28,8 @@ import {
   voteComment,
   getVoteStatusComment,
 } from './Services/CommentServices';
+import ReportPage from './ReportPage';
+import EditPage from './EditPage';
 
 export default function answerView() {
   const { id } = useParams<{ id: string }>();
@@ -30,8 +37,44 @@ export default function answerView() {
   const [answers, setAnswers] = useState<any[]>([]);
   const [newanswer, setNewanswer] = useState('');
   const [commentingId, setcommentingId] = useState<number | null>(null);
+
   type NewComment = {
     [key: string]: string;
+  };
+
+  const handleDelete = () => {};
+
+  const [editingId, setEditingId] = useState('');
+  const [editingContent, setEditingContent] = useState('');
+  const [editingType, setEditingType] = useState('');
+  const [openEditingModal, setOpenEditingModal] = useState(false);
+
+  const handleEdit = (item: any, type: 'ANSWER' | 'COMMENT') => {
+    setEditingType(type);
+    setEditingContent(item.content);
+    setEditingId(item.id);
+    setOpenEditingModal(true);
+  };
+
+  const handleCloseEditingModal = () => {
+    setOpenEditingModal(false);
+    fetchAnswers();
+  };
+
+  const [openReportModal, setOpenReportModal] = useState(false);
+  const [reportContentType, setReportContentType] = useState('');
+  const [reportContentId, setReportContentId] = useState('');
+  const [reportContent, setReportContent] = useState('');
+
+  const handleReport = (item: any, type: string) => {
+    setReportContentType(type);
+    setReportContentId(item.id);
+    setReportContent(item.content);
+    setOpenReportModal(true);
+  };
+
+  const handleCloseReportModal = () => {
+    setOpenReportModal(false);
   };
 
   const [newcomment, setNewComment] = useState<NewComment>({});
@@ -107,7 +150,6 @@ export default function answerView() {
     try {
       const response = await getCommentsByAnswerId(answerId);
       if (response.success) {
-        // Kiểm tra xem response.content có phải là một mảng không
         if (Array.isArray(response.content)) {
           const commentsWithVoteStatus = await Promise.all(
             response.content.map(async (comment: any) => {
@@ -232,18 +274,45 @@ export default function answerView() {
             p: 1.5,
             backgroundColor: '#f9f9f9',
           }}>
-          <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', mb: 0.5 }}>
-            <Avatar sx={{ width: 32, height: 32 }}>
-              {!answer.user.profilePicture && answer.user.username[0]}
-            </Avatar>
-            <Box>
-              <Typography fontWeight="bold" fontSize={14}>
-                {answer.user.username}
-              </Typography>
-              <Typography fontSize={14}>{answer.content}</Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: 1,
+            }}>
+            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+              <Avatar sx={{ width: 32, height: 32 }}>
+                {!answer.user.profilePicture && answer.user.username[0]}
+              </Avatar>
+              <Box>
+                <Typography fontWeight="bold" fontSize={14}>
+                  {answer.user.username}
+                </Typography>
+                <Typography fontSize={14}>{answer.content}</Typography>
+              </Box>
+            </Box>
+
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              <Tooltip title="Chỉnh sửa">
+                <IconButton onClick={() => handleEdit(answer, 'ANSWER')}>
+                  <EditIcon sx={{ fontSize: 20, color: '#0288d1' }} />
+                </IconButton>
+              </Tooltip>
+
+              <Tooltip title="Xóa">
+                <IconButton onClick={handleDelete}>
+                  <DeleteIcon sx={{ fontSize: 20, color: '#d32f2f' }} />
+                </IconButton>
+              </Tooltip>
+
+              <Tooltip title="Báo cáo">
+                <IconButton onClick={() => handleReport(answer, 'ANSWER')}>
+                  <FlagIcon sx={{ fontSize: 20, color: '#f57c00' }} />
+                </IconButton>
+              </Tooltip>
             </Box>
           </Box>
-
           <Box
             sx={{
               display: 'flex',
@@ -267,15 +336,16 @@ export default function answerView() {
             </IconButton>
 
             <Typography variant="caption">{answer.downvotes}</Typography>
-            <Button
-              size="small"
-              onClick={() =>
-                setcommentingId(commentingId === answer.id ? null : answer.id)
-              }>
-              Phản hồi
-            </Button>
-          </Box>
 
+            <Tooltip title="Phản hồi">
+              <IconButton
+                onClick={() =>
+                  setcommentingId(commentingId === answer.id ? null : answer.id)
+                }>
+                <ReplyIcon sx={{ fontSize: 24, color: '#1976d2' }} />
+              </IconButton>
+            </Tooltip>
+          </Box>
           <Collapse in={commentingId === answer.id} sx={{ mt: 1, ml: 5 }}>
             <Box sx={{ display: 'flex', gap: 1 }}>
               <TextField
@@ -296,7 +366,6 @@ export default function answerView() {
               </Button>
             </Box>
           </Collapse>
-
           <Box sx={{ ml: 5, mt: 1 }}>
             {comments[answer.id]?.map((comment) => (
               <Box
@@ -319,6 +388,7 @@ export default function answerView() {
                     {comment.user.username}
                   </Typography>
                   <Typography fontSize={13}>{comment.content}</Typography>
+
                   <Box
                     sx={{
                       display: 'flex',
@@ -356,11 +426,57 @@ export default function answerView() {
                     </Typography>
                   </Box>
                 </Box>
+
+                <Box
+                  sx={{
+                    display: 'flex',
+                    gap: 1,
+                    alignItems: 'center',
+                    ml: 'auto',
+                  }}>
+                  <Tooltip title="Chỉnh sửa">
+                    <IconButton
+                      onClick={() => handleEdit(comment, 'COMMENT')}
+                      size="small">
+                      <EditIcon sx={{ fontSize: 20, color: '#0288d1' }} />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip title="Xóa">
+                    <IconButton onClick={() => handleDelete()} size="small">
+                      <DeleteIcon sx={{ fontSize: 20, color: '#d32f2f' }} />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip title="Báo cáo">
+                    <IconButton
+                      onClick={() => handleReport(comment, 'COMMENT')}
+                      size="small">
+                      <FlagIcon sx={{ fontSize: 20, color: '#f57c00' }} />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
               </Box>
             ))}
           </Box>
         </Box>
       ))}
+
+      <ReportPage
+        open={openReportModal}
+        handleToggle={handleCloseReportModal}
+        contentType={reportContentType}
+        contentId={reportContentId}
+        content={reportContent}
+      />
+
+      <EditPage
+        open={openEditingModal}
+        handleToggle={handleCloseEditingModal}
+        id={editingId}
+        type={editingType}
+        oldContent={editingContent}
+      />
     </Box>
   );
 }
