@@ -30,10 +30,11 @@ const TopicsChart = () => {
     legend: {
       orient: 'horizontal',
       left: 'left',
-      top: 'bottom',
+      bottom: 20,
       itemGap: 14,
       textStyle: {
         fontFamily: 'Arial, sans-serif',
+        fontSize: 16,
       },
     },
 
@@ -41,7 +42,7 @@ const TopicsChart = () => {
       {
         name: 'Chủ đề',
         type: 'pie',
-        radius: '70%',
+        radius: '90%',
         center: ['50%', '40%'],
         data: chartData,
         emphasis: {

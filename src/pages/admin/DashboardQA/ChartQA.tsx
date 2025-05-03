@@ -18,8 +18,8 @@ interface IMonthlyStat {
   currentTopics: number;
 }
 
-const mockData: Record<number, IEmployeesStatsByYearsQuery> = {
-  2023: {
+const mockData: Record<number, IQAStatsByYearsQuery> = {
+  2024: {
     MonthlyStats: Array.from({ length: 12 }, (_, index) => ({
       Month: index + 1,
       newPosts: Math.floor(Math.random() * 10) + 1,
@@ -28,7 +28,7 @@ const mockData: Record<number, IEmployeesStatsByYearsQuery> = {
       currentTopics: Math.floor(Math.random() * 20) + 5,
     })),
   },
-  2024: {
+  2025: {
     MonthlyStats: Array.from({ length: 12 }, (_, index) => ({
       Month: index + 1,
       newPosts: Math.floor(Math.random() * 8) + 2,
@@ -39,7 +39,7 @@ const mockData: Record<number, IEmployeesStatsByYearsQuery> = {
   },
 };
 
-interface IEmployeesStatsByYearsQuery {
+interface IQAStatsByYearsQuery {
   MonthlyStats: IMonthlyStat[];
 }
 

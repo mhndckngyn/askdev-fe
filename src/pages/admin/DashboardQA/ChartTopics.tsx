@@ -17,14 +17,14 @@ interface ICountErrorReportsByType {
 }
 
 const mockDataByYear: Record<number, ICountErrorReportsByType[]> = {
-  2025: [{ Type: 'Pascal', Count: 8 }],
-  2023: [
+  2023: [{ Type: 'Pascal', Count: 8 }],
+  2024: [
     { Type: 'Pascal', Count: 4 },
     { Type: 'C++', Count: 15 },
     { Type: 'Python', Count: 10 },
     { Type: 'Java', Count: 7 },
   ],
-  2024: [
+  2025: [
     { Type: 'Pascal', Count: 6 },
     { Type: 'C++', Count: 18 },
     { Type: 'Python', Count: 14 },
