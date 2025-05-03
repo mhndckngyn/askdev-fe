@@ -30,8 +30,15 @@ import {
 } from './Services/CommentServices';
 import ReportPage from './ReportPage';
 import EditPage from './EditPage';
+import { useUserStore } from '../../stores/useUserStore';
 
 export default function answerView() {
+  const { user, fetchUser } = useUserStore();
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   const { id } = useParams<{ id: string }>();
   const [comments, setComments] = useState<Record<string, any[]>>({});
   const [answers, setAnswers] = useState<any[]>([]);
@@ -294,23 +301,27 @@ export default function answerView() {
             </Box>
 
             <Box sx={{ display: 'flex', gap: 1 }}>
-              <Tooltip title="Chỉnh sửa">
-                <IconButton onClick={() => handleEdit(answer, 'ANSWER')}>
-                  <EditIcon sx={{ fontSize: 20, color: '#0288d1' }} />
-                </IconButton>
-              </Tooltip>
+              {user?.id == answer.userId ? (
+                <>
+                  <Tooltip title="Chỉnh sửa">
+                    <IconButton onClick={() => handleEdit(answer, 'ANSWER')}>
+                      <EditIcon sx={{ fontSize: 20, color: '#0288d1' }} />
+                    </IconButton>
+                  </Tooltip>
 
-              <Tooltip title="Xóa">
-                <IconButton onClick={handleDelete}>
-                  <DeleteIcon sx={{ fontSize: 20, color: '#d32f2f' }} />
-                </IconButton>
-              </Tooltip>
-
-              <Tooltip title="Báo cáo">
-                <IconButton onClick={() => handleReport(answer, 'ANSWER')}>
-                  <FlagIcon sx={{ fontSize: 20, color: '#f57c00' }} />
-                </IconButton>
-              </Tooltip>
+                  <Tooltip title="Xóa">
+                    <IconButton onClick={handleDelete}>
+                      <DeleteIcon sx={{ fontSize: 20, color: '#d32f2f' }} />
+                    </IconButton>
+                  </Tooltip>
+                </>
+              ) : (
+                <Tooltip title="Báo cáo">
+                  <IconButton onClick={() => handleReport(answer, 'ANSWER')}>
+                    <FlagIcon sx={{ fontSize: 20, color: '#f57c00' }} />
+                  </IconButton>
+                </Tooltip>
+              )}
             </Box>
           </Box>
           <Box
@@ -434,27 +445,31 @@ export default function answerView() {
                     alignItems: 'center',
                     ml: 'auto',
                   }}>
-                  <Tooltip title="Chỉnh sửa">
-                    <IconButton
-                      onClick={() => handleEdit(comment, 'COMMENT')}
-                      size="small">
-                      <EditIcon sx={{ fontSize: 20, color: '#0288d1' }} />
-                    </IconButton>
-                  </Tooltip>
+                  {user?.id == comment.userId ? (
+                    <>
+                      <Tooltip title="Chỉnh sửa">
+                        <IconButton
+                          onClick={() => handleEdit(comment, 'COMMENT')}
+                          size="small">
+                          <EditIcon sx={{ fontSize: 20, color: '#0288d1' }} />
+                        </IconButton>
+                      </Tooltip>
 
-                  <Tooltip title="Xóa">
-                    <IconButton onClick={() => handleDelete()} size="small">
-                      <DeleteIcon sx={{ fontSize: 20, color: '#d32f2f' }} />
-                    </IconButton>
-                  </Tooltip>
-
-                  <Tooltip title="Báo cáo">
-                    <IconButton
-                      onClick={() => handleReport(comment, 'COMMENT')}
-                      size="small">
-                      <FlagIcon sx={{ fontSize: 20, color: '#f57c00' }} />
-                    </IconButton>
-                  </Tooltip>
+                      <Tooltip title="Xóa">
+                        <IconButton onClick={() => handleDelete()} size="small">
+                          <DeleteIcon sx={{ fontSize: 20, color: '#d32f2f' }} />
+                        </IconButton>
+                      </Tooltip>
+                    </>
+                  ) : (
+                    <Tooltip title="Báo cáo">
+                      <IconButton
+                        onClick={() => handleReport(comment, 'COMMENT')}
+                        size="small">
+                        <FlagIcon sx={{ fontSize: 20, color: '#f57c00' }} />
+                      </IconButton>
+                    </Tooltip>
+                  )}
                 </Box>
               </Box>
             ))}

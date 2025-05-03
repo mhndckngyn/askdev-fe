@@ -16,7 +16,7 @@ export default function TagsList({ tags }: TagsListProps) {
     <Grid.Col key={tag.id} span={{ base: 6, md: 4, lg: 3 }}>
       <div className={styles.tagItem}>
         <Group gap="xs">
-          <TagHoverCard id={tag.name} name={tag.name} />
+          <TagHoverCard id={tag.id} name={tag.name} />
           <Text size="sm">
             {tag.questionCount} {t('questions-count')}
           </Text>

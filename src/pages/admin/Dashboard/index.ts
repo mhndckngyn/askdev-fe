@@ -1,1 +1,3 @@
-export { default } from './Dashboard';
+import Homepage from './Homepage';
+
+export default Homepage;

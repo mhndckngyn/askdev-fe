@@ -1,5 +1,5 @@
 import { Box, Avatar, Typography, Divider, Paper } from '@mui/material';
-import cupIcon from '../../assets/images/cup.svg';
+import cupIcon from '../../../assets/images/cup.svg';
 import { Star } from 'lucide-react';
 
 const users = [

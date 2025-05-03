@@ -1,0 +1,22 @@
+.yarl__button {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    border-radius: 50% !important;
+    padding: 10px !important;
+    transition: background-color 0.3s ease !important;
+}
+
+.yarl__button:hover {
+    background-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.yarl__navigation_prev {
+    margin-left: 15px !important;
+}
+
+.yarl__navigation_next {
+    margin-right: 15px !important;
+}
+
+.yarl__toolbar button {
+    margin: 0 5px !important;
+}

@@ -1,8 +1,8 @@
 import ComplexStatisticsCard from './ComplexStatisticsCard';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import PostAddIcon from '@mui/icons-material/PostAdd';
-import ReportProblemIcon from '@mui/icons-material/ReportProblem';
-import PeopleIcon from '@mui/icons-material/People';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import CommentIcon from '@mui/icons-material/Comment';
+import RateReviewIcon from '@mui/icons-material/RateReview';
+import BarChartIcon from '@mui/icons-material/BarChart';
 import Box from '@mui/material/Box';
 
 const DashboardStats = () => {
@@ -15,9 +15,9 @@ const DashboardStats = () => {
       justifyContent="space-between">
       {[
         {
-          title: 'Số thành viên mới',
+          title: 'Số báo cáo câu hỏi',
           count: 50,
-          icon: <PersonAddIcon />,
+          icon: <HelpOutlineIcon sx={{ marginBottom: '10px' }} />,
           percentage: {
             color: 'linear-gradient(195deg, #FB8C00, #F57C00)',
             amount: '+7%',
@@ -25,9 +25,9 @@ const DashboardStats = () => {
           },
         },
         {
-          title: 'Số bài đăng',
+          title: 'Số báo cáo câu trả lời',
           count: 120,
-          icon: <PostAddIcon />,
+          icon: <CommentIcon sx={{ marginBottom: '10px' }} />,
           percentage: {
             color: 'linear-gradient(195deg, #EC407A, #D81B60)',
             amount: '+10%',
@@ -35,9 +35,9 @@ const DashboardStats = () => {
           },
         },
         {
-          title: 'Số báo cáo',
+          title: 'Số báo cáo phản hồi',
           count: 15,
-          icon: <ReportProblemIcon />,
+          icon: <RateReviewIcon sx={{ marginBottom: '10px' }} />,
           percentage: {
             color: 'linear-gradient(195deg, #49a3f1, #1A73E8)',
             amount: '-5%',
@@ -45,13 +45,13 @@ const DashboardStats = () => {
           },
         },
         {
-          title: 'Số thành viên hiện tại',
-          count: 500,
-          icon: <PeopleIcon />,
+          title: 'Tổng số báo cáo',
+          count: 185,
+          icon: <BarChartIcon sx={{ marginBottom: '10px' }} />,
           percentage: {
             color: 'linear-gradient(195deg, #66BB6A, #43A047)',
             amount: '+3%',
-            label: 'So với hôm qua',
+            label: 'So với tháng trước',
           },
         },
       ].map((item, index) => (

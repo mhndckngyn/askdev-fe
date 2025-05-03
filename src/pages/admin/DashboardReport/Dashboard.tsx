@@ -1,13 +1,12 @@
 import Box from '@mui/material/Box';
 import DashboardStats from './Statistics/DashboardStats';
-import ChartQA from './ChartQA';
-import ChartTopics from './ChartTopics';
-import TopicsChart from './TopicsChart';
+import ChartReport from './ChartReport';
+import ReportChart from './ReportChart';
+
 export default function Dashboard() {
   return (
     <Box width="100%">
       <DashboardStats />
-      <ChartQA />
       <Box
         sx={{
           width: '100%',
@@ -21,7 +20,7 @@ export default function Dashboard() {
             flexDirection: 'column',
             justifyContent: 'space-between',
           }}>
-          <ChartTopics />
+          <ChartReport />
         </Box>
 
         <Box
@@ -30,7 +29,7 @@ export default function Dashboard() {
             flexDirection: 'column',
             justifyContent: 'space-between',
           }}>
-          <TopicsChart />
+          <ReportChart />
         </Box>
       </Box>
     </Box>
