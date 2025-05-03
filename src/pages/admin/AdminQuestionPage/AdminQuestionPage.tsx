@@ -1,6 +1,6 @@
 import { useErrorStore } from '@/stores/useErrorStore';
 import { ApiResponse, QuestionAdminView } from '@/types';
-import { Button, Group, Space, Text, TextInput } from '@mantine/core';
+import { Button, Group, Space, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconFilterEdit } from '@tabler/icons-react';
@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import styles from './AdminQuestionPage.module.css';
 import FilterModal from './partials/FilterModal';
 import QuestionTable from './partials/QuestionTable';
+import SelectedRowActions from './partials/SelectedRowActions';
 import { getQuestions, hideQuestions, unhideQuestions } from './services';
 
 export type Filter = {
@@ -16,7 +17,7 @@ export type Filter = {
   tags?: string[];
   username?: string;
   isAnswered?: boolean;
-  hiddenOption?: boolean; /* undefined: both, true: only hidden, false: no hidden */
+  hiddenOption?: boolean /* undefined: both, true: only hidden, false: no hidden */;
   isEdited?: boolean;
   startDate?: Date;
   endDate?: Date;
@@ -69,7 +70,7 @@ export default function AdminQuestionPage() {
         setQuestions(response.content.questions);
         setTotalRecords(response.content.pagination.total);
       } else {
-        setQuestions([]); // set thành rỗng để table hiển thị empty state
+        setQuestions([]); // để table hiển thị empty state
       }
 
       setLoading(false);
@@ -78,10 +79,11 @@ export default function AdminQuestionPage() {
     handleGetQuestions();
   }, [filter, page, render]);
 
-  const handleToggleHide = async (
+  const handleToggleVisibility = async (
     service: (ids: string[]) => Promise<ApiResponse>,
+    id?: string,
   ) => {
-    const questionIds = selectedQuestions.map((q) => q.id);
+    const questionIds = id ? [id] : selectedQuestions.map((q) => q.id); // sử dụng id truyền vào hoặc id từ record đã chọn
     const response = await service(questionIds);
     if (response.success) {
       notifications.show({ message: t('toggleHideSuccess') });
@@ -103,6 +105,7 @@ export default function AdminQuestionPage() {
       <FilterModal
         currentFilter={filter}
         setFilter={setFilter}
+        resetFilter={() => setFilter({})}
         opened={opened}
         onClose={close}
       />
@@ -126,31 +129,21 @@ export default function AdminQuestionPage() {
           isLoading={isLoading}
           selected={selectedQuestions}
           setSelected={setSelectedQuestions}
+          setHide={(question: QuestionAdminView) => {
+            handleToggleVisibility(hideQuestions, question.id);
+          }}
+          setUnhide={(question: QuestionAdminView) => {
+            handleToggleVisibility(unhideQuestions, question.id);
+          }}
         />
       </div>
       <Space h="xs" />
 
-      <Group justify="flex-end">
-        {selectedQuestions.length > 0 && (
-          <Text size="sm">
-            {t('selectedCount', { count: selectedQuestions.length })}
-          </Text>
-        )}
-        <Button
-          onClick={() => handleToggleHide(hideQuestions)}
-          disabled={selectedQuestions.length === 0}
-          variant="light"
-          color="orange">
-          {t('hideQuestions')}
-        </Button>
-        <Button
-          onClick={() => handleToggleHide(unhideQuestions)}
-          disabled={selectedQuestions.length === 0}
-          variant="light"
-          color="green">
-          {t('unhideQuestions')}
-        </Button>
-      </Group>
+      <SelectedRowActions
+        selectedQuestions={selectedQuestions}
+        onHideQuestions={() => handleToggleVisibility(hideQuestions)}
+        onUnhideQuestions={() => handleToggleVisibility(unhideQuestions)}
+      />
     </div>
   );
 }

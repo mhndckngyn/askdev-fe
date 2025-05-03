@@ -1,4 +1,4 @@
-import { Button, Group, Modal, Radio, Stack, Text } from '@mantine/core';
+import { Button, Group, Modal, Radio, Space, Stack, Text } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +11,7 @@ type FilterModalType = {
   setFilter: (filter: Filter) => void;
   opened: boolean;
   onClose: () => void;
+  resetFilter: () => void;
 };
 
 export default function FilterModal({
@@ -18,6 +19,7 @@ export default function FilterModal({
   setFilter,
   opened,
   onClose,
+  resetFilter,
 }: FilterModalType) {
   const { t } = useTranslation('adminQuestionPage');
 
@@ -49,6 +51,12 @@ export default function FilterModal({
     } else {
       form.setFieldValue('hiddenOption', value === 'only');
     }
+  };
+
+  const handleResetFilter = () => {
+    form.reset();
+    resetFilter();
+    onClose();
   };
 
   return (
@@ -121,7 +129,11 @@ export default function FilterModal({
             </Group>
           </Radio.Group>
 
+          <Space h="xs"></Space>
           <Group justify="flex-end" gap="xs">
+            <Button type="button" onClick={handleResetFilter} variant="light">
+              Reset filters
+            </Button>
             <Button type="submit">{t('apply')}</Button>
           </Group>
         </Stack>

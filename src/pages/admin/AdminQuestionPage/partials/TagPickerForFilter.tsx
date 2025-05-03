@@ -125,7 +125,7 @@ export default function TagPicker({
             ) : tagOptions.length > 0 ? (
               tagOptions
             ) : (
-              <Combobox.Empty>No result</Combobox.Empty>
+              <Combobox.Empty>{t('noResults')}</Combobox.Empty>
             )}
           </Combobox.Options>
         </Combobox.Dropdown>

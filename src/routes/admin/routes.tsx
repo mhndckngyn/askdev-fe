@@ -5,6 +5,7 @@ import AdminLayout from './AdminLayout';
 import AdminQuestionPage from '@/pages/admin/AdminQuestionPage';
 import adminRoutePaths from './paths';
 import DashboardQA from '@/pages/admin/DashboardQA';
+import AdminAnswerPage from '@/pages/admin/AdminAnswerPage';
 
 const adminRoutes = (
   <Route
@@ -15,6 +16,7 @@ const adminRoutes = (
     }>
     <Route path={adminRoutePaths.dashboard} element={<Dashboard />} />
     <Route path={adminRoutePaths.questions} element={<AdminQuestionPage />} />
+    <Route path={adminRoutePaths.answers} element={<AdminAnswerPage />} />
     <Route path={adminRoutePaths.qandaDashboard} element={<DashboardQA />} />
   </Route>
 );

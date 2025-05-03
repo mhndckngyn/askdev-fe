@@ -1,7 +1,27 @@
+import adminRoutePaths from '@/routes/admin/paths';
 import publicRoutePaths from '@/routes/user/public/paths';
 import { QuestionAdminView } from '@/types';
-import { Anchor, Badge, Box, Text, ThemeIcon, Tooltip } from '@mantine/core';
-import { IconCheck, IconMoodSad, IconX } from '@tabler/icons-react';
+import {
+  ActionIcon,
+  Anchor,
+  Badge,
+  Box,
+  Group,
+  Text,
+  ThemeIcon,
+  Tooltip,
+} from '@mantine/core';
+import { useClipboard } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
+import {
+  IconCheck,
+  IconClipboard,
+  IconEye,
+  IconEyeOff,
+  IconMessageShare,
+  IconMoodSad,
+  IconX,
+} from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import { DataTable } from 'mantine-datatable';
 import { useTranslation } from 'react-i18next';
@@ -20,7 +40,9 @@ type QuestionTableProps = {
   pagination: Pagination;
   isLoading: boolean;
   selected: QuestionAdminView[];
-  setSelected: (questions: QuestionAdminView[]) => void;
+  setSelected: (ids: QuestionAdminView[]) => void;
+  setHide: (question: QuestionAdminView) => void;
+  setUnhide: (question: QuestionAdminView) => void;
 };
 
 export default function QuestionTable({
@@ -29,9 +51,56 @@ export default function QuestionTable({
   isLoading,
   selected,
   setSelected,
+  setHide,
+  setUnhide,
 }: QuestionTableProps) {
   const { t } = useTranslation('adminQuestionPage');
+  const clipboard = useClipboard();
 
+  const renderRecordActions = (question: QuestionAdminView) => (
+    <Group gap={4} justify="center" wrap="nowrap">
+      <Tooltip label={t('toggleVisibility')}>
+        <ActionIcon
+          size="sm"
+          variant="subtle"
+          color="pink"
+          onClick={() => {
+            if (question.isHidden) {
+              setUnhide(question);
+            } else {
+              setHide(question);
+            }
+          }}>
+          {question.isHidden ? <IconEye size={18} /> : <IconEyeOff size={18} />}
+        </ActionIcon>
+      </Tooltip>
+
+      <Tooltip label={t('copyQuestionId')}>
+        <ActionIcon
+          size="sm"
+          variant="subtle"
+          onClick={() => {
+            clipboard.copy(question.id);
+            notifications.show({
+              message: t('copySuccess', { id: question.id }),
+            });
+          }}>
+          <IconClipboard size={18} />
+        </ActionIcon>
+      </Tooltip>
+
+      <Tooltip label={t('viewAnswers')}>
+        <ActionIcon
+          component={Link}
+          to={`${adminRoutePaths.answers}?questionId=${question.id}`}
+          size="sm"
+          variant="subtle"
+          color="green">
+          <IconMessageShare size={18} />
+        </ActionIcon>
+      </Tooltip>
+    </Group>
+  );
   return (
     <DataTable
       records={records}
@@ -53,7 +122,7 @@ export default function QuestionTable({
         {
           accessor: 'title',
           title: t('title'),
-          width: '25%',
+          width: 400,
           render: (row) => (
             <Anchor
               component={Link}
@@ -66,7 +135,7 @@ export default function QuestionTable({
         {
           accessor: 'tags',
           title: t('tags'),
-          width: 'fit-content',
+          width: 120,
           render: (row) => (
             <Tooltip.Floating
               label={row.tags.map((tag) => tag.name).join(', ')}>
@@ -78,27 +147,31 @@ export default function QuestionTable({
         },
         {
           accessor: 'user.username',
+          width: 160,
           title: t('poster'),
         },
         {
           accessor: 'views',
+          width: 80,
           title: t('views'),
           textAlign: 'right',
         },
         {
           accessor: 'votes',
+          width: 80,
           title: t('votes'),
           textAlign: 'right',
         },
         {
           accessor: 'answers',
+          width: 80,
           title: t('answers'),
           textAlign: 'right',
         },
         {
           accessor: 'isAnswered',
           title: t('answered'),
-          textAlign: 'right',
+          textAlign: 'center',
           render: (row) => (
             <ThemeIcon color={row.isAnswered ? 'blue' : 'red'}>
               {row.isAnswered ? <IconCheck size={16} /> : <IconX size={16} />}
@@ -118,6 +191,7 @@ export default function QuestionTable({
         {
           accessor: 'editedAt',
           title: t('lastEdited'),
+          textAlign: 'center',
           width: '10%',
           render: (row) => (
             /* hiển thị ngày edit chỉ khi khác ngày tạo */
@@ -127,6 +201,11 @@ export default function QuestionTable({
                 : dayjs(row.editedAt).format('DD/MM/YYYY, HH:mm')}
             </Text>
           ),
+        },
+        {
+          accessor: 'actions',
+          title: t('actions'),
+          render: renderRecordActions,
         },
       ]}
       /* set style */

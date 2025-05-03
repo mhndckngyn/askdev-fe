@@ -11,6 +11,7 @@
 .tableContainer {
   height: 100px; /* height cố định để table có thể scroll */
   flex: 1 1 auto; /* vẫn grow dù có height cố định (idk how) */
+  width: 100%;
 }
 
 /* ConfirmDeleteQuestion Modal */
