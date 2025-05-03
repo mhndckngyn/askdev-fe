@@ -69,12 +69,11 @@ const TopUsers = () => {
   return (
     <Box
       sx={{
-        width: '100%',
+        maxwidth: '100%',
         padding: '35px',
         border: '1px solid #ccc',
       }}>
       <Box
-      
         sx={{
           mt: '-20px',
           paddingBlock: 1.4,
@@ -96,11 +95,10 @@ const TopUsers = () => {
           }}>
           Xếp hạng thành viên đăng bài
         </Typography>
-       
       </Box>
 
-      <Divider sx={{ mt: '10px',mb: '15px', borderColor: 'black' }} />
-      
+      <Divider sx={{ mt: '10px', mb: '15px', borderColor: 'black' }} />
+
       {users.map((user, index) => (
         <Box
           key={index}

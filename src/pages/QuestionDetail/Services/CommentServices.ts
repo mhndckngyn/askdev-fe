@@ -16,6 +16,18 @@ export async function createComment(
   });
 }
 
+export async function updateComment(
+  id: string,
+  content: string,
+): Promise<ApiResponse> {
+  const payload = { content };
+  return fetcher({
+    method: 'PUT',
+    route: `comment/${id}`,
+    payload,
+  });
+}
+
 export async function getCommentsByAnswerId(
   answerId: string,
 ): Promise<ApiResponse> {

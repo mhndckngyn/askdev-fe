@@ -109,7 +109,7 @@ const TopicTable: React.FC = () => {
   return (
     <Box
       sx={{
-        width: '100%',
+        maxwidth: '100%',
 
         padding: '35px',
         border: '1px solid #ccc',

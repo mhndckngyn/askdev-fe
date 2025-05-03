@@ -15,7 +15,7 @@ const DashboardStats = () => {
       justifyContent="space-between">
       {[
         {
-          title: 'Số thành viên mới',
+          title: 'Số bài đăng mới',
           count: 50,
           icon: <PersonAddIcon />,
           percentage: {
@@ -25,7 +25,7 @@ const DashboardStats = () => {
           },
         },
         {
-          title: 'Số bài đăng',
+          title: 'Số bài đăng hiện tại',
           count: 120,
           icon: <PostAddIcon />,
           percentage: {
@@ -35,7 +35,7 @@ const DashboardStats = () => {
           },
         },
         {
-          title: 'Số báo cáo',
+          title: 'Số chủ đề mới',
           count: 15,
           icon: <ReportProblemIcon />,
           percentage: {
@@ -45,13 +45,13 @@ const DashboardStats = () => {
           },
         },
         {
-          title: 'Số thành viên hiện tại',
+          title: 'Số chủ đề hiện tại',
           count: 500,
           icon: <PeopleIcon />,
           percentage: {
             color: 'linear-gradient(195deg, #66BB6A, #43A047)',
             amount: '+3%',
-            label: 'So với hôm qua',
+            label: 'So với tháng trước',
           },
         },
       ].map((item, index) => (

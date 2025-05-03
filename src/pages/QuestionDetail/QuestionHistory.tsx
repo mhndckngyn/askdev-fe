@@ -10,7 +10,7 @@ import {
 import QuestionContent from './QuestionContent';
 import ImageGrid from './ImageGrid';
 import FormatTime from './formatTime';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, History } from 'lucide-react';
 import { getEditHistory } from './Services/QuestionServices';
 import { useState, useEffect } from 'react';
 
@@ -80,6 +80,18 @@ function QuestionHistory({ open, handleToggle, question }: Props) {
           height: '100vh',
           position: 'relative',
         }}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            opacity: 0.1,
+            zIndex: 1,
+            pointerEvents: 'none',
+          }}>
+          <History size={400} color="#388e3c" />
+        </Box>
         <Paper
           elevation={0}
           sx={{
@@ -113,7 +125,7 @@ function QuestionHistory({ open, handleToggle, question }: Props) {
               variant="h6"
               sx={{
                 fontWeight: 'bold',
-                fontSize: '18px',
+                fontSize: '23px',
                 textAlign: 'center',
                 margin: 'auto',
                 overflow: 'hidden',

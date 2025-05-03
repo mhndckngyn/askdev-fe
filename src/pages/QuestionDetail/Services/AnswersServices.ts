@@ -16,6 +16,18 @@ export async function createAnswer(
   });
 }
 
+export async function updateAnswer(
+  id: string,
+  content: string,
+): Promise<ApiResponse> {
+  const payload = { content };
+  return fetcher({
+    method: 'PUT',
+    route: `answer/${id}`,
+    payload,
+  });
+}
+
 export async function getAnswersByQuestionId(
   questionId: string,
 ): Promise<ApiResponse> {
@@ -24,7 +36,6 @@ export async function getAnswersByQuestionId(
     route: `answer/question/${questionId}`,
   });
 }
-
 
 export async function voteAnswers(
   id: string,
