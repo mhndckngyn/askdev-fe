@@ -27,3 +27,9 @@
   height: 36px;
   color: var(--mantine-color-red-6);
 }
+
+/* Table */
+.hiddenQuestion {
+  filter: grayscale(100%);
+  opacity: 0.8;
+}

@@ -1,26 +1,12 @@
 import publicRoutePaths from '@/routes/user/public/paths';
 import { QuestionAdminView } from '@/types';
-import {
-  ActionIcon,
-  Anchor,
-  Badge,
-  Box,
-  Group,
-  Text,
-  ThemeIcon,
-  Tooltip,
-} from '@mantine/core';
-import {
-  IconCheck,
-  IconExternalLink,
-  IconMoodSad,
-  IconTrash,
-  IconX,
-} from '@tabler/icons-react';
+import { Anchor, Badge, Box, Text, ThemeIcon, Tooltip } from '@mantine/core';
+import { IconCheck, IconMoodSad, IconX } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import { DataTable } from 'mantine-datatable';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import styles from '../AdminQuestionPage.module.css';
 
 type Pagination = {
   pageSize: number;
@@ -33,50 +19,41 @@ type QuestionTableProps = {
   records: QuestionAdminView[];
   pagination: Pagination;
   isLoading: boolean;
-  setDelete: (questionId: string) => void;
+  selected: QuestionAdminView[];
+  setSelected: (questions: QuestionAdminView[]) => void;
 };
 
 export default function QuestionTable({
   records,
   pagination,
   isLoading,
-  setDelete,
+  selected,
+  setSelected,
 }: QuestionTableProps) {
   const { t } = useTranslation('adminQuestionPage');
-
-  const renderActionIcons = (question: QuestionAdminView) => (
-    <Group gap={4} justify="center" wrap="nowrap">
-      <ActionIcon
-        component={Link}
-        to={publicRoutePaths.questionDetail.replace(':id', question.id)}
-        size="sm"
-        variant="subtle"
-        color="blue">
-        <IconExternalLink />
-      </ActionIcon>
-      <ActionIcon
-        size="sm"
-        variant="subtle"
-        color="red"
-        onClick={() => setDelete(question.id)}>
-        <IconTrash />
-      </ActionIcon>
-    </Group>
-  );
 
   return (
     <DataTable
       records={records}
+      /* phân trang */
       totalRecords={pagination.totalRecords}
       recordsPerPage={pagination.pageSize}
       page={pagination.currentPage}
       onPageChange={pagination.setPage}
+      /* chọn hàng */
+      selectedRecords={selected}
+      onSelectedRecordsChange={setSelected}
+      /* loading state */
       fetching={isLoading}
+      /* tô màu cho record có isHidden === true */
+      rowClassName={({ isHidden }) =>
+        isHidden ? styles.hiddenQuestion : undefined
+      }
       columns={[
         {
           accessor: 'title',
           title: t('title'),
-          width: '30%',
+          width: '25%',
           render: (row) => (
             <Anchor
               component={Link}
@@ -103,13 +80,25 @@ export default function QuestionTable({
           accessor: 'user.username',
           title: t('poster'),
         },
-        { accessor: 'views', title: t('views'), textAlign: 'right' },
-        { accessor: 'votes', title: t('votes'), textAlign: 'right' },
+        {
+          accessor: 'views',
+          title: t('views'),
+          textAlign: 'right',
+        },
+        {
+          accessor: 'votes',
+          title: t('votes'),
+          textAlign: 'right',
+        },
+        {
+          accessor: 'answers',
+          title: t('answers'),
+          textAlign: 'right',
+        },
         {
           accessor: 'isAnswered',
           title: t('answered'),
-          width: 'fit-content',
-          textAlign: 'center',
+          textAlign: 'right',
           render: (row) => (
             <ThemeIcon color={row.isAnswered ? 'blue' : 'red'}>
               {row.isAnswered ? <IconCheck size={16} /> : <IconX size={16} />}
@@ -139,15 +128,8 @@ export default function QuestionTable({
             </Text>
           ),
         },
-        {
-          accessor: 'actions',
-          title: t('actions'),
-          textAlign: 'center',
-          render: renderActionIcons,
-        },
       ]}
-      /* style values */
-      striped
+      /* set style */
       withTableBorder
       withColumnBorders
       noRecordsIcon={

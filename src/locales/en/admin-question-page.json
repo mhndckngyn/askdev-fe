@@ -3,9 +3,11 @@
   "title": "Title",
   "tags": "Tags",
   "poster": "Poster",
-  "answered": "Is Answered",
+  "hidden": "Hidden",
+  "answered": "Answered",
   "views": "Views",
   "votes": "Votes",
+  "answers": "Answers",
   "postedOn": "Posted On",
   "lastEdited": "Last Edited",
   "actions": "Actions",
@@ -23,12 +25,14 @@
   "both": "Both",
   "yes": "Yes",
   "no": "No",
+  "onlyHidden": "Only hidden",
+  "noHidden": "No hidden",
   "apply": "Apply",
-  "noResults": "No results found",
 
-  "deleteConfirm": "Are you sure you want to delete this question? Answers and comments to this question will also be deleted.",
-  "delete": "Delete",
-  "cancel": "Cancel",
-  "deleteSuccess": "Question deleted successfully",
-  "deleteError": "Error encountered while deleting question."
+  "noResults": "No results found",
+  "selectedCount": "{{count}} question(s) selected",
+  "hideQuestions": "Hide selected question(s)",
+  "unhideQuestions": "Unhide selected question(s)",
+  "toggleHideSuccess": "Update question state successfully",
+  "toggleHideError": "Error encountered while updating question."
 }

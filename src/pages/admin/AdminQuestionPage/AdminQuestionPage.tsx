@@ -1,22 +1,22 @@
-import { useActionStore } from '@/stores/useActionModalStore';
 import { useErrorStore } from '@/stores/useErrorStore';
-import { QuestionAdminView } from '@/types';
-import { Button, Group, Space, TextInput } from '@mantine/core';
+import { ApiResponse, QuestionAdminView } from '@/types';
+import { Button, Group, Space, Text, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 import { IconFilterEdit } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './AdminQuestionPage.module.css';
 import FilterModal from './partials/FilterModal';
 import QuestionTable from './partials/QuestionTable';
-import { deleteQuestion, getQuestions } from './services';
-import { notifications } from '@mantine/notifications';
+import { getQuestions, hideQuestions, unhideQuestions } from './services';
 
 export type Filter = {
   titleKeyword?: string;
   tags?: string[];
   username?: string;
   isAnswered?: boolean;
+  hiddenOption?: boolean; /* undefined: both, true: only hidden, false: no hidden */
   isEdited?: boolean;
   startDate?: Date;
   endDate?: Date;
@@ -27,7 +27,6 @@ const PAGE_SIZE = 10;
 
 export default function AdminQuestionPage() {
   const { t } = useTranslation('adminQuestionPage');
-  const setAction = useActionStore((state) => state.setAction);
   const setError = useErrorStore((state) => state.setError);
 
   const [opened, { open, close }] = useDisclosure(false); // FilterModal
@@ -40,7 +39,9 @@ export default function AdminQuestionPage() {
 
   const [isLoading, setLoading] = useState(false);
 
-  const [deleteQuestionId, setDeleteQuestionId] = useState('');
+  const [selectedQuestions, setSelectedQuestions] = useState<
+    QuestionAdminView[]
+  >([]);
   const [render, setRender] = useState(0); // dùng để fetch data mới sau khi xóa
 
   useEffect(() => {
@@ -77,23 +78,18 @@ export default function AdminQuestionPage() {
     handleGetQuestions();
   }, [filter, page, render]);
 
-  useEffect(() => {
-    if (!deleteQuestionId) {
-      return;
+  const handleToggleHide = async (
+    service: (ids: string[]) => Promise<ApiResponse>,
+  ) => {
+    const questionIds = selectedQuestions.map((q) => q.id);
+    const response = await service(questionIds);
+    if (response.success) {
+      notifications.show({ message: t('toggleHideSuccess') });
+      setRender(render + 1); // force re-render để lấy data mới
+    } else {
+      setError(t('toggleHideError'));
     }
-
-    const handleDeleteQuestion = async () => {
-      const response = await deleteQuestion(deleteQuestionId);
-      if (response.success) {
-        notifications.show({ message: t('deleteSuccess') });
-        setRender(render + 1); // force re-render để lấy data mới
-      } else {
-        setError(t('deleteError')); // TODO: Hiển thị lỗi chi tiết hơn
-      }
-    };
-
-    setAction(t('deleteConfirm'), t('delete'), handleDeleteQuestion); // hàm xóa sẽ được gọi khi người dùng xác nhận
-  }, [deleteQuestionId]);
+  };
 
   const pagination = {
     totalRecords,
@@ -128,9 +124,33 @@ export default function AdminQuestionPage() {
           records={questions}
           pagination={pagination}
           isLoading={isLoading}
-          setDelete={setDeleteQuestionId}
+          selected={selectedQuestions}
+          setSelected={setSelectedQuestions}
         />
       </div>
+      <Space h="xs" />
+
+      <Group justify="flex-end">
+        {selectedQuestions.length > 0 && (
+          <Text size="sm">
+            {t('selectedCount', { count: selectedQuestions.length })}
+          </Text>
+        )}
+        <Button
+          onClick={() => handleToggleHide(hideQuestions)}
+          disabled={selectedQuestions.length === 0}
+          variant="light"
+          color="orange">
+          {t('hideQuestions')}
+        </Button>
+        <Button
+          onClick={() => handleToggleHide(unhideQuestions)}
+          disabled={selectedQuestions.length === 0}
+          variant="light"
+          color="green">
+          {t('unhideQuestions')}
+        </Button>
+      </Group>
     </div>
   );
 }

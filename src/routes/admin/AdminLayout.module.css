@@ -4,6 +4,6 @@
   grid-template-columns: auto 1fr;
 
   > :nth-child(2) {
-    padding: 30px;
+    padding: 20px;
   }
 }
