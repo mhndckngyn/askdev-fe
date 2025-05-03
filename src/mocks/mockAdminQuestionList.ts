@@ -6,20 +6,16 @@ const MockAdminQuestionList: QuestionAdminView[] = [
     title: 'Component re-render quá nhiều lần',
     tags: [
       { id: '31eb9712-1d75-45bb-9a05-c9ae7aa4341e', name: 'react' },
-      {
-        id: 'd4fe986c-c50d-428e-a8d2-049432fdbef3',
-        name: 'react-optimization',
-      },
+      { id: 'd4fe986c-c50d-428e-a8d2-049432fdbef3', name: 'react-optimization' },
     ],
     views: 300,
     votes: 56,
-    user: {
-      id: 'a49ff39a-59c7-4b28-bd95-224b149f07e5',
-      username: 'ducminhdev',
-    },
+    user: { id: 'a49ff39a-59c7-4b28-bd95-224b149f07e5', username: 'ducminhdev' },
     isAnswered: true,
     createdAt: '2025-04-25T15:00:00Z',
     editedAt: '2025-04-26T16:30:00Z',
+    isHidden: false,
+    answers: 8,
   },
   {
     id: 'e2399c21-b90f-4f7a-bd34-4560e3cb5321',
@@ -34,6 +30,8 @@ const MockAdminQuestionList: QuestionAdminView[] = [
     isAnswered: true,
     createdAt: '2025-04-24T08:20:00Z',
     editedAt: '2025-04-25T10:00:00Z',
+    isHidden: true,
+    answers: 13,
   },
   {
     id: 'fbb3b998-d4fa-41b4-8f80-8b5f0fa62b97',
@@ -44,13 +42,12 @@ const MockAdminQuestionList: QuestionAdminView[] = [
     ],
     views: 250,
     votes: 80,
-    user: {
-      id: 'd79a6ecb-36d1-4a4b-a1d4-4d3993d4ed38',
-      username: 'alice_tech',
-    },
+    user: { id: 'd79a6ecb-36d1-4a4b-a1d4-4d3993d4ed38', username: 'alice_tech' },
     isAnswered: false,
     createdAt: '2025-04-22T11:30:00Z',
     editedAt: '2025-04-22T14:00:00Z',
+    isHidden: false,
+    answers: 4,
   },
   {
     id: '2e50e6a9-6d52-4d0e-bcb0-27e4449fa8ab',
@@ -65,6 +62,8 @@ const MockAdminQuestionList: QuestionAdminView[] = [
     isAnswered: true,
     createdAt: '2025-04-19T10:00:00Z',
     editedAt: '2025-04-21T16:00:00Z',
+    isHidden: false,
+    answers: 10,
   },
   {
     id: 'b93a72c7-4015-44f0-beb9-417b9e2c8d0b',
@@ -79,6 +78,8 @@ const MockAdminQuestionList: QuestionAdminView[] = [
     isAnswered: false,
     createdAt: '2025-04-18T09:00:00Z',
     editedAt: '2025-04-19T12:00:00Z',
+    isHidden: true,
+    answers: 5,
   },
   {
     id: '9f2216f5-0a8e-41d1-b42a-e8b1b7e338cd',
@@ -89,13 +90,12 @@ const MockAdminQuestionList: QuestionAdminView[] = [
     ],
     views: 510,
     votes: 150,
-    user: {
-      id: 'd0424584-d08e-4ed0-b173-8e83358b59e2',
-      username: 'david_user',
-    },
+    user: { id: 'd0424584-d08e-4ed0-b173-8e83358b59e2', username: 'david_user' },
     isAnswered: true,
     createdAt: '2025-04-15T14:00:00Z',
     editedAt: '2025-04-17T18:30:00Z',
+    isHidden: false,
+    answers: 12,
   },
   {
     id: '7a41b86c-f4ed-4337-bfd0-d64f2ac6b254',
@@ -106,13 +106,12 @@ const MockAdminQuestionList: QuestionAdminView[] = [
     ],
     views: 270,
     votes: 60,
-    user: {
-      id: '37b545b7-0a9f-47e2-b502-26acb7a568ff',
-      username: 'jessicajane',
-    },
+    user: { id: '37b545b7-0a9f-47e2-b502-26acb7a568ff', username: 'jessicajane' },
     isAnswered: true,
     createdAt: '2025-04-13T08:30:00Z',
     editedAt: '2025-04-14T09:30:00Z',
+    isHidden: true,
+    answers: 7,
   },
   {
     id: 'b2b1e595-7e5f-4f3a-a240-d1b0c8e72a7d',
@@ -123,13 +122,12 @@ const MockAdminQuestionList: QuestionAdminView[] = [
     ],
     views: 320,
     votes: 110,
-    user: {
-      id: '1cd5c593-c736-4fda-977d-02d99f5ed9be',
-      username: 'rachel_tech',
-    },
+    user: { id: '1cd5c593-c736-4fda-977d-02d99f5ed9be', username: 'rachel_tech' },
     isAnswered: true,
     createdAt: '2025-04-10T13:00:00Z',
     editedAt: '2025-04-11T14:15:00Z',
+    isHidden: false,
+    answers: 11,
   },
   {
     id: 'b34db278-02c7-4793-b233-cd07e1d3182f',
@@ -144,6 +142,8 @@ const MockAdminQuestionList: QuestionAdminView[] = [
     isAnswered: false,
     createdAt: '2025-04-08T17:00:00Z',
     editedAt: '2025-04-09T12:30:00Z',
+    isHidden: true,
+    answers: 3,
   },
   {
     id: 'c87a5c72-82ed-4e30-91fd-18a78f2f2289',
@@ -158,8 +158,10 @@ const MockAdminQuestionList: QuestionAdminView[] = [
     isAnswered: true,
     createdAt: '2025-04-06T14:00:00Z',
     editedAt: '2025-04-06T15:30:00Z',
+    isHidden: false,
+    answers: 6,
   },
-    {
+  {
     id: '1dcd4a25-42c8-48c9-9027-d85d2d2b61c5',
     title: 'Làm sao để tối ưu database query trong MongoDB?',
     tags: [
@@ -168,13 +170,12 @@ const MockAdminQuestionList: QuestionAdminView[] = [
     ],
     views: 90,
     votes: 18,
-    user: {
-      id: 'e654a2d4-87b3-4aa8-b8de-6b0c64b9cf59',
-      username: 'devdatabases',
-    },
+    user: { id: 'e654a2d4-87b3-4aa8-b8de-6b0c64b9cf59', username: 'devdatabases' },
     isAnswered: false,
     createdAt: '2025-04-20T10:45:00Z',
     editedAt: '2025-04-22T08:30:00Z',
+    isHidden: true,
+    answers: 2,
   },
   {
     id: '2f3ec9c1-c1c7-4f29-9aa1-9f913b0327a4',
@@ -185,13 +186,12 @@ const MockAdminQuestionList: QuestionAdminView[] = [
     ],
     views: 250,
     votes: 40,
-    user: {
-      id: 'd2ac93b2-05b1-4f13-8082-5b60cf6bd1db',
-      username: 'minhcode',
-    },
+    user: { id: 'd2ac93b2-05b1-4f13-8082-5b60cf6bd1db', username: 'minhcode' },
     isAnswered: true,
     createdAt: '2025-04-23T12:00:00Z',
     editedAt: '2025-04-24T09:15:00Z',
+    isHidden: false,
+    answers: 6,
   },
   {
     id: '4b70ea89-bba1-4d61-9280-733a5f7c2d92',
@@ -203,13 +203,12 @@ const MockAdminQuestionList: QuestionAdminView[] = [
     ],
     views: 120,
     votes: 23,
-    user: {
-      id: 'c30c3a1f-9b4d-4a87-bc92-9d8f91f1d7cb',
-      username: 'backendpro',
-    },
+    user: { id: 'c30c3a1f-9b4d-4a87-bc92-9d8f91f1d7cb', username: 'backendpro' },
     isAnswered: true,
     createdAt: '2025-04-24T14:00:00Z',
     editedAt: '2025-04-25T14:30:00Z',
+    isHidden: true,
+    answers: 4,
   },
 ];
 

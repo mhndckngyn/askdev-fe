@@ -7,7 +7,7 @@ import '@mantine/dropzone/styles.css';
 import { Notifications } from '@mantine/notifications';
 import '@mantine/notifications/styles.css';
 import '@mantine/tiptap/styles.css';
-import 'mantine-datatable/styles.css';
+import 'mantine-datatable/styles.layer.css';
 import { useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import ActionModal from './components/ActionModal';

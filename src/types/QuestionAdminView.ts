@@ -12,6 +12,7 @@ export interface QuestionAdminView {
     id: string;
     username: string;
   };
+  isHidden: boolean;
   isAnswered: boolean;
   createdAt: string;
   editedAt: string;

@@ -43,6 +43,14 @@ export default function FilterModal({
     }
   };
 
+  const handleHiddenOptionChange = (value: string) => {
+    if (value === 'both') {
+      form.setFieldValue('hiddenOption', undefined);
+    } else {
+      form.setFieldValue('hiddenOption', value === 'only');
+    }
+  };
+
   return (
     <Modal
       opened={opened}
@@ -91,6 +99,25 @@ export default function FilterModal({
               <Radio value="both" label={t('both')} />
               <Radio value="yes" label={t('yes')} />
               <Radio value="no" label={t('no')} />
+            </Group>
+          </Radio.Group>
+
+          <Radio.Group
+            name="isHidden"
+            label={t('hidden')}
+            description={t('defaultBoth')}
+            value={
+              form.values.hiddenOption === undefined
+                ? 'both'
+                : form.values.hiddenOption
+                  ? 'only'
+                  : 'no'
+            }
+            onChange={handleHiddenOptionChange}>
+            <Group mt="xs">
+              <Radio value="both" label={t('both')} />
+              <Radio value="only" label={t('onlyHidden')} />
+              <Radio value="no" label={t('noHidden')} />
             </Group>
           </Radio.Group>
 

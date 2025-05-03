@@ -65,9 +65,18 @@ export async function getTags(query: string) {
   });
 }
 
-export async function deleteQuestion(id: string) {
+export async function hideQuestions(ids: string[]) {
   return fetcher({
-    method: 'DELETE',
-    route: `question/${id}`,
+    method: 'POST',
+    route: 'admin/question/hide',
+    payload: { ids },
+  });
+}
+
+export async function unhideQuestions(ids: string[]) {
+  return fetcher({
+    method: 'POST',
+    route: 'admin/question/unhide',
+    payload: { ids },
   });
 }
