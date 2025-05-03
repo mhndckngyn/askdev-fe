@@ -10,15 +10,16 @@ import {
   IconQuestionMark,
   IconTags,
   IconUsers,
+  IconHome2,
 } from '@tabler/icons-react';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './AdminSidebar.module.css';
-import adminRoutePaths from '@/routes/admin/paths';
 
 type AdminSidebarKey =
+  | 'Trang chủ'
   | 'dashboard'
   | 'questions'
   | 'answers'
@@ -27,48 +28,91 @@ type AdminSidebarKey =
   | 'reports';
 
 const data: {
-  link: string;
-  label: AdminSidebarKey;
-  icon: any; // any thay vì TablerIcon để có thể dễ thay thế
+  link?: string;
+  label: AdminSidebarKey | string;
+  icon?: any;
+  children?: { link: string; label: string }[];
 }[] = [
+  { link: '/admin', label: 'Trang chủ', icon: IconHome2 },
   {
-    link: adminRoutePaths.dashboard,
     label: 'dashboard',
     icon: IconLayoutDashboard,
+    children: [
+      { link: '/admin/dashboard/users', label: 'Thống kê người dùng' },
+      { link: '/admin/dashboard/Q&A', label: 'Thống kê câu hỏi' },
+      { link: '/admin/dashboard/report', label: 'Thống kê báo cáo' },
+    ],
   },
   { link: '/admin/questions', label: 'questions', icon: IconQuestionMark },
-  { link: adminRoutePaths.dashboard, label: 'answers', icon: IconMessage },
-  { link: adminRoutePaths.dashboard, label: 'tags', icon: IconTags },
-  { link: adminRoutePaths.dashboard, label: 'members', icon: IconUsers },
-  { link: adminRoutePaths.dashboard, label: 'reports', icon: IconFlag },
+  { link: '/admin/answers', label: 'answers', icon: IconMessage },
+  { link: '/admin/tags', label: 'tags', icon: IconTags },
+  { link: '/admin/members', label: 'members', icon: IconUsers },
+  { link: '/admin/reports', label: 'reports', icon: IconFlag },
 ];
 
 export default function AdminSidebar() {
   const { t } = useTranslation('adminSidebar');
-  const [active, setActive] = useState<AdminSidebarKey>();
+  const [activePath, setActivePath] = useState<string>('');
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   const location = useLocation();
 
   useEffect(() => {
-    const currentPath = location.pathname;
-    const activeItem = data.find((item) => item.link === currentPath);
-    if (activeItem) {
-      setActive(activeItem.label);
-    }
+    setActivePath(location.pathname);
   }, [location]);
 
-  const links = data.map((item) => (
-    <Link
-      className={clsx(styles.link, { [styles.active]: item.label === active })}
-      to={item.link}
-      key={item.label}
-      onClick={() => {
-        setActive(item.label);
-      }}>
-      <item.icon className={styles.linkIcon} stroke={1.5} />
-      <span>{t(item.label)}</span>
-    </Link>
-  ));
+  const links = data.map((item) => {
+    const isActiveParent = item.children?.some(
+      (child) => child.link === activePath,
+    );
+    const isDropdownOpen = openDropdown === item.label;
+
+    if (item.children) {
+      return (
+        <div key={item.label}>
+          <div
+            className={clsx(styles.link, {
+              [styles.active]: isActiveParent || isDropdownOpen,
+            })}
+            onClick={() =>
+              setOpenDropdown(isDropdownOpen ? null : (item.label as string))
+            }>
+            {item.icon && (
+              <item.icon className={styles.linkIcon} stroke={1.5} />
+            )}
+            <span>{t(item.label as any)}</span>
+          </div>
+          {isDropdownOpen &&
+            item.children.map((child) => (
+              <Link
+                key={child.label}
+                to={child.link}
+                className={clsx(styles.subLink, {
+                  [styles.active]: activePath === child.link,
+                })}>
+                <span className={styles.subBullet}>•</span>
+                {child.label}
+              </Link>
+            ))}
+        </div>
+      );
+    }
+
+    return (
+      <Link
+        className={clsx(styles.link, {
+          [styles.active]: activePath === item.link,
+        })}
+        to={item.link!}
+        key={item.label}
+        onClick={() => {
+          setOpenDropdown(null);
+        }}>
+        {item.icon && <item.icon className={styles.linkIcon} stroke={1.5} />}
+        <span>{t(item.label as any)}</span>
+      </Link>
+    );
+  });
 
   return (
     <nav className={styles.navbar}>

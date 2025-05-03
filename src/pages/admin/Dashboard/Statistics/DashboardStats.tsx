@@ -17,7 +17,7 @@ const DashboardStats = () => {
         {
           title: 'Số thành viên mới',
           count: 50,
-          icon: <PersonAddIcon />,
+          icon: <PersonAddIcon sx={{ marginBottom: '10px' }} />,
           percentage: {
             color: 'linear-gradient(195deg, #FB8C00, #F57C00)',
             amount: '+7%',
@@ -27,7 +27,7 @@ const DashboardStats = () => {
         {
           title: 'Số bài đăng',
           count: 120,
-          icon: <PostAddIcon />,
+          icon: <PostAddIcon sx={{ marginBottom: '10px' }} />,
           percentage: {
             color: 'linear-gradient(195deg, #EC407A, #D81B60)',
             amount: '+10%',
@@ -37,7 +37,7 @@ const DashboardStats = () => {
         {
           title: 'Số báo cáo',
           count: 15,
-          icon: <ReportProblemIcon />,
+          icon: <ReportProblemIcon sx={{ marginBottom: '10px' }} />,
           percentage: {
             color: 'linear-gradient(195deg, #49a3f1, #1A73E8)',
             amount: '-5%',
@@ -47,7 +47,7 @@ const DashboardStats = () => {
         {
           title: 'Số thành viên hiện tại',
           count: 500,
-          icon: <PeopleIcon />,
+          icon: <PeopleIcon sx={{ marginBottom: '10px' }} />,
           percentage: {
             color: 'linear-gradient(195deg, #66BB6A, #43A047)',
             amount: '+3%',
