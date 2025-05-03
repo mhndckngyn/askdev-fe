@@ -10,7 +10,7 @@ type TagNameProps = {
 };
 
 export default function TagHoverCard({ id, name }: TagNameProps) {
-  const [tagInfo, setTagInfo] = useState<string | null>(null); // it returns an object
+  const [tagInfo, setTagInfo] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const safeUriName = encodeURIComponent(id);
 
@@ -39,10 +39,9 @@ export default function TagHoverCard({ id, name }: TagNameProps) {
         shadow="md"
         openDelay={100}
         position="bottom-start"
-        onOpen={fetchTagInfo} // Fetch data when the user hovers
-      >
+        onOpen={fetchTagInfo}>
         <HoverCard.Target>
-          <Link to={`/questions/${safeUriName}`} className={styles.tag}>
+          <Link to={`/questions/tags/${safeUriName}`} className={styles.tag}>
             {name}
           </Link>
         </HoverCard.Target>

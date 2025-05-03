@@ -10,9 +10,8 @@ import {
 } from '@mui/material';
 import QuestionContent from './QuestionContent';
 import ImageGrid from './ImageGrid';
-import { getQuestion } from './Services/QuestionServices';
+import { getQuestion } from './QuestionServices';
 import { ApiResponse } from '@/types';
-import { useParams } from 'react-router-dom';
 import FormatTime from './formatTime';
 import QuestionHistory from './QuestionHistory';
 import EditIcon from '@mui/icons-material/Edit';
@@ -20,16 +19,20 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import HistoryIcon from '@mui/icons-material/History';
 import FlagIcon from '@mui/icons-material/Flag';
 import ReportPage from './ReportPage';
-import { useUserStore } from '../../stores/useUserStore';
+import { useUserStore } from '../../../stores/useUserStore';
 
-const QuestionView = () => {
+type Props = {
+  question: any;
+};
+
+export default function QuestionView({ question }: Props) {
   const { user, fetchUser } = useUserStore();
 
   useEffect(() => {
     fetchUser();
   }, []);
 
-  const { id } = useParams<{ id: string }>();
+  const id = question.id;
   const [data, setData] = useState<any>(null);
   const [openHistory, setOpenHistory] = useState(false);
   const [openReport, setOpenReport] = useState(false);
@@ -66,7 +69,7 @@ const QuestionView = () => {
   }
 
   return (
-    <Paper>
+    <Paper elevation={0}>
       <Box
         sx={{
           width: '100%',
@@ -206,13 +209,11 @@ const QuestionView = () => {
           )}
         </Box>
       </Box>
-
       <QuestionHistory
         open={openHistory}
         handleToggle={handleToggleHistory}
         question={data}
       />
-
       <ReportPage
         open={openReport}
         handleToggle={handleToggleReport}
@@ -222,6 +223,4 @@ const QuestionView = () => {
       />
     </Paper>
   );
-};
-
-export default QuestionView;
+}
