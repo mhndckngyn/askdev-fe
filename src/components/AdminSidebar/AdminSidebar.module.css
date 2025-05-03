@@ -6,27 +6,6 @@
   border-right: 1px solid var(--mantine-color-default-border);
 }
 
-.subLink {
-  padding-left: 2.5rem;
-  display: flex;
-  align-items: center;
-  color: var(--mantine-color-dimmed);
-  font-size: 14px;
-  padding-top: 0.4rem;
-  padding-bottom: 0.4rem;
-  text-decoration: none;
-}
-
-.subLink:hover {
-  color: var(--mantine-color-text);
-}
-
-.subBullet {
-  margin-right: 0.5rem;
-  font-size: 1rem;
-}
-
-
 .navMain {
   flex: 1;
 }
