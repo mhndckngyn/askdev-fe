@@ -196,9 +196,9 @@ export default function QuestionTable({
           render: (row) => (
             /* hiển thị ngày edit chỉ khi khác ngày tạo */
             <Text size="sm">
-              {row.editedAt === ''
+              {row.updatedAt === ''
                 ? '-'
-                : dayjs(row.editedAt).format('DD/MM/YYYY, HH:mm')}
+                : dayjs(row.updatedAt).format('DD/MM/YYYY, HH:mm')}
             </Text>
           ),
         },

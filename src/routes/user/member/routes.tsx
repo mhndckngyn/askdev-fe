@@ -4,6 +4,7 @@ import PostQuestion from '@/pages/PostQuestion';
 import EditProfile from '@/pages/EditProfile';
 import ChangePassword from '@/pages/ChangePassword';
 import memberRoutePaths from './paths';
+import ProfilePage from '@/pages/ProfilePage';
 
 const memberRoutes = (
   <Route element={<MemberGuard />}>
@@ -13,6 +14,7 @@ const memberRoutes = (
       path={memberRoutePaths.changePassword}
       element={<ChangePassword />}
     />
+    <Route path={`${memberRoutePaths.profile}/:id`} element={<ProfilePage />} />
   </Route>
 );
 

@@ -9,7 +9,7 @@ interface GoBackProps {
 }
 
 export default function GoBack({ warnOnExit = false }: GoBackProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   const navigate = useNavigate();
   const navigationType = useNavigationType(); // Checks if there's a navigable history
   const [opened, { open, close }] = useDisclosure(false); // Modal state
@@ -39,7 +39,7 @@ export default function GoBack({ warnOnExit = false }: GoBackProps) {
         onClick={handleClick}
         style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
         <IconArrowLeft size="18" />
-        Go Back
+        {t('go-back.label')}
       </Anchor>
 
       <Modal opened={opened} onClose={close} title={t('go-back.title')}>

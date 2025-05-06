@@ -12,5 +12,8 @@
   "save-changes": "Save changes",
   "username-length-error": "Username must be between 5 and 24 characters.",
   "github-length-error": "GitHub username is less than 39 characters.",
-  "github-empty-error": "GitHub username cannot be empty when display is enabled."
+  "github-empty-error": "GitHub username cannot be empty when display is enabled.",
+  "fetchError": "Couldn't retrieve user information.",
+  "updateError": "Couldn't update user profile.",
+  "updateSuccess": "Profile updated succesfully."
 }

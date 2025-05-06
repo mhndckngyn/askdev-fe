@@ -1,0 +1,9 @@
+.menuContainer {
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.root {
+  width: 80%;
+}

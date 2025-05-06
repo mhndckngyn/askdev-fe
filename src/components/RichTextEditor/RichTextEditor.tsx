@@ -17,6 +17,7 @@ import TableRow from '@tiptap/extension-table-row';
 import { JSONContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { common, createLowlight } from 'lowlight';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './RichTextEditor.module.css';
 
@@ -32,6 +33,7 @@ type EditorPlugins = {
 type RichTextEditorProps = {
   label: string;
   description: string;
+  value?: JSONContent | null;
   onContentChange: (value: JSONContent) => void;
   plugins?: EditorPlugins;
   height?: number;
@@ -41,6 +43,7 @@ type RichTextEditorProps = {
 const lowlight = createLowlight(common);
 
 export default function RichTextEditor({
+  value,
   onContentChange,
   label,
   description,
@@ -69,12 +72,18 @@ export default function RichTextEditor({
       TableCell,
       CodeBlockLowlight.configure({ lowlight }),
     ],
-    content: '',
+    content: value ?? '',
     onUpdate: ({ editor }) => {
       const json = editor.getJSON();
       onContentChange(json);
     },
   });
+
+  useEffect(() => {
+    if (editor && value) {
+      editor.commands.setContent(value);
+    }
+  }, [editor, value]);
 
   const handleInsertTable = () => {
     if (!editor) {
