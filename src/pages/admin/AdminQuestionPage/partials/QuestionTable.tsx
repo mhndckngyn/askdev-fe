@@ -24,6 +24,7 @@ import {
 } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import { DataTable } from 'mantine-datatable';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import styles from '../AdminQuestionPage.module.css';
@@ -45,7 +46,7 @@ type QuestionTableProps = {
   setUnhide: (question: QuestionAdminView) => void;
 };
 
-export default function QuestionTable({
+function QuestionTableComponent({
   records,
   pagination,
   isLoading,
@@ -57,13 +58,17 @@ export default function QuestionTable({
   const { t } = useTranslation('adminQuestionPage');
   const clipboard = useClipboard();
 
+  const formatDate = (day: string) => {
+    return dayjs(day).format('HH:mm, DD/MM/YYYY');
+  };
+
   const renderRecordActions = (question: QuestionAdminView) => (
     <Group gap={4} justify="center" wrap="nowrap">
       <Tooltip label={t('toggleVisibility')}>
         <ActionIcon
           size="sm"
           variant="subtle"
-          color="pink"
+          color="orange"
           onClick={() => {
             if (question.isHidden) {
               setUnhide(question);
@@ -95,12 +100,13 @@ export default function QuestionTable({
           to={`${adminRoutePaths.answers}?questionId=${question.id}`}
           size="sm"
           variant="subtle"
-          color="green">
+          color="pink">
           <IconMessageShare size={18} />
         </ActionIcon>
       </Tooltip>
     </Group>
   );
+
   return (
     <DataTable
       records={records}
@@ -182,23 +188,16 @@ export default function QuestionTable({
           accessor: 'createdAt',
           title: t('postedOn'),
           width: '10%',
-          render: (row) => (
-            <Text size="sm">
-              {dayjs(row.createdAt).format('DD/MM/YYYY, HH:mm')}
-            </Text>
-          ),
+          render: (row) => <Text size="sm">{formatDate(row.createdAt)}</Text>,
         },
         {
           accessor: 'editedAt',
           title: t('lastEdited'),
-          textAlign: 'center',
           width: '10%',
           render: (row) => (
             /* hiển thị ngày edit chỉ khi khác ngày tạo */
             <Text size="sm">
-              {row.updatedAt === ''
-                ? '-'
-                : dayjs(row.updatedAt).format('DD/MM/YYYY, HH:mm')}
+              {row.updatedAt === '' ? '-' : formatDate(row.updatedAt)}
             </Text>
           ),
         },
@@ -220,3 +219,23 @@ export default function QuestionTable({
     />
   );
 }
+
+function areEqual(
+  prevProps: QuestionTableProps,
+  nextProps: QuestionTableProps,
+): boolean {
+  return (
+    prevProps.records === nextProps.records &&
+    prevProps.pagination.currentPage === nextProps.pagination.currentPage &&
+    prevProps.pagination.totalRecords === nextProps.pagination.totalRecords &&
+    prevProps.pagination.pageSize === nextProps.pagination.pageSize &&
+    prevProps.isLoading === nextProps.isLoading &&
+    prevProps.selected === nextProps.selected &&
+    prevProps.setSelected === nextProps.setSelected &&
+    prevProps.setHide === nextProps.setHide &&
+    prevProps.setUnhide === nextProps.setUnhide
+  );
+}
+
+const QuestionTable = React.memo(QuestionTableComponent, areEqual);
+export default QuestionTable;

@@ -14,14 +14,6 @@
   width: 100%;
 }
 
-/* ConfirmDeleteQuestion Modal */
-.message {
-  flex: 1;
-  padding: 2px;
-  font-weight: 500;
-  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-1));
-}
-
 .icon {
   flex-shrink: 0;
   width: 36px;

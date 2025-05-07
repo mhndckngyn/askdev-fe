@@ -16,12 +16,7 @@ export default function SelectedRowActions({
   const { t } = useTranslation('adminQuestionPage');
 
   return (
-    <Group justify="flex-end">
-      {selectedQuestions.length > 0 && (
-        <Text size="sm">
-          {t('selectedCount', { count: selectedQuestions.length })}
-        </Text>
-      )}
+    <Group>
       <Button
         onClick={onHideQuestions}
         disabled={selectedQuestions.length === 0}
@@ -36,6 +31,11 @@ export default function SelectedRowActions({
         color="green">
         {t('unhideQuestions')}
       </Button>
+      {selectedQuestions.length > 0 && (
+        <Text size="sm">
+          {t('selectedCount', { count: selectedQuestions.length })}
+        </Text>
+      )}
     </Group>
   );
 }

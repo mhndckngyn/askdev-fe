@@ -4,7 +4,7 @@ import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { Filter } from '../AdminQuestionPage';
 import TagPicker from './TagPickerForFilter';
-import UsernamePicker from './UsernameAutocomplete';
+import UsernamePicker from './UsernamePicker';
 
 type FilterModalType = {
   currentFilter: Filter;
@@ -132,7 +132,7 @@ export default function FilterModal({
           <Space h="xs"></Space>
           <Group justify="flex-end" gap="xs">
             <Button type="button" onClick={handleResetFilter} variant="light">
-              Reset filters
+              {t('reset')}
             </Button>
             <Button type="submit">{t('apply')}</Button>
           </Group>

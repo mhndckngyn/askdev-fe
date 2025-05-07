@@ -32,6 +32,7 @@
   "onlyHidden": "Chỉ ẩn",
   "noHidden": "Không có ẩn",
   "apply": "Áp dụng",
+  "reset": "Đặt lại bộ lọc",
 
   "noResults": "Không tìm thấy kết quả nào",
   "selectedCount": "{{count}} câu hỏi được chọn",

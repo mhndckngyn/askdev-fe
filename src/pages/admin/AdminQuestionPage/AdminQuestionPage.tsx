@@ -4,7 +4,7 @@ import { Button, Group, Space, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconFilterEdit } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './AdminQuestionPage.module.css';
 import FilterModal from './partials/FilterModal';
@@ -79,33 +79,65 @@ export default function AdminQuestionPage() {
     handleGetQuestions();
   }, [filter, page, render]);
 
-  const handleToggleVisibility = async (
-    service: (ids: string[]) => Promise<ApiResponse>,
-    id?: string,
-  ) => {
-    const questionIds = id ? [id] : selectedQuestions.map((q) => q.id); // sử dụng id truyền vào hoặc id từ record đã chọn
-    const response = await service(questionIds);
-    if (response.success) {
-      notifications.show({ message: t('toggleHideSuccess') });
-      setRender(render + 1); // force re-render để lấy data mới
-    } else {
-      setError(t('toggleHideError'));
-    }
+  const handleToggleVisibility = useCallback(
+    async (service: (ids: string[]) => Promise<ApiResponse>, id?: string) => {
+      const questionIds = id ? [id] : selectedQuestions.map((q) => q.id);
+
+      const response = await service(questionIds);
+
+      if (response.success) {
+        notifications.show({ message: t('toggleHideSuccess') });
+        setRender((prev) => prev + 1);
+      } else {
+        setError(t('toggleHideError'));
+      }
+    },
+    [selectedQuestions, setError, t],
+  );
+
+  const pagination = useMemo(
+    () => ({
+      totalRecords,
+      currentPage: page,
+      pageSize: PAGE_SIZE,
+      setPage,
+    }),
+    [totalRecords, page, setPage],
+  );
+
+  const handleSetSelected = useCallback((selected: QuestionAdminView[]) => {
+    setSelectedQuestions(selected);
+  }, []);
+
+  const setHide = useCallback(
+    (question: QuestionAdminView) => {
+      handleToggleVisibility(hideQuestions, question.id);
+    },
+    [handleToggleVisibility],
+  );
+
+  const setUnhide = useCallback(
+    (question: QuestionAdminView) => {
+      handleToggleVisibility(unhideQuestions, question.id);
+    },
+    [handleToggleVisibility],
+  );
+
+  // nếu không dùng hàm này, titleKeyword sẽ bị bỏ qua khi áp dụng advanced filter
+  const setAdvancedFilter = (values: Partial<Filter>) => {
+    setFilter({ ...filter, ...values });
   };
 
-  const pagination = {
-    totalRecords,
-    currentPage: page,
-    pageSize: PAGE_SIZE,
-    setPage,
+  const resetFilter = () => {
+    setFilter({ titleKeyword: filter.titleKeyword });
   };
 
   return (
     <div className={styles.page}>
       <FilterModal
         currentFilter={filter}
-        setFilter={setFilter}
-        resetFilter={() => setFilter({})}
+        setFilter={setAdvancedFilter}
+        resetFilter={resetFilter}
         opened={opened}
         onClose={close}
       />
@@ -114,7 +146,13 @@ export default function AdminQuestionPage() {
         <TextInput
           placeholder={t('searchTitle')}
           className={styles.searchInput}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (filter.titleKeyword === '' && value === '') {
+              return; // để tránh set value và dẫn đến load lại data
+            }
+            setInputValue(value);
+          }}
         />
         <Button onClick={open} leftSection={<IconFilterEdit size={18} />}>
           {t('filters')}
@@ -128,13 +166,9 @@ export default function AdminQuestionPage() {
           pagination={pagination}
           isLoading={isLoading}
           selected={selectedQuestions}
-          setSelected={setSelectedQuestions}
-          setHide={(question: QuestionAdminView) => {
-            handleToggleVisibility(hideQuestions, question.id);
-          }}
-          setUnhide={(question: QuestionAdminView) => {
-            handleToggleVisibility(unhideQuestions, question.id);
-          }}
+          setSelected={handleSetSelected}
+          setHide={setHide}
+          setUnhide={setUnhide}
         />
       </div>
       <Space h="xs" />
