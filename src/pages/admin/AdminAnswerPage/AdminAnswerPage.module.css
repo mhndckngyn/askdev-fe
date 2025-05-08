@@ -1,0 +1,33 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tableContainer {
+  height: 100px; /* height cố định để table có thể scroll */
+  flex: 1 1 auto; /* vẫn grow dù có height cố định (idk how) */
+  width: 100%;
+}
+
+.questionIdText {
+  flex: 1;
+}
+
+.tableIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.searchFields {
+  flex: 1;
+}
+
+.filterBtn {
+  flex-grow: 0;
+}
+
+.hiddenAnswer {
+  filter: grayscale(100%);
+  opacity: 0.8;
+}

@@ -1,0 +1,36 @@
+{
+  "findByQuestionId": "Tìm theo ID câu hỏi",
+  "findByContent": "Tìm theo nội dung câu trả lời",
+  "advancedFilters": "Bộ lọc nâng cao",
+
+  "postedOnDescription": "Chọn một ngày hoặc khoảng thời gian",
+  "defaultBoth": "Mặc định: Cả hai",
+  "both": "Cả hai",
+  "yes": "Có",
+  "no": "Không",
+  "hidden": "Đã ẩn",
+  "onlyHidden": "Chỉ những câu đã ẩn",
+  "noHidden": "Không có câu nào bị ẩn",
+  "apply": "Áp dụng",
+  "reset": "Đặt lại bộ lọc",
+
+  "questionId": "ID câu hỏi",
+  "openQuestionPage": "Mở trang câu hỏi",
+  "content": "Nội dung",
+  "poster": "Người đăng",
+  "votes": "Bình chọn",
+  "comments": "Bình luận",
+  "postedOn": "Ngày đăng",
+  "lastEdited": "Chỉnh sửa lần cuối",
+  "actions": "Thao tác",
+  "copyAnswerId": "Sao chép ID câu trả lời",
+
+  "toggleVisibility": "Chuyển đổi trạng thái hiển thị",
+  "toggleVisibilitySuccess": "Cập nhật trạng thái câu trả lời thành công",
+  "toggleVisibilityError": "Gặp lỗi khi cập nhật câu trả lời.",
+  "selectedCount": "{{count}} câu trả lời đã được chọn",
+  "hideAnswers": "Ẩn các câu trả lời đã chọn",
+  "unhideAnswers": "Hiện các câu trả lời đã chọn",
+
+  "noResults": "Không tìm thấy kết quả nào"
+}
