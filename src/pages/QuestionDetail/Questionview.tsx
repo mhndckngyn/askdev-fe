@@ -66,7 +66,7 @@ const QuestionView = () => {
   }
 
   return (
-    <Paper>
+    <Paper elevation={0}>
       <Box
         sx={{
           width: '100%',
