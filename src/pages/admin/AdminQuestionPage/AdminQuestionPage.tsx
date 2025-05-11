@@ -1,14 +1,15 @@
 import { useErrorStore } from '@/stores/useErrorStore';
 import { ApiResponse, QuestionAdminView } from '@/types';
-import { Button, Group, Space, Text, TextInput } from '@mantine/core';
+import { Button, Group, Space, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconFilterEdit } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './AdminQuestionPage.module.css';
 import FilterModal from './partials/FilterModal';
 import QuestionTable from './partials/QuestionTable';
+import SelectedRowActions from './partials/SelectedRowActions';
 import { getQuestions, hideQuestions, unhideQuestions } from './services';
 
 export type Filter = {
@@ -16,7 +17,7 @@ export type Filter = {
   tags?: string[];
   username?: string;
   isAnswered?: boolean;
-  hiddenOption?: boolean; /* undefined: both, true: only hidden, false: no hidden */
+  hiddenOption?: boolean /* undefined: both, true: only hidden, false: no hidden */;
   isEdited?: boolean;
   startDate?: Date;
   endDate?: Date;
@@ -69,7 +70,7 @@ export default function AdminQuestionPage() {
         setQuestions(response.content.questions);
         setTotalRecords(response.content.pagination.total);
       } else {
-        setQuestions([]); // set thành rỗng để table hiển thị empty state
+        setQuestions([]); // để table hiển thị empty state
       }
 
       setLoading(false);
@@ -78,31 +79,65 @@ export default function AdminQuestionPage() {
     handleGetQuestions();
   }, [filter, page, render]);
 
-  const handleToggleHide = async (
-    service: (ids: string[]) => Promise<ApiResponse>,
-  ) => {
-    const questionIds = selectedQuestions.map((q) => q.id);
-    const response = await service(questionIds);
-    if (response.success) {
-      notifications.show({ message: t('toggleHideSuccess') });
-      setRender(render + 1); // force re-render để lấy data mới
-    } else {
-      setError(t('toggleHideError'));
-    }
+  const handleToggleVisibility = useCallback(
+    async (service: (ids: string[]) => Promise<ApiResponse>, id?: string) => {
+      const questionIds = id ? [id] : selectedQuestions.map((q) => q.id);
+
+      const response = await service(questionIds);
+
+      if (response.success) {
+        notifications.show({ message: t('toggleHideSuccess') });
+        setRender((prev) => prev + 1);
+      } else {
+        setError(t('toggleHideError'));
+      }
+    },
+    [selectedQuestions, setError, t],
+  );
+
+  const pagination = useMemo(
+    () => ({
+      totalRecords,
+      currentPage: page,
+      pageSize: PAGE_SIZE,
+      setPage,
+    }),
+    [totalRecords, page, setPage],
+  );
+
+  const handleSetSelected = useCallback((selected: QuestionAdminView[]) => {
+    setSelectedQuestions(selected);
+  }, []);
+
+  const setHide = useCallback(
+    (question: QuestionAdminView) => {
+      handleToggleVisibility(hideQuestions, question.id);
+    },
+    [handleToggleVisibility],
+  );
+
+  const setUnhide = useCallback(
+    (question: QuestionAdminView) => {
+      handleToggleVisibility(unhideQuestions, question.id);
+    },
+    [handleToggleVisibility],
+  );
+
+  // nếu không dùng hàm này, titleKeyword sẽ bị bỏ qua khi áp dụng advanced filter
+  const setAdvancedFilter = (values: Partial<Filter>) => {
+    setFilter({ ...filter, ...values });
   };
 
-  const pagination = {
-    totalRecords,
-    currentPage: page,
-    pageSize: PAGE_SIZE,
-    setPage,
+  const resetFilter = () => {
+    setFilter({ titleKeyword: filter.titleKeyword });
   };
 
   return (
     <div className={styles.page}>
       <FilterModal
         currentFilter={filter}
-        setFilter={setFilter}
+        setFilter={setAdvancedFilter}
+        resetFilter={resetFilter}
         opened={opened}
         onClose={close}
       />
@@ -111,7 +146,13 @@ export default function AdminQuestionPage() {
         <TextInput
           placeholder={t('searchTitle')}
           className={styles.searchInput}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (filter.titleKeyword === '' && value === '') {
+              return; // để tránh set value và dẫn đến load lại data
+            }
+            setInputValue(value);
+          }}
         />
         <Button onClick={open} leftSection={<IconFilterEdit size={18} />}>
           {t('filters')}
@@ -125,32 +166,18 @@ export default function AdminQuestionPage() {
           pagination={pagination}
           isLoading={isLoading}
           selected={selectedQuestions}
-          setSelected={setSelectedQuestions}
+          setSelected={handleSetSelected}
+          setHide={setHide}
+          setUnhide={setUnhide}
         />
       </div>
       <Space h="xs" />
 
-      <Group justify="flex-end">
-        {selectedQuestions.length > 0 && (
-          <Text size="sm">
-            {t('selectedCount', { count: selectedQuestions.length })}
-          </Text>
-        )}
-        <Button
-          onClick={() => handleToggleHide(hideQuestions)}
-          disabled={selectedQuestions.length === 0}
-          variant="light"
-          color="orange">
-          {t('hideQuestions')}
-        </Button>
-        <Button
-          onClick={() => handleToggleHide(unhideQuestions)}
-          disabled={selectedQuestions.length === 0}
-          variant="light"
-          color="green">
-          {t('unhideQuestions')}
-        </Button>
-      </Group>
+      <SelectedRowActions
+        selectedQuestions={selectedQuestions}
+        onHideQuestions={() => handleToggleVisibility(hideQuestions)}
+        onUnhideQuestions={() => handleToggleVisibility(unhideQuestions)}
+      />
     </div>
   );
 }

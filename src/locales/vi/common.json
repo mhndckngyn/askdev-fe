@@ -7,6 +7,7 @@
     "title": "Lỗi"
   },
   "go-back": {
+    "label": "Quay lại",
     "title": "Xác nhận thoát",
     "description": "Bạn có thay đổi chưa được lưu. Bạn có chắc chắn muốn thoát?",
     "yes": "Có",

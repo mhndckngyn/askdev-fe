@@ -11,6 +11,10 @@
   "postedOn": "Đăng vào",
   "lastEdited": "Chỉnh sửa lần cuối",
   "actions": "Thao tác",
+  "copyQuestionId": "Sao chép ID câu hỏi",
+  "viewAnswers": "Xem câu trả lời",
+  "toggleVisibility": "Ẩn/Hiển thị",
+  "copySuccess": "Đã sao chép ID câu hỏi: {{id}}",
 
   "searchTitle": "Tìm kiếm câu hỏi theo tiêu đề",
   "filters": "Bộ lọc nâng cao",
@@ -28,6 +32,7 @@
   "onlyHidden": "Chỉ ẩn",
   "noHidden": "Không có ẩn",
   "apply": "Áp dụng",
+  "reset": "Đặt lại bộ lọc",
 
   "noResults": "Không tìm thấy kết quả nào",
   "selectedCount": "{{count}} câu hỏi được chọn",

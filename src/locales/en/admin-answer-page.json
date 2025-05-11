@@ -1,0 +1,36 @@
+{
+  "findByQuestionId": "Find by Question ID",
+  "findByContent": "Find by answer content",
+  "advancedFilters": "Advanced filters",
+
+  "postedOnDescription": "Choose a date or date range",
+  "defaultBoth": "Default: Both",
+  "both": "Both",
+  "yes": "Yes",
+  "no": "No",
+  "hidden": "Hidden",
+  "onlyHidden": "Only hidden",
+  "noHidden": "No hidden",
+  "apply": "Apply",
+  "reset": "Reset filters",
+
+  "questionId": "Question ID",
+  "openQuestionPage": "Open question page",
+  "content": "Content",
+  "poster": "Poster",
+  "votes": "Votes",
+  "comments": "Comments",
+  "postedOn": "Posted on",
+  "lastEdited": "Last edited",
+  "actions": "Actions",
+  "copyAnswerId": "Copy Answer ID",
+
+  "toggleVisibility": "Toggle visibility",
+  "toggleVisibilitySuccess": "Update answer state successfully",
+  "toggleVisibilityError": "Error encountered while updating question.",
+  "selectedCount": "{{count}} answer(s) selected",
+  "hideAnswers": "Hide selected answer(s)",
+  "unhideAnswers": "Unhide selected answer(s)",
+
+  "noResults": "No results found"
+}

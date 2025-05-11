@@ -3,7 +3,7 @@ import DashboardStats from './Statistics/DashboardStats';
 import ChartReport from './ChartReport';
 import ReportChart from './ReportChart';
 
-export default function Dashboard() {
+export default function DashboardReport() {
   return (
     <Box width="100%">
       <DashboardStats />

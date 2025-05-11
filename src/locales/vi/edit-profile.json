@@ -12,5 +12,8 @@
   "save-changes": "Lưu thay đổi",
   "username-length-error": "Tên người dùng phải có độ dài từ 5 đến 24 ký tự.",
   "github-length-error": "Tên người dùng GitHub phải có ít hơn 39 ký tự.",
-  "github-empty-error": "Tên người dùng GitHub không thể để trống khi được hiển thị."
+  "github-empty-error": "Tên người dùng GitHub không thể để trống khi được hiển thị.",
+  "fetchError": "Không thể truy cập thông tin hồ sơ người dùng.",
+  "updateError": "Không thể cập nhật hồ sơ người dùng.",
+  "updateSuccess": "Cập nhật hồ sơ thành công."
 }

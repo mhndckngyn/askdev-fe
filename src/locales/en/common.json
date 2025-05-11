@@ -7,6 +7,7 @@
     "title": "Error"
   },
   "go-back": {
+    "label": "Go back",
     "title": "Leave confirmation",
     "description": "You have unsaved changes. Are you sure you want to leave?",
     "yes": "Yes",

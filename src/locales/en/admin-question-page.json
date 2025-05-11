@@ -11,6 +11,10 @@
   "postedOn": "Posted On",
   "lastEdited": "Last Edited",
   "actions": "Actions",
+  "copyQuestionId": "Copy Question ID",
+  "viewAnswers": "View Answers",
+  "toggleVisibility": "Toggle question visibility",
+  "copySuccess": "Copied quesion ID: {{id}}",
 
   "searchTitle": "Search question by title",
   "filters": "Advanced Filters",
@@ -28,6 +32,7 @@
   "onlyHidden": "Only hidden",
   "noHidden": "No hidden",
   "apply": "Apply",
+  "reset": "Reset filters",
 
   "noResults": "No results found",
   "selectedCount": "{{count}} question(s) selected",

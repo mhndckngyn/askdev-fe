@@ -4,25 +4,30 @@
   overflow: hidden;
 }
 
-.searchInput {
-  flex: 1;
-}
-
 .tableContainer {
   height: 100px; /* height cố định để table có thể scroll */
   flex: 1 1 auto; /* vẫn grow dù có height cố định (idk how) */
   width: 100%;
 }
 
-.icon {
-  flex-shrink: 0;
-  width: 36px;
-  height: 36px;
-  color: var(--mantine-color-red-6);
+.questionIdText {
+  flex: 1;
 }
 
-/* Table */
-.hiddenQuestion {
+.tableIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.searchFields {
+  flex: 1;
+}
+
+.filterBtn {
+  flex-grow: 0;
+}
+
+.hiddenAnswer {
   filter: grayscale(100%);
   opacity: 0.8;
 }

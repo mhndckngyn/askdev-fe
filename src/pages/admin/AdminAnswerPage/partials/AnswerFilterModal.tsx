@@ -1,33 +1,30 @@
-import { Button, Group, Modal, Radio, Space, Stack, Text } from '@mantine/core';
-import { DatePickerInput } from '@mantine/dates';
+import { Button, Modal, Text, Group, Radio, Stack, Space } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import UsernamePicker from '../../AdminQuestionPage/partials/UsernamePicker';
+import { AnswerFilter } from '../AdminAnswerPage';
 import { useTranslation } from 'react-i18next';
-import { Filter } from '../AdminQuestionPage';
-import TagPicker from './TagPickerForFilter';
-import UsernamePicker from './UsernamePicker';
+import { DatePickerInput } from '@mantine/dates';
 
-type FilterModalType = {
-  currentFilter: Filter;
-  setFilter: (filter: Filter) => void;
+type Props = {
+  currentFilter: AnswerFilter;
+  setFilter: (filter: AnswerFilter) => void;
+  resetFilter: () => void;
   opened: boolean;
   onClose: () => void;
-  resetFilter: () => void;
 };
 
-export default function FilterModal({
+export default function AnswerFilterModal({
   currentFilter,
   setFilter,
+  resetFilter,
   opened,
   onClose,
-  resetFilter,
-}: FilterModalType) {
-  const { t } = useTranslation('adminQuestionPage');
+}: Props) {
+  const { t } = useTranslation('adminAnswerPage');
 
-  const form = useForm<Filter>({
-    initialValues: currentFilter,
-  });
+  const form = useForm<AnswerFilter>({ initialValues: currentFilter });
 
-  const applyFilter = (values: Filter) => {
+  const applyFilter = (values: AnswerFilter) => {
     setFilter(values);
     onClose();
   };
@@ -35,14 +32,6 @@ export default function FilterModal({
   const handleDateChange = (dates: [Date | null, Date | null] | null) => {
     form.setFieldValue('startDate', dates?.[0] ?? undefined);
     form.setFieldValue('endDate', dates?.[1] ?? undefined);
-  };
-
-  const handleAnsweredChange = (value: string) => {
-    if (value === 'both') {
-      form.setFieldValue('isAnswered', undefined);
-    } else {
-      form.setFieldValue('isAnswered', value === 'yes');
-    }
   };
 
   const handleHiddenOptionChange = (value: string) => {
@@ -65,23 +54,17 @@ export default function FilterModal({
       onClose={onClose}
       title={
         <Text size="lg" fw="bold">
-          {t('filters')}
+          {t('advancedFilters')}
         </Text>
       }>
       <form onSubmit={form.onSubmit(applyFilter)}>
         <Stack gap="md">
-          <TagPicker
-            value={form.values.tags || []}
-            onChange={(tags) => form.setFieldValue('tags', tags)}
-          />
-
           <UsernamePicker
-            value={form.values.username || null}
-            onChange={(username) =>
-              form.setFieldValue('username', username ?? undefined)
+            value={form.values.content || null}
+            onChange={(value) =>
+              form.setFieldValue('username', value ? value : undefined)
             }
           />
-
           <DatePickerInput
             type="range"
             allowSingleDateInRange
@@ -90,26 +73,6 @@ export default function FilterModal({
             value={[form.values.startDate || null, form.values.endDate || null]}
             onChange={handleDateChange}
           />
-
-          <Radio.Group
-            name="isAnswered"
-            label={t('answered')}
-            description={t('defaultBoth')}
-            value={
-              form.values.isAnswered === undefined
-                ? 'both'
-                : form.values.isAnswered
-                  ? 'yes'
-                  : 'no'
-            }
-            onChange={handleAnsweredChange}>
-            <Group mt="xs">
-              <Radio value="both" label={t('both')} />
-              <Radio value="yes" label={t('yes')} />
-              <Radio value="no" label={t('no')} />
-            </Group>
-          </Radio.Group>
-
           <Radio.Group
             name="isHidden"
             label={t('hidden')}
@@ -130,6 +93,7 @@ export default function FilterModal({
           </Radio.Group>
 
           <Space h="xs"></Space>
+
           <Group justify="flex-end" gap="xs">
             <Button type="button" onClick={handleResetFilter} variant="light">
               {t('reset')}

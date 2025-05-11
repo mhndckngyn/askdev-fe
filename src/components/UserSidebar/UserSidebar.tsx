@@ -30,7 +30,7 @@ export default function UserSidebar() {
   const { t } = useTranslation('userSidebar');
   const [active, setActive] = useState<UserSidebarKey>('homepage');
 
-  const links = data.map((item) => (
+  const navItems = data.map((item) => (
     <Link
       className={clsx(styles.link, item.label === active && styles.active)}
       to={item.link}
@@ -55,9 +55,10 @@ export default function UserSidebar() {
           size="md"
           className={styles.actionButton}
           fullWidth>
-          Đăng câu hỏi
+          {t('postQuestion')}
         </Button>
-        {links}
+
+        {navItems}
       </div>
     </nav>
   );

@@ -6,6 +6,8 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import CommentIcon from '@mui/icons-material/Comment';
 import { voteQuestion, getQuestion, getVoteStatus } from './QuestionServices';
 import { ApiResponse } from '@/types';
+import { Link } from 'react-router-dom';
+import publicRoutePaths from '@/routes/user/public/paths';
 
 type Props = {
   question: any;
@@ -171,8 +173,9 @@ export default function InteractionBar({ question }: Props) {
           alignItems: 'center',
         }}>
         <IconButton
-          sx={{ fontSize: '32px', cursor: 'pointer' }}
-          onClick={() => (window.location.href = `/questions/${question.id}`)}>
+          component={Link}
+          to={publicRoutePaths.questionDetail.replace(':id', question.id)}
+          sx={{ fontSize: '32px', cursor: 'pointer' }}>
           <CommentIcon sx={{ fontSize: '32px' }} />
           <Typography
             variant="body1"

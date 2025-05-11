@@ -28,7 +28,7 @@
 
 .content {
   display: grid;
-  grid-template-columns: 1fr 2.5fr;
+  grid-template-columns: 1fr 2fr;
   gap: var(--mantine-spacing-md);
 }
 

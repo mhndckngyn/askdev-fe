@@ -12,8 +12,9 @@ import clsx from 'clsx';
 import { LayoutDashboard } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './UserMenu.module.css';
+import memberRoutePaths from '@/routes/user/member/paths';
 
 export default function UserMenu({ bottom = false }: { bottom: boolean }) {
   const { t } = useTranslation('userMenu');
@@ -32,6 +33,27 @@ export default function UserMenu({ bottom = false }: { bottom: boolean }) {
   if (!user) {
     return <></>;
   }
+
+  const userLinks = (
+    <>
+      <Menu.Item leftSection={<IconUser size={16} />}>{t('profile')}</Menu.Item>
+      <Menu.Item
+        component={Link}
+        to={memberRoutePaths.editProfile}
+        leftSection={<IconKey size={16} />}>
+        {t('account-settings')}
+      </Menu.Item>
+    </>
+  );
+
+  const adminLinks = (
+    <>
+      <Menu.Item leftSection={<LayoutDashboard size={16} />}>
+        {t('manage')}
+      </Menu.Item>
+      <Menu.Divider />
+    </>
+  );
 
   return (
     <Menu
@@ -60,23 +82,11 @@ export default function UserMenu({ bottom = false }: { bottom: boolean }) {
 
         <Menu.Divider />
 
-        <Menu.Item leftSection={<IconUser size={16} />}>
-          {t('profile')}
-        </Menu.Item>
-        <Menu.Item leftSection={<IconKey size={16} />}>
-          {t('account-settings')}
-        </Menu.Item>
+        {userLinks}
 
         <Menu.Divider />
 
-        {user.role === 'admin' && (
-          <>
-            <Menu.Item leftSection={<LayoutDashboard size={16} />}>
-              {t('manage')}
-            </Menu.Item>
-            <Menu.Divider />
-          </>
-        )}
+        {user.role === 'admin' && adminLinks}
 
         <Menu.Item
           color="red"

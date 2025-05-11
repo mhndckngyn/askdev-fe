@@ -1,25 +1,30 @@
 import GoBack from '@/components/GoBack';
-import PageLoader from '@/components/PageLoader/PageLoader';
+import PageLoader from '@/components/PageLoader';
 import RichTextEditor from '@/components/RichTextEditor';
-import { mockMemberProfile } from '@/mocks';
+import publicRoutePaths from '@/routes/user/public/paths';
+import { useErrorStore } from '@/stores/useErrorStore';
+import { useUserStore } from '@/stores/useUserStore';
 import {
   Avatar,
   Button,
   Checkbox,
   Group,
+  Space,
   Stack,
   TextInput,
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { notifications } from '@mantine/notifications';
 import { JSONContent } from '@tiptap/core';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import styles from './EditProfile.module.css';
 import { getGithubError, getUsernameError } from './schemas';
-import { useUserStore } from '@/stores/useUserStore';
+import { getProfileById, updateProfile } from './services';
 
-type ProfileFormData = {
+export type ProfileFormData = {
   username: string;
   avatar: File | null;
   github: string;
@@ -29,11 +34,15 @@ type ProfileFormData = {
 
 export default function EditProfile() {
   const { t } = useTranslation('editProfile');
+  const navigate = useNavigate();
+  const setError = useErrorStore((state) => state.setError);
   const user = useUserStore((state) => state.user); // use user.id to fetch
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isFetching, setFetching] = useState(true);
   const [isSubmitting, setSubmitting] = useState(false);
+
+  const [render, setRender] = useState(0);
 
   const [initialAvatarUrl, setInitialAvatarUrl] = useState('');
   const form = useForm<ProfileFormData>({
@@ -60,22 +69,34 @@ export default function EditProfile() {
 
   useEffect(() => {
     const fetchInfo = async () => {
-      setTimeout(() => {
-        setInitialAvatarUrl(mockMemberProfile.avatar);
+      const userId = user?.id;
+
+      if (!userId) {
+        navigate(publicRoutePaths.homepage);
+        return;
+      }
+
+      const response = await getProfileById(user?.id);
+      if (response.success) {
+        const about = JSON.parse(response.content.bio);
+        const github = response.content.github ?? '';
+
+        setInitialAvatarUrl(response.content.profilePicture);
         form.setValues({
-          username: mockMemberProfile.username,
-          github: mockMemberProfile.github,
-          showGithub: mockMemberProfile.showGithub,
-          about: null,
+          username: response.content.username,
+          github,
+          showGithub: response.content.showGithub,
+          about,
           avatar: null,
         });
-
-        setFetching(false);
-      }, 1200);
+      } else {
+        setError(t('fetchError'));
+      }
     };
 
     fetchInfo();
-  }, []);
+    setFetching(false);
+  }, [render]);
 
   useEffect(() => {
     return () => URL.revokeObjectURL(avatarPreviewUrl);
@@ -92,11 +113,19 @@ export default function EditProfile() {
     form.setFieldValue('avatar', null);
   };
 
-  const handleSubmit = (values: ProfileFormData) => {
+  const handleSubmit = async (values: ProfileFormData) => {
     // mantine validates before running this function
     setSubmitting(true);
-    // TODO
-    console.log(values);
+
+    const resBody = await updateProfile(values);
+    if (resBody.success) {
+      notifications.show({ message: t('updateSuccess') });
+      setRender(render + 1);
+    } else {
+      setError(t('updateError'));
+    }
+
+    setSubmitting(false);
   };
 
   if (isFetching) return <PageLoader />;
@@ -104,6 +133,7 @@ export default function EditProfile() {
   return (
     <div className={styles.container}>
       <GoBack />
+      <Space h="sm" />
       <Title className={styles.title}>{t('title')}</Title>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <div className={styles.content}>
@@ -144,6 +174,7 @@ export default function EditProfile() {
               />
             </Group>
             <RichTextEditor
+              value={form.values.about}
               onContentChange={(value) => form.setFieldValue('about', value)}
               label={t('about-me-label')}
               description={t('about-me-description')}
