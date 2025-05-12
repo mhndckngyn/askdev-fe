@@ -19,7 +19,7 @@ export default function SelectedRowActions({
   selectedTags,
   onMergeSuccess,
 }: Props) {
-  const { t } = useTranslation('adminQuestionPage');
+  const { t } = useTranslation('adminTagPage');
   const [open, setOpen] = useState(false);
   const handleToggle = () => setOpen((prev) => !prev);
   const onMergeTags = () => setOpen(true);
@@ -32,7 +32,7 @@ export default function SelectedRowActions({
           disabled={selectedTags.length === 0}
           variant="light"
           color="green">
-          Gộp các thẻ đã chọn
+          {t('mergeTags')}
         </Button>
         {selectedTags.length > 0 && (
           <Text size="sm">

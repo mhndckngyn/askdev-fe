@@ -9,8 +9,8 @@
 }
 
 .tableContainer {
-  height: 100px; /* height cố định để table có thể scroll */
-  flex: 1 1 auto; /* vẫn grow dù có height cố định (idk how) */
+  height: 100px;
+  flex: 1 1 auto;
   width: 100%;
 }
 
@@ -21,7 +21,6 @@
   color: var(--mantine-color-red-6);
 }
 
-/* Table */
 .hiddenQuestion {
   filter: grayscale(100%);
   opacity: 0.8;

@@ -1,10 +1,12 @@
-import { Group, Space, TextInput } from '@mantine/core';
+import { Group, Space, TextInput, Button } from '@mantine/core';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './AdminTagPage.module.css';
 import TagTable from './partials/TagTable';
 import SelectedRowActions from './partials/SelectedRowActions';
 import { getTags } from './services';
+import { IconPlus } from '@tabler/icons-react';
+import AddTagPage from './partials/AddTagPage';
 
 export interface TagAdminView {
   id: string;
@@ -25,10 +27,10 @@ export type Filter = {
 };
 
 const SEARCH_DELAY_MS = 300;
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 12;
 
 export default function AdminTagPage() {
-  const { t } = useTranslation('adminQuestionPage');
+  const { t } = useTranslation('adminTagPage');
 
   const [tags, setTags] = useState<TagAdminView[]>([]);
   const [filter, setFilter] = useState<Filter>({});
@@ -90,6 +92,7 @@ export default function AdminTagPage() {
 
   const handleTagMergeSuccess = () => {
     setRender((prev) => prev + 1);
+    setSelectedTags([]);
   };
 
   const handleEditSuccess = (updatedTag: TagAdminView) => {
@@ -98,11 +101,15 @@ export default function AdminTagPage() {
     );
   };
 
+  const [open, setOpen] = useState(false);
+  const handleToggle = () => setOpen((prev) => !prev);
+  const onAddTag = () => setOpen(true);
+
   return (
     <div className={styles.page}>
       <Group gap="xs">
         <TextInput
-          placeholder={t('searchTitle')}
+          placeholder={t('searchName')}
           className={styles.searchInput}
           onChange={(e) => {
             const value = e.target.value;
@@ -112,6 +119,9 @@ export default function AdminTagPage() {
             setInputValue(value);
           }}
         />
+        <Button onClick={onAddTag} leftSection={<IconPlus size={18} />}>
+          {t('buttonAdd')}
+        </Button>
       </Group>
       <Space h="md" />
 
@@ -130,6 +140,12 @@ export default function AdminTagPage() {
       <SelectedRowActions
         selectedTags={selectedTags}
         onMergeSuccess={handleTagMergeSuccess}
+      />
+
+      <AddTagPage
+        open={open}
+        handleToggle={handleToggle}
+        onSuccess={handleTagMergeSuccess}
       />
     </div>
   );

@@ -62,3 +62,17 @@ export async function editTag(data: {
     },
   });
 }
+
+export async function createTag(data: {
+  name: string;
+  descriptionVi: string;
+  descriptionEn: string;
+}) {
+  return fetcher({
+    method: 'POST',
+    route: 'admin/tag',
+    options: {
+      data,
+    },
+  });
+}

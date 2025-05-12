@@ -41,7 +41,7 @@ function TagTableComponent({
   setSelected,
   setRecords,
 }: TagTableProps) {
-  const { t } = useTranslation('adminQuestionPage');
+  const { t } = useTranslation('adminTagPage');
   const clipboard = useClipboard();
 
   const [open, setOpen] = useState(false);
@@ -56,7 +56,7 @@ function TagTableComponent({
 
   const renderRecordActions = (tag: TagAdminView) => (
     <Group gap={4} justify="center" wrap="nowrap">
-      <Tooltip label={'edit'}>
+      <Tooltip label={t('edit')}>
         <ActionIcon
           size="sm"
           variant="subtle"
@@ -66,7 +66,7 @@ function TagTableComponent({
         </ActionIcon>
       </Tooltip>
 
-      <Tooltip label={t('copyQuestionId')}>
+      <Tooltip label={t('copyTagId')}>
         <ActionIcon
           size="sm"
           variant="subtle"
@@ -95,8 +95,8 @@ function TagTableComponent({
         fetching={isLoading}
         columns={[
           {
-            accessor: 'title',
-            title: t('title'),
+            accessor: 'name',
+            title: t('name'),
             width: 300,
             render: (row) => (
               <Anchor
@@ -110,21 +110,41 @@ function TagTableComponent({
           {
             accessor: 'descriptionVi',
             width: 380,
-            title: t('poster'),
-            render: (record) =>
-              record.descriptionVi ?? <em>Chưa có dữ liệu</em>,
+            title: t('descriptionVi'),
+            render: (record) => (
+              <div
+                style={{
+                  maxWidth: 360,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}>
+                {record.descriptionVi ?? <em>{t('notFound')}</em>}
+              </div>
+            ),
           },
+
           {
             accessor: 'descriptionEn',
             width: 380,
-            title: t('poster'),
-            render: (record) =>
-              record.descriptionEn ?? <em>Chưa có dữ liệu</em>,
+            title: t('descriptionEn'),
+            render: (record) => (
+              <div
+                style={{
+                  maxWidth: 360,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}>
+                {record.descriptionEn ?? <em>{t('notFound')}</em>}
+              </div>
+            ),
           },
           {
             accessor: 'actions',
             title: t('actions'),
             render: renderRecordActions,
+            textAlign: 'center',
           },
         ]}
         withTableBorder

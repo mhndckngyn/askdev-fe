@@ -6,37 +6,24 @@ import {
   TextField,
   Button,
 } from '@mui/material';
-import { X, Layers } from 'lucide-react';
-import { mergeTags } from '../services';
+import { X, Edit } from 'lucide-react';
+import { createTag } from '../services';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { notifications, Notifications } from '@mantine/notifications';
 
-export interface TagAdminView {
-  id: string;
-  name: string;
-  descriptionVi: string;
-  descriptionEn: string;
-}
-
 interface Props {
   open: boolean;
   handleToggle: () => void;
-  selectedTags: TagAdminView[];
-  onMergeSuccess: () => void;
+  onSuccess: () => void;
 }
 
-function MergePage({
-  open,
-  handleToggle,
-  selectedTags,
-  onMergeSuccess,
-}: Props) {
+function EditPage({ open, handleToggle, onSuccess }: Props) {
   const [name, setName] = useState('');
   const [descriptionVi, setDescriptionVi] = useState('');
   const [descriptionEn, setDescriptionEn] = useState('');
-  const [submit, setSubmit] = useState(false);
   const { t } = useTranslation('adminTagPage');
+  const [submit, setSubmit] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -49,20 +36,18 @@ function MergePage({
 
   const handleSubmit = async () => {
     setSubmit(true);
+
     if (
       name.trim() === '' ||
       descriptionEn.trim() === '' ||
       descriptionVi.trim() === ''
     ) {
-      notifications.show({ message: t('pleaseFillAllFields') });
+      notifications.show({ message: t('pleaseFillAllFields'), color: 'red' });
       return;
     }
 
-    const sourceTagIds = selectedTags.map((tag) => tag.id);
-
     try {
-      const result = await mergeTags({
-        sourceTagIds,
+      const result = await createTag({
         name,
         descriptionVi,
         descriptionEn,
@@ -70,20 +55,25 @@ function MergePage({
 
       if (result.success) {
         notifications.show({
-          message: t('tagMergeSuccess'),
+          message: t('tagCreateSuccess'),
           color: 'green',
         });
-        onMergeSuccess();
+        onSuccess();
         handleToggle();
+      } else if (result.message === 'api:tag.duplicate-name') {
+        notifications.show({
+          message: t('tagNameAlreadyExists'),
+          color: 'red',
+        });
       } else {
         notifications.show({
-          message: t('tagMergeFailed'),
+          message: t('tagCreateFailed'),
           color: 'red',
         });
       }
     } catch (error: any) {
       notifications.show({
-        message: t('tagMergeFailed'),
+        message: t('tagCreateFailed'),
         color: 'red',
       });
       console.error(error);
@@ -93,6 +83,7 @@ function MergePage({
   return (
     <>
       <Notifications zIndex={9999} />
+
       <Modal open={open} onClose={handleToggle}>
         <Box
           sx={{
@@ -125,7 +116,7 @@ function MergePage({
                 zIndex: 0,
                 pointerEvents: 'none',
               }}>
-              <Layers size={200} color="#4caf50" />
+              <Edit size={200} color="orange" />
             </Box>
             <Box
               sx={{
@@ -137,7 +128,7 @@ function MergePage({
                 justifyContent: 'center',
                 position: 'sticky',
                 top: 0,
-                zIndex: 1,
+                zIndex: 0,
                 borderBottom: '1px solid black',
               }}>
               <Typography
@@ -151,7 +142,7 @@ function MergePage({
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
                 }}>
-                {t('merge')}
+                {t('addTag')}
               </Typography>
 
               <Box
@@ -181,7 +172,7 @@ function MergePage({
 
             <Box sx={{ padding: 2 }}>
               <TextField
-                label={t('generalName') + '*'}
+                label={t('name') + '*'}
                 fullWidth
                 multiline
                 minRows={1}
@@ -193,7 +184,7 @@ function MergePage({
               />
 
               <TextField
-                label={t('generalDescriptionVi') + '*'}
+                label={t('descriptionVi') + '*'}
                 fullWidth
                 multiline
                 minRows={4}
@@ -205,7 +196,7 @@ function MergePage({
               />
 
               <TextField
-                label={t('generalDescriptionEn') + '*'}
+                label={t('descriptionEn') + '*'}
                 fullWidth
                 multiline
                 minRows={4}
@@ -221,7 +212,7 @@ function MergePage({
                 color="primary"
                 fullWidth
                 onClick={handleSubmit}>
-                {t('buttonMerge')}
+                {t('buttonAdd')}
               </Button>
             </Box>
           </Paper>
@@ -231,4 +222,4 @@ function MergePage({
   );
 }
 
-export default MergePage;
+export default EditPage;
