@@ -37,8 +37,8 @@ export default function GoBack({ warnOnExit = false }: GoBackProps) {
       <Anchor
         component="button"
         onClick={handleClick}
-        style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-        <IconArrowLeft size="18" />
+        style={{ display: 'flex', alignItems: 'center', gap: '5px', }}>
+        <IconArrowLeft size="18" style={{marginTop: '1px'}}/>
         {t('go-back.label')}
       </Anchor>
 

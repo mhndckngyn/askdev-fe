@@ -42,19 +42,21 @@ type RichTextEditorProps = {
 
 const lowlight = createLowlight(common);
 
+const defaultPlugins = {
+  inline: false,
+  code: false,
+  heading: false,
+  block: false,
+  link: false,
+  table: false,
+};
+
 export default function RichTextEditor({
   value,
   onContentChange,
   label,
   description,
-  plugins = {
-    inline: false,
-    code: false,
-    heading: false,
-    block: false,
-    link: false,
-    table: false,
-  },
+  plugins = defaultPlugins,
   height,
   required = false,
 }: RichTextEditorProps) {
@@ -232,18 +234,21 @@ export default function RichTextEditor({
               <MantineRichTextEditor.ClearFormatting />
             </MantineRichTextEditor.ControlsGroup>
           )}
-          {plugins.table &&
-            tableControls.map(({ label, handler, icon: Icon }) => (
-              <ActionIcon
-                key={label}
-                aria-label={label}
-                title={label}
-                onClick={handler}
-                variant="default"
-                className={styles.control}>
-                <Icon className={styles.controlIcon} />
-              </ActionIcon>
-            ))}
+          {plugins.table && (
+            <ActionIcon.Group>
+              {tableControls.map(({ label, handler, icon: Icon }) => (
+                <ActionIcon
+                  key={label}
+                  aria-label={label}
+                  title={label}
+                  onClick={handler}
+                  variant="default"
+                  className={styles.control}>
+                  <Icon className={styles.controlIcon} />
+                </ActionIcon>
+              ))}
+            </ActionIcon.Group>
+          )}
         </MantineRichTextEditor.Toolbar>
         <MantineRichTextEditor.Content />
       </MantineRichTextEditor>

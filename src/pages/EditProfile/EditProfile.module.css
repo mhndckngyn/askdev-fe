@@ -1,20 +1,18 @@
-.container {
-
-}
-
 .title {
-  font-size: var(--mantine-h2-font-size);
-  font-weight: var(--mantine-h2-font-weight);
-  line-height: var(--mantine-h2-line-height);
-  margin-bottom: var(--mantine-spacing-lg);
+  margin-bottom: var(--mantine-spacing-xl);
+  text-align: center;
 }
 
 .content {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: max(var(--mantine-spacing-xl), 50px);
+  gap: max(var(--mantine-spacing-xl), 60px);
 }
 
 .avatarInput {
   display: none;
+}
+
+.label {
+  margin-bottom: calc(0.5 * var(--mantine-spacing-xs));
 }

@@ -36,7 +36,7 @@ export default function EditProfile() {
   const { t } = useTranslation('editProfile');
   const navigate = useNavigate();
   const setError = useErrorStore((state) => state.setError);
-  const user = useUserStore((state) => state.user); // use user.id to fetch
+  const { user, fetchUser } = useUserStore(); // use user.id to fetch
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isFetching, setFetching] = useState(true);
@@ -120,6 +120,7 @@ export default function EditProfile() {
     const resBody = await updateProfile(values);
     if (resBody.success) {
       notifications.show({ message: t('updateSuccess') });
+      fetchUser();
       setRender(render + 1);
     } else {
       setError(t('updateError'));
@@ -134,11 +135,14 @@ export default function EditProfile() {
     <div className={styles.container}>
       <GoBack />
       <Space h="sm" />
-      <Title className={styles.title}>{t('title')}</Title>
+      <Title size="h2" className={styles.title}>
+        {t('title')}
+      </Title>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <div className={styles.content}>
-          <Stack>
-            <Avatar src={avatarPreviewUrl} size={100} radius="sm" mx="auto" />
+          <Stack className={styles.avatarSection}>
+            <Avatar src={avatarPreviewUrl} size={200} mx="auto" />
+            <Space />
             <input
               type="file"
               accept="image/*"
@@ -156,22 +160,28 @@ export default function EditProfile() {
             </Button>
           </Stack>
           <Stack gap="md">
-            <TextInput
-              label={t('username-label')}
-              placeholder={t('username-placeholder')}
-              {...form.getInputProps('username')}
-            />
-            <TextInput
-              label={t('github-label')}
-              placeholder={t('github-placeholder')}
-              {...form.getInputProps('github')}
-              disabled={!form.values.showGithub}
-            />
-            <Group justify="flex-end">
-              <Checkbox
-                label={t('show-github-label')}
-                {...form.getInputProps('showGithub', { type: 'checkbox' })}
+            <Group align="flex-start" grow>
+              <TextInput
+                label={t('username-label')}
+                placeholder={t('username-placeholder')}
+                {...form.getInputProps('username')}
+                classNames={{ label: styles.label }}
               />
+              <Stack gap="sm">
+                <TextInput
+                  label={t('github-label')}
+                  placeholder={t('github-placeholder')}
+                  {...form.getInputProps('github')}
+                  disabled={!form.values.showGithub}
+                  classNames={{ label: styles.label }}
+                />
+                <Group justify="flex-end">
+                  <Checkbox
+                    label={t('show-github-label')}
+                    {...form.getInputProps('showGithub', { type: 'checkbox' })}
+                  />
+                </Group>
+              </Stack>
             </Group>
             <RichTextEditor
               value={form.values.about}
