@@ -44,7 +44,7 @@ const data: {
   { link: adminRoutePaths.answers, label: 'answers', icon: IconMessage },
   { link: adminRoutePaths.tags, label: 'tags', icon: IconTags },
   { link: adminRoutePaths.dashboard, label: 'members', icon: IconUsers },
-  { link: adminRoutePaths.dashboard, label: 'reports', icon: IconFlag },
+  { link: adminRoutePaths.reports, label: 'reports', icon: IconFlag },
 ];
 
 export default function AdminSidebar() {

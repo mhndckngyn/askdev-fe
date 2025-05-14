@@ -1,6 +1,7 @@
 import AdminAnswerPage from '@/pages/admin/AdminAnswerPage';
 import AdminTagPage from '@/pages/admin/AdminTagPage';
 import AdminQuestionPage from '@/pages/admin/AdminQuestionPage';
+import AdminReportPage from '@/pages/admin/AdminReportPage';
 import DashboardContainer from '@/pages/admin/DashboardContainer/DashboardContainer';
 import DashboardQA from '@/pages/admin/DashboardQA';
 import DashboardReport from '@/pages/admin/DashboardReport';
@@ -20,6 +21,7 @@ const adminRoutes = (
     <Route path={adminRoutePaths.questions} element={<AdminQuestionPage />} />
     <Route path={adminRoutePaths.answers} element={<AdminAnswerPage />} />
     <Route path={adminRoutePaths.tags} element={<AdminTagPage />} />
+    <Route path={adminRoutePaths.reports} element={<AdminReportPage />} />
     <Route path={adminRoutePaths.qandaDashboard} element={<DashboardQA />} />
     <Route
       path={adminRoutePaths.reportDashboard}
