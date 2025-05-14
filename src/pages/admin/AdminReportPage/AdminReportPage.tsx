@@ -38,7 +38,7 @@ const SEARCH_DELAY_MS = 300;
 const PAGE_SIZE = 10;
 
 export default function AdminReportPage() {
-  const { t } = useTranslation('adminQuestionPage');
+  const { t } = useTranslation('adminReportPage');
   const setError = useErrorStore((state) => state.setError);
 
   const [opened, { open, close }] = useDisclosure(false);
@@ -152,7 +152,7 @@ export default function AdminReportPage() {
 
       <Group gap="xs">
         <TextInput
-          placeholder={t('searchTitle')}
+          placeholder={t('searchReason')}
           className={styles.searchInput}
           onChange={(e) => {
             const value = e.target.value;

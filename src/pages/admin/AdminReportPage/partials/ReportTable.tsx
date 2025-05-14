@@ -1,13 +1,22 @@
 import adminRoutePaths from '@/routes/admin/paths';
 import publicRoutePaths from '@/routes/user/public/paths';
-import { ActionIcon, Box, Group, Text, Tooltip } from '@mantine/core';
+import {
+  ActionIcon,
+  Box,
+  Group,
+  Text,
+  Tooltip,
+  Badge,
+  Flex,
+} from '@mantine/core';
+import { IconClock, IconCheck, IconX } from '@tabler/icons-react';
 import { useClipboard } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import {
-  IconClipboard,
+  IconCopy,
   IconEye,
   IconEyeOff,
-  IconMessageShare,
+  IconClipboard,
   IconMoodSad,
 } from '@tabler/icons-react';
 import dayjs from 'dayjs';
@@ -54,7 +63,7 @@ function ReportTableComponent({
   setHide,
   setUnhide,
 }: ReportTableProps) {
-  const { t } = useTranslation('adminQuestionPage');
+  const { t } = useTranslation('adminReportPage');
   const clipboard = useClipboard();
 
   const formatDate = (day: string) => {
@@ -67,20 +76,27 @@ function ReportTableComponent({
         {report.contentId}
       </Text>
 
-      <ActionIcon
-        size="sm"
-        variant="light"
-        onClick={() => navigator.clipboard.writeText(report.contentId)}>
-        <IconClipboard className={styles.tableIcon} />
-      </ActionIcon>
-
-      <Tooltip label={'openQuestionPage'}>
+      <Tooltip label={t('openContentPage')}>
         <ActionIcon
           component={Link}
           to={publicRoutePaths.questionDetail.replace(':id', report.contentId)}
           size="sm"
           variant="light">
-          <IconMessageShare className={styles.tableIcon} />
+          <IconClipboard className={styles.tableIcon} />
+        </ActionIcon>
+      </Tooltip>
+
+      <Tooltip label={t('copyContentId')}>
+        <ActionIcon
+          size="sm"
+          variant="light"
+          onClick={() => {
+            navigator.clipboard.writeText(report.contentId);
+            notifications.show({
+              message: t('copyContentSuccess', { id: report.contentId }),
+            });
+          }}>
+          <IconCopy className={styles.tableIcon} />
         </ActionIcon>
       </Tooltip>
     </Group>
@@ -104,28 +120,28 @@ function ReportTableComponent({
         </ActionIcon>
       </Tooltip>
 
-      <Tooltip label={t('copyQuestionId')}>
-        <ActionIcon
-          size="sm"
-          variant="subtle"
-          onClick={() => {
-            clipboard.copy(Report.id);
-            notifications.show({
-              message: t('copySuccess', { id: Report.id }),
-            });
-          }}>
-          <IconClipboard size={18} />
-        </ActionIcon>
-      </Tooltip>
-
-      <Tooltip label={'viewreports'}>
+      <Tooltip label={t('viewReport')}>
         <ActionIcon
           component={Link}
           to={`${adminRoutePaths.reports}?ReportId=${Report.id}`}
           size="sm"
           variant="subtle"
           color="pink">
-          <IconMessageShare size={18} />
+          <IconClipboard size={18} />
+        </ActionIcon>
+      </Tooltip>
+
+      <Tooltip label={t('copyReportId')}>
+        <ActionIcon
+          size="sm"
+          variant="subtle"
+          onClick={() => {
+            clipboard.copy(Report.id);
+            notifications.show({
+              message: t('copyReportSuccess', { id: Report.id }),
+            });
+          }}>
+          <IconCopy size={18} />
         </ActionIcon>
       </Tooltip>
     </Group>
@@ -147,38 +163,128 @@ function ReportTableComponent({
       columns={[
         {
           accessor: 'contentId',
-          title: t('poster'),
-          width: 300,
+          title: t('contentId'),
+          width: 220,
           render: renderContentIdCell,
         },
         {
           accessor: 'username',
           width: 180,
-          title: t('views'),
+          title: t('username'),
           textAlign: 'left',
         },
         {
           accessor: 'contentType',
-          width: 100,
-          title: t('votes'),
+          width: 120,
+          title: t('contentType'),
           textAlign: 'center',
+          render: ({ contentType }) => {
+            let color: 'blue' | 'green' | 'yellow' | 'gray' = 'gray';
+            let label = contentType;
+
+            switch (contentType) {
+              case 'QUESTION':
+                color = 'blue';
+                break;
+              case 'ANSWER':
+                color = 'green';
+                break;
+              case 'COMMENT':
+                color = 'yellow';
+                break;
+            }
+
+            return (
+              <Badge
+                color={color}
+                variant="light"
+                radius="sm"
+                size="lg"
+                style={{
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  padding: '6px 10px',
+                }}>
+                {t(label as any)}
+              </Badge>
+            );
+          },
         },
+
         {
           accessor: 'reason',
           width: 300,
-          title: 'reports',
+          title: t('reason'),
           textAlign: 'left',
+          render: (record) => (
+            <div
+              style={{
+                maxWidth: 360,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}>
+              {record.reason}
+            </div>
+          ),
         },
+
         {
           accessor: 'status',
-          width: 100,
-          title: 'reports',
+          width: 140,
+          title: t('status'),
           textAlign: 'center',
+          render: ({ status }) => {
+            let color = '';
+            let label = '';
+            let IconComponent = null;
+
+            switch (status) {
+              case 'PENDING':
+                color = 'orange';
+                label = 'PENDING';
+                IconComponent = IconClock;
+                break;
+              case 'REVIEWED':
+                color = 'green';
+                label = 'REVIEWED';
+                IconComponent = IconCheck;
+                break;
+              case 'REJECTED':
+                color = 'red';
+                label = 'REJECTED';
+                IconComponent = IconX;
+                break;
+              default:
+                color = 'gray';
+                label = status;
+            }
+
+            return (
+              <Badge
+                color={color}
+                variant="light"
+                radius="sm"
+                size="lg"
+                style={{
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  textTransform: 'capitalize',
+                  padding: '8px 12px',
+                }}>
+                <Flex align="center" gap={6}>
+                  {IconComponent && <IconComponent size={16} />}
+                  {t(label as any)}
+                </Flex>
+              </Badge>
+            );
+          },
         },
 
         {
           accessor: 'createdAt',
-          title: t('postedOn'),
+          title: t('createdAt'),
           width: '10%',
           render: (row) => <Text size="sm">{formatDate(row.createdAt)}</Text>,
         },

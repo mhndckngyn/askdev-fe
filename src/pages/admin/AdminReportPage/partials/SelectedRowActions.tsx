@@ -23,7 +23,7 @@ export default function SelectedRowActions({
   onHideReports,
   onUnhideReports,
 }: Props) {
-  const { t } = useTranslation('adminQuestionPage');
+  const { t } = useTranslation('adminReportPage');
 
   return (
     <Group>
@@ -32,14 +32,14 @@ export default function SelectedRowActions({
         disabled={selectedReports.length === 0}
         variant="light"
         color="orange">
-        {'hideReports'}
+        {t('hideReports')}
       </Button>
       <Button
         onClick={onUnhideReports}
         disabled={selectedReports.length === 0}
         variant="light"
         color="green">
-        {'unhideReports'}
+        {t('unhideReports')}
       </Button>
       {selectedReports.length > 0 && (
         <Text size="sm">

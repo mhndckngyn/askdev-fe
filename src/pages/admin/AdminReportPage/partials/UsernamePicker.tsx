@@ -16,7 +16,7 @@ export default function UsernamePicker({
   value,
   onChange,
 }: UsernamePickerProps) {
-  const { t } = useTranslation('adminQuestionPage');
+  const { t } = useTranslation('adminReportPage');
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
     onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),

@@ -29,7 +29,7 @@ export default function FilterModal({
   onClose,
   resetFilter,
 }: FilterModalType) {
-  const { t } = useTranslation('adminQuestionPage');
+  const { t } = useTranslation('adminReportPage');
 
   const form = useForm<Filter>({
     initialValues: currentFilter,
@@ -43,14 +43,6 @@ export default function FilterModal({
   const handleDateChange = (dates: [Date | null, Date | null] | null) => {
     form.setFieldValue('startDate', dates?.[0] ?? undefined);
     form.setFieldValue('endDate', dates?.[1] ?? undefined);
-  };
-
-  const handleContentTypeChange = (value: string) => {
-    form.setFieldValue('contentType', value);
-  };
-
-  const handleStatusChange = (value: string) => {
-    form.setFieldValue('status', value);
   };
 
   const handleHiddenOptionChange = (value: string) => {
@@ -88,28 +80,32 @@ export default function FilterModal({
             }
           />
 
-          <Radio.Group
-            name="contentType"
-            label={t('answered')}
-            description={t('defaultBoth')}
-            value={
-              form.values.contentType === 'QUESTION'
-                ? 'QUESTION'
-                : form.values.contentType === 'ANSWER'
-                  ? 'ANSWER'
-                  : 'COMMENT'
-            }
-            onChange={handleContentTypeChange}>
-            <Group mt="4">
-              <Radio value="QUESTION" label={'QUESTION'} />
-              <Radio value="ANSWER" label={'ANSWER'} />
-              <Radio value="COMMENT" label={'COMMENT'} />
-            </Group>
-          </Radio.Group>
+          <Group>
+            <Text
+              size="sm"
+              mb={-10}
+              style={{ display: 'block', width: '100%', fontWeight: '500' }}>
+              {t('contentType')}
+            </Text>
+            {['QUESTION', 'ANSWER', 'COMMENT'].map((type) => (
+              <Radio
+                key={type}
+                value={type}
+                label={t(type as any)}
+                checked={form.values.contentType === type}
+                onClick={() =>
+                  form.setFieldValue(
+                    'contentType',
+                    form.values.contentType === type ? undefined : type,
+                  )
+                }
+              />
+            ))}
+          </Group>
 
           <TextInput
-            label="Content ID"
-            placeholder="Enter Content ID"
+            label={t('contentId')}
+            placeholder={t('inputContentId')}
             value={form.values.contentId || ''}
             onChange={(event) =>
               form.setFieldValue(
@@ -124,30 +120,34 @@ export default function FilterModal({
           <DatePickerInput
             type="range"
             allowSingleDateInRange
-            label={t('postedOn')}
-            description={t('postedOnDescription')}
+            label={t('reportOn')}
+            description={t('reportedOnDescription')}
             value={[form.values.startDate || null, form.values.endDate || null]}
             onChange={handleDateChange}
           />
 
-          <Radio.Group
-            name="status"
-            label={t('answered')}
-            description={t('defaultBoth')}
-            value={
-              form.values.status === 'PENDING'
-                ? 'PENDING'
-                : form.values.status === 'REVIEWED'
-                  ? 'REVIEWED'
-                  : 'REJECTED'
-            }
-            onChange={handleStatusChange}>
-            <Group mt="4">
-              <Radio value="PENDING" label={'PENDING'} />
-              <Radio value="REVIEWED" label={'REVIEWED'} />
-              <Radio value="REJECTED" label={'REJECTED'} />
-            </Group>
-          </Radio.Group>
+          <Group>
+            <Text
+              size="sm"
+              mb={-10}
+              style={{ display: 'block', width: '100%', fontWeight: '500' }}>
+              {t('status')}
+            </Text>
+            {['PENDING', 'REVIEWED', 'REJECTED'].map((status) => (
+              <Radio
+                key={status}
+                value={status}
+                label={t(status as any)}
+                checked={form.values.status === status}
+                onClick={() =>
+                  form.setFieldValue(
+                    'status',
+                    form.values.status === status ? undefined : status,
+                  )
+                }
+              />
+            ))}
+          </Group>
 
           <Radio.Group
             name="isHidden"
@@ -169,7 +169,7 @@ export default function FilterModal({
           </Radio.Group>
 
           <Space h="0"></Space>
-          <Group justify="flex-end" gap="4">
+          <Group justify="flex-end" gap="sx">
             <Button type="button" onClick={handleResetFilter} variant="light">
               {t('reset')}
             </Button>

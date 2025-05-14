@@ -2,7 +2,7 @@ import publicRoutePaths from '@/routes/user/public/paths';
 import { ActionIcon, Anchor, Box, Group, Tooltip } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconClipboard, IconMoodSad, IconEdit } from '@tabler/icons-react';
+import { IconCopy, IconMoodSad, IconEdit } from '@tabler/icons-react';
 import { DataTable } from 'mantine-datatable';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -76,7 +76,7 @@ function TagTableComponent({
               message: t('copySuccess', { id: tag.id }),
             });
           }}>
-          <IconClipboard size={18} />
+          <IconCopy size={18} />
         </ActionIcon>
       </Tooltip>
     </Group>
@@ -98,14 +98,6 @@ function TagTableComponent({
             accessor: 'name',
             title: t('name'),
             width: 300,
-            render: (row) => (
-              <Anchor
-                component={Link}
-                to={publicRoutePaths.questionDetail.replace(':id', row.id)}
-                lineClamp={2}>
-                {row.name}
-              </Anchor>
-            ),
           },
           {
             accessor: 'descriptionVi',
