@@ -1,0 +1,8 @@
+{
+  "invalid-request": "Invalid request",
+  "fetch-error": "Error while fetching question to edit.",
+  "invalid-user": "You cannot edit this question.",
+  "edit-question": "Edit question",
+  "save": "Save question",
+  "edit-successful": "Question edited successfully."
+}

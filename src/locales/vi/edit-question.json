@@ -1,0 +1,8 @@
+{
+  "invalid-request": "Yêu cầu không hợp lệ",
+  "fetch-error": "Lỗi khi tải câu hỏi để chỉnh sửa.",
+  "invalid-user": "Bạn không có quyền chỉnh sửa câu hỏi này.",
+  "edit-question": "Chỉnh sửa câu hỏi",
+  "save": "Lưu câu hỏi",
+  "edit-successful": "Chỉnh sửa câu hỏi thành công."
+}

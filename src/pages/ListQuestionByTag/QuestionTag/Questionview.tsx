@@ -20,13 +20,15 @@ import HistoryIcon from '@mui/icons-material/History';
 import FlagIcon from '@mui/icons-material/Flag';
 import ReportPage from './ReportPage';
 import { useUserStore } from '../../../stores/useUserStore';
+import { Link } from 'react-router-dom';
+import memberRoutePaths from '@/routes/user/member/paths';
 
 type Props = {
   question: any;
 };
 
 export default function QuestionView({ question }: Props) {
-  const { user, fetchUser } = useUserStore();
+  const { user } = useUserStore();
 
 
   const id = question.id;
@@ -164,7 +166,10 @@ export default function QuestionView({ question }: Props) {
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Chỉnh sửa">
-                    <IconButton onClick={handleEdit}>
+                    <IconButton
+                      component={Link}
+                      to={memberRoutePaths.editQuestion.replace(':id', question.id)}
+                    >
                       <EditIcon sx={{ color: '#1976d2' }} fontSize="medium" />
                     </IconButton>
                   </Tooltip>

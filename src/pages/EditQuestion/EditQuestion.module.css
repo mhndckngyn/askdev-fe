@@ -1,0 +1,16 @@
+.title {
+  font-size: var(--mantine-h2-font-size);
+  font-weight: var(--mantine-h2-font-weight);
+  margin-bottom: var(--mantine-spacing-lg);
+}
+
+.content {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--mantine-spacing-xl);
+}
+
+.titleDescription {
+  margin-bottom: calc(0.85 * var(--mantine-spacing-xs));
+}
