@@ -33,11 +33,7 @@ import EditPage from './EditPage';
 import { useUserStore } from '../../stores/useUserStore';
 
 export default function answerView() {
-  const { user, fetchUser } = useUserStore();
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
+  const { user } = useUserStore();
 
   const { id } = useParams<{ id: string }>();
   const [comments, setComments] = useState<Record<string, any[]>>({});

@@ -23,11 +23,7 @@ import ReportPage from './ReportPage';
 import { useUserStore } from '../../stores/useUserStore';
 
 const QuestionView = () => {
-  const { user, fetchUser } = useUserStore();
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
+  const { user } = useUserStore();
 
   const { id } = useParams<{ id: string }>();
   const [data, setData] = useState<any>(null);

@@ -5,17 +5,17 @@ import { useTranslation } from 'react-i18next';
 import styles from './ImageDropzone.module.css';
 import { useEffect, useMemo } from 'react';
 
-type PhotoUploadProps = {
+type Props = {
   currentImages: File[];
   onImageChange: (value: File[]) => void;
   maxImages: number;
 };
 
-export default function PhotoUpload({
+export default function ImageDropzone({
   currentImages,
   onImageChange,
   maxImages,
-}: PhotoUploadProps) {
+}: Props) {
   const { t } = useTranslation('postQuestion');
 
   const handleDrop = (newImages: FileWithPath[]): void => {
@@ -43,6 +43,20 @@ export default function PhotoUpload({
   useEffect(() => {
     return () => previewsUrl.forEach((url) => URL.revokeObjectURL(url));
   }, [previewsUrl]);
+
+  const previews = previewsUrl.map((preview, index) => (
+    <div className={styles.imageContainer} key={preview}>
+      <img src={preview} className={styles.imagePreview} />
+      <ActionIcon
+        className={styles.imageDelete}
+        variant="default"
+        size="sm"
+        aria-label="Delete image from uploads"
+        onClick={() => handleRemoveImage(index)}>
+        <IconX />
+      </ActionIcon>
+    </div>
+  ));
 
   return (
     <div className={styles.container}>
@@ -97,21 +111,7 @@ export default function PhotoUpload({
         <Divider orientation="vertical" className={styles.divider} />
 
         {currentImages.length > 0 ? (
-          <div className={styles.imageList}>
-            {previewsUrl.map((preview, index) => (
-              <div className={styles.imageContainer} key={preview}>
-                <img src={preview} className={styles.imagePreview} />
-                <ActionIcon
-                  className={styles.imageDelete}
-                  variant="default"
-                  size="sm"
-                  aria-label="Delete image from uploads"
-                  onClick={() => handleRemoveImage(index)}>
-                  <IconX />
-                </ActionIcon>
-              </div>
-            ))}
-          </div>
+          <div className={styles.imageList}>{previews}</div>
         ) : (
           <div className={styles.noImage}>
             <Text size="sm">{t('image.no-image-selected')}</Text>

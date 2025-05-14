@@ -13,8 +13,8 @@ import {
 import { IconMinus, IconPlus } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { searchTags } from '../../services';
 import { TagData } from '../../PostQuestion';
+import { searchTags } from '../../services';
 
 type TagPickerProps = {
   existingTags: TagData[]; // 1 mục gồm tên và id
@@ -84,26 +84,28 @@ export default function TagPicker({
     return newTags.includes(value);
   };
 
-  // Remove existing tag
-  const handleTagRemove = (tag: string | TagData) => {
-    if (typeof tag === 'string') {
-      const filtered = newTags.filter((name) => tag !== name);
-      updateChosenNewTags(filtered);
-    } else {
-      const filtered = existingTags.filter((t) => t.name !== tag.name);
-      updateChosenExistingTags(filtered);
-    }
+  const handleRemoveExistingTag = (tag: string) => {
+    const filtered = existingTags.filter((t) => t.name !== tag);
+    updateChosenExistingTags(filtered);
   };
 
-  const isExceedingTagLimit = existingTags.length + newTags.length >= MAX_TAGS;
+  const handleRemoveNewTag = (tag: string) => {
+    const filtered = newTags.filter((name) => tag !== name);
+    updateChosenNewTags(filtered);
+  };
+
+  const tagLimitExceeded = existingTags.length + newTags.length >= MAX_TAGS;
 
   // Chọn tag từ danh sách dropdown
   const handleTagSelect = (tag: string | TagData) => {
     const name = typeof tag === 'string' ? tag : tag.name;
-    if (isInSelectedExistingTags(name) || isInSelectedNewTags(name)) {
-      handleTagRemove(name); // nếu chọn cái đã có thì xóa
+
+    if (isInSelectedExistingTags(name)) {
+      handleRemoveExistingTag(name);
+    } else if (isInSelectedNewTags(name)) {
+      handleRemoveNewTag(name);
     } else {
-      if (isExceedingTagLimit) {
+      if (tagLimitExceeded) {
         setError(t('tags.max-tags'));
       } else {
         if (typeof tag === 'string') {
@@ -115,11 +117,22 @@ export default function TagPicker({
     }
   };
 
-  const selectedTags = [...existingTags, ...newTags].map((tag, index) => (
-    <Pill key={index} withRemoveButton onRemove={() => handleTagRemove(tag)}>
-      {typeof tag === 'string' ? tag : tag.name}
+  const existingTagPills = existingTags.map((tag) => (
+    <Pill
+      key={tag.name}
+      withRemoveButton
+      onRemove={() => handleRemoveExistingTag(tag.name)}>
+      {tag.name}
     </Pill>
   ));
+
+  const newTagPills = newTags.map((tag) => (
+    <Pill key={tag} withRemoveButton onRemove={() => handleRemoveNewTag(tag)}>
+      {tag}
+    </Pill>
+  ));
+
+  const pills = [existingTagPills, newTagPills];
 
   // Mục dropdown tag được trả về từ kết quả tìm kiếm
   const tagResults = tagSearchResults.map((item) => {
@@ -148,8 +161,8 @@ export default function TagPicker({
         <Combobox.DropdownTarget>
           <PillsInput onClick={() => combobox.openDropdown()}>
             <Pill.Group>
-              {selectedTags}{' '}
               {/* danh sach tag đã chọn, bao gồm có và chưa có trong db */}
+              {pills}
               <Combobox.EventsTarget>
                 <PillsInput.Field
                   onFocus={() => combobox.openDropdown()}
@@ -186,13 +199,13 @@ export default function TagPicker({
                 <Group>
                   {isInSelectedNewTags(query) ? (
                     <>
-                      <IconMinus size="16" /> {t('tags.remove')} "{query}"{' '}
                       {/* nếu đã tồn tại thì cho phép xóa */}
+                      <IconMinus size="16" /> {t('tags.remove')} "{query}"
                     </>
                   ) : (
                     <>
-                      <IconPlus size="16" /> {t('tags.add')} "{query}"{' '}
                       {/* nếu không tồn tại thì cho phép thêm */}
+                      <IconPlus size="16" /> {t('tags.add')} "{query}"
                     </>
                   )}
                 </Group>

@@ -28,9 +28,6 @@ type Props = {
 export default function QuestionView({ question }: Props) {
   const { user, fetchUser } = useUserStore();
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   const id = question.id;
   const [data, setData] = useState<any>(null);

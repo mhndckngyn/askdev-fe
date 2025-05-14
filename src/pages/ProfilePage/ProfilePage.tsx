@@ -28,7 +28,7 @@ export default function ProfilePage() {
   const userId = useUserStore((state) => state.user?.id);
   const [profile, setProfile] = useState<MemberProfile | null>(null);
 
-  const allowEditing = id === userId;
+  // TODO: Nếu không có id từ param, thử lấy từ store, nếu không thì navigate
 
   useEffect(() => {
     // TODO
@@ -41,6 +41,8 @@ export default function ProfilePage() {
     fetchProfile();
   }, [id]);
 
+  const allowEdit = id === userId;
+
   if (!profile) return <PageLoader />;
 
   return (
@@ -50,7 +52,7 @@ export default function ProfilePage() {
         <Stack gap="xs">
           <Group>
             <Title className={styles.name}>{profile.username}</Title>
-            {allowEditing && (
+            {allowEdit && (
               <Button
                 component={Link}
                 to={memberRoutePaths.editProfile}
