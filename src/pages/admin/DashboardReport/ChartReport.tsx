@@ -391,7 +391,7 @@ const Chart = () => {
 
       <ReactECharts
         option={option}
-        key={`${selectedYear}-${setCurrentMonth}-${selectedType}`}
+        key={`${selectedYear}-${currentMonth}-${selectedType}`}
         style={{ height: 450, width: '100%' }}
       />
     </Paper>

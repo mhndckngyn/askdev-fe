@@ -1,0 +1,27 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.searchInput {
+  flex: 1;
+}
+
+.tableContainer {
+  height: 100px;
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+.icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  color: var(--mantine-color-red-6);
+}
+
+.hiddenQuestion {
+  filter: grayscale(100%);
+  opacity: 0.8;
+}

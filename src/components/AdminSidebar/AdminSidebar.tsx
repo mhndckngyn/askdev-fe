@@ -42,7 +42,7 @@ const data: {
     icon: IconQuestionMark,
   },
   { link: adminRoutePaths.answers, label: 'answers', icon: IconMessage },
-  { link: adminRoutePaths.dashboard, label: 'tags', icon: IconTags },
+  { link: adminRoutePaths.tags, label: 'tags', icon: IconTags },
   { link: adminRoutePaths.dashboard, label: 'members', icon: IconUsers },
   { link: adminRoutePaths.dashboard, label: 'reports', icon: IconFlag },
 ];
