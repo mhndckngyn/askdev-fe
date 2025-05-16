@@ -1,5 +1,3 @@
-import adminRoutePaths from '@/routes/admin/paths';
-import publicRoutePaths from '@/routes/user/public/paths';
 import {
   ActionIcon,
   Box,
@@ -23,8 +21,11 @@ import dayjs from 'dayjs';
 import { DataTable } from 'mantine-datatable';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import styles from '../AdminReportPage.module.css';
+import ReportDetailPage from './ReportDetailPage';
+import { getReportedContentDetails } from '../services';
+import ContentTypePage from './ContentTypePage';
 
 export interface ReportAdminView {
   id: string;
@@ -52,6 +53,7 @@ type ReportTableProps = {
   setSelected: (ids: ReportAdminView[]) => void;
   setHide: (Report: ReportAdminView) => void;
   setUnhide: (Report: ReportAdminView) => void;
+  setRecords: (updatedStatus: ReportAdminView) => void;
 };
 
 function ReportTableComponent({
@@ -62,12 +64,40 @@ function ReportTableComponent({
   setSelected,
   setHide,
   setUnhide,
+  setRecords,
 }: ReportTableProps) {
   const { t } = useTranslation('adminReportPage');
   const clipboard = useClipboard();
 
+  const [open, setOpen] = useState(false);
+  const handleToggle = () => setOpen((prev) => !prev);
+  const [report, setReport] = useState<ReportAdminView | null>(null);
+  const handleReportDetailPage = (selectedReport: ReportAdminView) => {
+    setReport(selectedReport);
+    setOpen(true);
+  };
+
   const formatDate = (day: string) => {
     return dayjs(day).format('HH:mm, DD/MM/YYYY');
+  };
+
+  const [dataContent, setDataContent] = useState<any | null>(null);
+  const [openContent, setOpenContent] = useState(false);
+  const handleToggleContent = () => setOpenContent((prev) => !prev);
+
+  const handleOpenContent = async (report: ReportAdminView) => {
+    try {
+      const data = await getReportedContentDetails(
+        report.contentType as 'QUESTION' | 'ANSWER' | 'COMMENT',
+        report.contentId,
+      );
+      if (data.success) {
+        setDataContent(data);
+        setOpenContent(true);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const renderContentIdCell = (report: ReportAdminView) => (
@@ -78,10 +108,9 @@ function ReportTableComponent({
 
       <Tooltip label={t('openContentPage')}>
         <ActionIcon
-          component={Link}
-          to={publicRoutePaths.questionDetail.replace(':id', report.contentId)}
           size="sm"
-          variant="light">
+          variant="light"
+          onClick={() => handleOpenContent(report)}>
           <IconClipboard className={styles.tableIcon} />
         </ActionIcon>
       </Tooltip>
@@ -122,11 +151,12 @@ function ReportTableComponent({
 
       <Tooltip label={t('viewReport')}>
         <ActionIcon
-          component={Link}
-          to={`${adminRoutePaths.reports}?ReportId=${Report.id}`}
           size="sm"
           variant="subtle"
-          color="pink">
+          color="pink"
+          onClick={() => {
+            handleReportDetailPage(Report);
+          }}>
           <IconClipboard size={18} />
         </ActionIcon>
       </Tooltip>
@@ -148,162 +178,192 @@ function ReportTableComponent({
   );
 
   return (
-    <DataTable
-      records={records}
-      totalRecords={pagination.totalRecords}
-      recordsPerPage={pagination.pageSize}
-      page={pagination.currentPage}
-      onPageChange={pagination.setPage}
-      selectedRecords={selected}
-      onSelectedRecordsChange={setSelected}
-      fetching={isLoading}
-      rowClassName={({ isHidden }) =>
-        isHidden ? styles.hiddenReport : undefined
-      }
-      columns={[
-        {
-          accessor: 'contentId',
-          title: t('contentId'),
-          width: 220,
-          render: renderContentIdCell,
-        },
-        {
-          accessor: 'username',
-          width: 180,
-          title: t('username'),
-          textAlign: 'left',
-        },
-        {
-          accessor: 'contentType',
-          width: 120,
-          title: t('contentType'),
-          textAlign: 'center',
-          render: ({ contentType }) => {
-            let color: 'blue' | 'green' | 'yellow' | 'gray' = 'gray';
-            let label = contentType;
-
-            switch (contentType) {
-              case 'QUESTION':
-                color = 'blue';
-                break;
-              case 'ANSWER':
-                color = 'green';
-                break;
-              case 'COMMENT':
-                color = 'yellow';
-                break;
-            }
-
-            return (
-              <Badge
-                color={color}
-                variant="light"
-                radius="sm"
-                size="lg"
-                style={{
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  padding: '6px 10px',
-                }}>
-                {t(label as any)}
-              </Badge>
-            );
+    <>
+      <DataTable
+        records={records}
+        totalRecords={pagination.totalRecords}
+        recordsPerPage={pagination.pageSize}
+        page={pagination.currentPage}
+        onPageChange={pagination.setPage}
+        selectedRecords={selected}
+        onSelectedRecordsChange={setSelected}
+        fetching={isLoading}
+        rowClassName={({ isHidden }) =>
+          isHidden ? styles.hiddenReport : undefined
+        }
+        columns={[
+          {
+            accessor: 'contentId',
+            title: t('contentId'),
+            width: 220,
+            render: renderContentIdCell,
           },
-        },
-
-        {
-          accessor: 'reason',
-          width: 300,
-          title: t('reason'),
-          textAlign: 'left',
-          render: (record) => (
-            <div
-              style={{
-                maxWidth: 360,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}>
-              {record.reason}
-            </div>
-          ),
-        },
-
-        {
-          accessor: 'status',
-          width: 140,
-          title: t('status'),
-          textAlign: 'center',
-          render: ({ status }) => {
-            let color = '';
-            let label = '';
-            let IconComponent = null;
-
-            switch (status) {
-              case 'PENDING':
-                color = 'orange';
-                label = 'PENDING';
-                IconComponent = IconClock;
-                break;
-              case 'REVIEWED':
-                color = 'green';
-                label = 'REVIEWED';
-                IconComponent = IconCheck;
-                break;
-              case 'REJECTED':
-                color = 'red';
-                label = 'REJECTED';
-                IconComponent = IconX;
-                break;
-              default:
-                color = 'gray';
-                label = status;
-            }
-
-            return (
-              <Badge
-                color={color}
-                variant="light"
-                radius="sm"
-                size="lg"
+          {
+            accessor: 'username',
+            width: 180,
+            title: t('username'),
+            textAlign: 'left',
+            render: (record) => (
+              <div
                 style={{
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  textTransform: 'capitalize',
-                  padding: '8px 12px',
+                  maxWidth: 360,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
                 }}>
-                <Flex align="center" gap={6}>
-                  {IconComponent && <IconComponent size={16} />}
+                {record.username}
+              </div>
+            ),
+          },
+          {
+            accessor: 'contentType',
+            width: 120,
+            title: t('contentType'),
+            textAlign: 'center',
+            render: ({ contentType }) => {
+              let color: 'blue' | 'green' | 'yellow' | 'gray' = 'gray';
+              let label = contentType;
+
+              switch (contentType) {
+                case 'QUESTION':
+                  color = 'blue';
+                  break;
+                case 'ANSWER':
+                  color = 'green';
+                  break;
+                case 'COMMENT':
+                  color = 'yellow';
+                  break;
+              }
+
+              return (
+                <Badge
+                  color={color}
+                  variant="light"
+                  radius="sm"
+                  size="lg"
+                  style={{
+                    fontSize: '12px',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    padding: '6px 10px',
+                  }}>
                   {t(label as any)}
-                </Flex>
-              </Badge>
-            );
+                </Badge>
+              );
+            },
           },
-        },
 
-        {
-          accessor: 'createdAt',
-          title: t('createdAt'),
-          width: '10%',
-          render: (row) => <Text size="sm">{formatDate(row.createdAt)}</Text>,
-        },
-        {
-          accessor: 'actions',
-          title: t('actions'),
-          textAlign: 'center',
-          render: renderRecordActions,
-        },
-      ]}
-      withTableBorder
-      withColumnBorders
-      noRecordsIcon={
-        <Box>
-          <IconMoodSad size={36} strokeWidth={1.5} />
-        </Box>
-      }
-      noRecordsText={t('noResults')}
-    />
+          {
+            accessor: 'reason',
+            width: 280,
+            title: t('reason'),
+            textAlign: 'left',
+            render: (record) => (
+              <div
+                style={{
+                  maxWidth: 280,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}>
+                {record.reason}
+              </div>
+            ),
+          },
+
+          {
+            accessor: 'status',
+            width: 160,
+            title: t('status'),
+            textAlign: 'center',
+            render: ({ status }) => {
+              let color = '';
+              let label = '';
+              let IconComponent = null;
+
+              switch (status) {
+                case 'PENDING':
+                  color = 'orange';
+                  label = 'PENDING';
+                  IconComponent = IconClock;
+                  break;
+                case 'REVIEWED':
+                  color = 'green';
+                  label = 'REVIEWED';
+                  IconComponent = IconCheck;
+                  break;
+                case 'REJECTED':
+                  color = 'red';
+                  label = 'REJECTED';
+                  IconComponent = IconX;
+                  break;
+                default:
+                  color = 'gray';
+                  label = status;
+              }
+
+              return (
+                <Badge
+                  color={color}
+                  variant="light"
+                  radius="sm"
+                  size="lg"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    textTransform: 'capitalize',
+                    padding: '8px 12px',
+                  }}>
+                  <Flex align="center" gap={6}>
+                    {IconComponent && <IconComponent size={16} />}
+                    {t(label as any)}
+                  </Flex>
+                </Badge>
+              );
+            },
+          },
+
+          {
+            accessor: 'createdAt',
+            title: t('createdAt'),
+            width: '10%',
+            render: (row) => <Text size="sm">{formatDate(row.createdAt)}</Text>,
+          },
+          {
+            accessor: 'actions',
+            title: t('actions'),
+            textAlign: 'center',
+            render: renderRecordActions,
+          },
+        ]}
+        withTableBorder
+        withColumnBorders
+        noRecordsIcon={
+          <Box>
+            <IconMoodSad size={36} strokeWidth={1.5} />
+          </Box>
+        }
+        noRecordsText={t('noResults')}
+      />
+
+      {report && (
+        <ReportDetailPage
+          open={open}
+          handleToggle={handleToggle}
+          report={report}
+          setRecords={setRecords}
+        />
+      )}
+
+      {dataContent && (
+        <ContentTypePage
+          open={openContent}
+          handleToggle={handleToggleContent}
+          data={dataContent}
+        />
+      )}
+    </>
   );
 }
 

@@ -27,5 +27,6 @@
   "tagEditSuccess": "Chỉnh sửa thẻ thành công",
   "tagEditFailed": "Chỉnh sửa thẻ thất bại",
   "tagMergeSuccess": "Kết hợp thẻ thành công",
-  "tagMergeFailed": "Kết hợp thẻ thất bại"
+  "tagMergeFailed": "Kết hợp thẻ thất bại",
+  "viewTag": "Xem chi tiết thẻ"
 }

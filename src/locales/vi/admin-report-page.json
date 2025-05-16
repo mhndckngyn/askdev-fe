@@ -38,5 +38,8 @@
   "toggleHideError": "Đã xảy ra lỗi khi cập nhật báo cáo",
   "searchReason": "Tìm kiếm báo cáo theo lý do",
   "copyReportSuccess": "Đã sao chép ID báo cáo: {{id}}",
-  "copyContentSuccess": "Đã sao chép ID nội dung: {{id}}"
+  "copyContentSuccess": "Đã sao chép ID nội dung: {{id}}",
+  "updateStatus": "Cập nhật trạng thái",
+  "updateStatusSuccess": "Cập nhật trạng thái thành công",
+  "updateStatusFail": "Cập nhật trạng thái thất bại"
 }

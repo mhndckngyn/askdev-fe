@@ -27,5 +27,6 @@
   "tagEditSuccess": "Tag edited successfully",
   "tagEditFailed": "Failed to edit tag",
   "tagMergeSuccess": "Tags merged successfully",
-  "tagMergeFailed": "Failed to merge tags"
+  "tagMergeFailed": "Failed to merge tags",
+  "viewTag": "View tag details"
 }

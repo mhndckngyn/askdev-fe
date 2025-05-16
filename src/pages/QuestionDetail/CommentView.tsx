@@ -31,6 +31,7 @@ import {
 import ReportPage from './ReportPage';
 import EditPage from './EditPage';
 import { useUserStore } from '../../stores/useUserStore';
+import dayjs from 'dayjs';
 
 export default function answerView() {
   const { user } = useUserStore();
@@ -289,9 +290,14 @@ export default function answerView() {
                 {!answer.user.profilePicture && answer.user.username[0]}
               </Avatar>
               <Box>
-                <Typography fontWeight="bold" fontSize={14}>
-                  {answer.user.username}
-                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Typography fontWeight="bold" fontSize={14}>
+                    {answer.user.username}
+                  </Typography>
+                  <Typography fontSize={12} color="gray">
+                    {dayjs(answer.createdAt).format('HH:mm DD/MM/YYYY')}
+                  </Typography>
+                </Box>
                 <Typography fontSize={14}>{answer.content}</Typography>
               </Box>
             </Box>
@@ -391,9 +397,15 @@ export default function answerView() {
                   {!comment.user.profilePicture && comment.user.username[0]}
                 </Avatar>
                 <Box>
-                  <Typography fontWeight="bold" fontSize={13}>
-                    {comment.user.username}
-                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Typography fontWeight="bold" fontSize={13}>
+                      {comment.user.username}
+                    </Typography>
+                    <Typography fontSize={12} color="gray">
+                      {dayjs(comment.createdAt).format('HH:mm DD/MM/YYYY')}
+                    </Typography>
+                  </Box>
+
                   <Typography fontSize={13}>{comment.content}</Typography>
 
                   <Box

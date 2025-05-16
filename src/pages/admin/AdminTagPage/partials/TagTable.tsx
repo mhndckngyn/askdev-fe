@@ -1,14 +1,18 @@
-import publicRoutePaths from '@/routes/user/public/paths';
-import { ActionIcon, Anchor, Box, Group, Tooltip } from '@mantine/core';
+import { ActionIcon, Box, Group, Tooltip } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconCopy, IconMoodSad, IconEdit } from '@tabler/icons-react';
+import {
+  IconCopy,
+  IconMoodSad,
+  IconEdit,
+  IconClipboard,
+} from '@tabler/icons-react';
 import { DataTable } from 'mantine-datatable';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import EditPage from './EditTagPage';
 import { useState } from 'react';
+import TagDetailPage from './TagDetailPage';
 
 type Pagination = {
   pageSize: number;
@@ -54,6 +58,14 @@ function TagTableComponent({
     setOpen(true);
   };
 
+  const [openDetail, setOpenDetail] = useState(false);
+  const handleToggleDetail = () => setOpenDetail((prev) => !prev);
+  const [tagDetail, setTagDetail] = useState<TagAdminView | null>(null);
+  const handleTagDetailPage = (selectedTag: TagAdminView) => {
+    setTagDetail(selectedTag);
+    setOpenDetail(true);
+  };
+
   const renderRecordActions = (tag: TagAdminView) => (
     <Group gap={4} justify="center" wrap="nowrap">
       <Tooltip label={t('edit')}>
@@ -63,6 +75,18 @@ function TagTableComponent({
           color="orange"
           onClick={() => handleEdit(tag)}>
           <IconEdit size={18} />
+        </ActionIcon>
+      </Tooltip>
+
+      <Tooltip label={t('viewTag')}>
+        <ActionIcon
+          size="sm"
+          variant="subtle"
+          color="pink"
+          onClick={() => {
+            handleTagDetailPage(tag);
+          }}>
+          <IconClipboard size={18} />
         </ActionIcon>
       </Tooltip>
 
@@ -155,6 +179,14 @@ function TagTableComponent({
         tag={tag}
         setRecords={setRecords}
       />
+
+      {tagDetail && (
+        <TagDetailPage
+          open={openDetail}
+          handleToggle={handleToggleDetail}
+          tag={tagDetail}
+        />
+      )}
     </>
   );
 }

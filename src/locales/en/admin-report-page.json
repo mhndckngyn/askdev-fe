@@ -38,5 +38,8 @@
   "toggleHideError": "Error updating report status",
   "searchReason": "Search reports by reason",
   "copyReportSuccess": "Copied report ID: {{id}}",
-  "copyContentSuccess": "Copied content ID: {{id}}"
+  "copyContentSuccess": "Copied content ID: {{id}}",
+  "updateStatus": "Update the Status",
+  "updateStatusSuccess": "Status has been updated successfully",
+  "updateStatusFail": "Failed to update status"
 }

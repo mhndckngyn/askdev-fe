@@ -140,6 +140,14 @@ export default function AdminReportPage() {
     setFilter({ reasonKeyword: filter.reasonKeyword });
   };
 
+  const handleEditSuccess = (updatedTag: ReportAdminView) => {
+    setReports((prevReports) =>
+      prevReports.map((report) =>
+        report.id === updatedTag.id ? updatedTag : report,
+      ),
+    );
+  };
+
   return (
     <div className={styles.page}>
       <FilterModal
@@ -177,6 +185,7 @@ export default function AdminReportPage() {
           setSelected={handleSetSelected}
           setHide={setHide}
           setUnhide={setUnhide}
+          setRecords={handleEditSuccess}
         />
       </div>
       <Space h="xs" />

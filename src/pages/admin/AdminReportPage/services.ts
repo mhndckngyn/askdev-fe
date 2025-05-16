@@ -64,3 +64,32 @@ export async function unhideReports(ids: string[]) {
     payload: { ids },
   });
 }
+
+export async function updateStatus(
+  id: string,
+  status: 'PENDING' | 'REVIEWED' | 'REJECTED',
+) {
+  return fetcher({
+    method: 'PATCH',
+    route: `admin/report/${id}/status`,
+    options: {
+      params: { status },
+    },
+  });
+}
+
+export async function getReportedContentDetails(
+  contentType: 'QUESTION' | 'ANSWER' | 'COMMENT',
+  contentId: string,
+) {
+  return fetcher({
+    method: 'GET',
+    route: 'admin/report/content',
+    options: {
+      params: {
+        contentType,
+        contentId,
+      },
+    },
+  });
+}
