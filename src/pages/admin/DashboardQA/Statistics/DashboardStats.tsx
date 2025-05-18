@@ -1,11 +1,90 @@
+import { useEffect, useState } from 'react';
 import ComplexStatisticsCard from './ComplexStatisticsCard';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ArticleIcon from '@mui/icons-material/Article';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import GroupsIcon from '@mui/icons-material/AccountTree';
 import Box from '@mui/material/Box';
+import { getDashboardStats } from '../services';
 
 const DashboardStats = () => {
+  const [stats, setStats] = useState({
+    newPosts: 0,
+    totalPosts: 0,
+    postGrowthNew: 0,
+    postGrowthCurrent: 0,
+    newTags: 0,
+    totalTags: 0,
+    tagGrowthNew: 0,
+    tagGrowthCurrent: 0,
+  });
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const data = await getDashboardStats();
+        if (data.success) {
+          setStats(data.content);
+          console.error(stats);
+        } else {
+          console.error(data.message);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchStats();
+  }, []);
+
+  const formatGrowth = (value: number | null) => {
+    if (value === null || value === undefined) return 'N/A';
+    const sign = value > 0 ? '+' : value < 0 ? '-' : '';
+    return sign + Math.abs(value) + '%';
+  };
+
+  const items = [
+    {
+      title: 'Số bài đăng mới',
+      count: stats.newPosts,
+      icon: <AddCircleOutlineIcon sx={{ marginBottom: '10px' }} />,
+      percentage: {
+        color: 'linear-gradient(195deg, #FB8C00, #F57C00)',
+        amount: formatGrowth(stats.postGrowthNew),
+        label: 'So với tháng trước',
+      },
+    },
+    {
+      title: 'Số bài đăng hiện tại',
+      count: stats.totalPosts,
+      icon: <ArticleIcon sx={{ marginBottom: '10px' }} />,
+      percentage: {
+        color: 'linear-gradient(195deg, #EC407A, #D81B60)',
+        amount: formatGrowth(stats.postGrowthCurrent),
+        label: 'So với tháng trước',
+      },
+    },
+    {
+      title: 'Số chủ đề mới',
+      count: stats.newTags,
+      icon: <LibraryAddIcon sx={{ marginBottom: '10px' }} />,
+      percentage: {
+        color: 'linear-gradient(195deg, #49a3f1, #1A73E8)',
+        amount: formatGrowth(stats.tagGrowthNew),
+        label: 'So với tháng trước',
+      },
+    },
+    {
+      title: 'Số chủ đề hiện tại',
+      count: stats.totalTags,
+      icon: <GroupsIcon sx={{ marginBottom: '10px' }} />,
+      percentage: {
+        color: 'linear-gradient(195deg, #66BB6A, #43A047)',
+        amount: formatGrowth(stats.tagGrowthCurrent),
+        label: 'So với tháng trước',
+      },
+    },
+  ];
+
   return (
     <Box
       width="100%"
@@ -13,48 +92,7 @@ const DashboardStats = () => {
       flexWrap="wrap"
       gap="1rem"
       justifyContent="space-between">
-      {[
-        {
-          title: 'Số bài đăng mới',
-          count: 50,
-          icon: <AddCircleOutlineIcon sx={{ marginBottom: '10px' }} />,
-          percentage: {
-            color: 'linear-gradient(195deg, #FB8C00, #F57C00)',
-            amount: '+7%',
-            label: 'So với tháng trước',
-          },
-        },
-        {
-          title: 'Số bài đăng hiện tại',
-          count: 120,
-          icon: <ArticleIcon sx={{ marginBottom: '10px' }} />,
-          percentage: {
-            color: 'linear-gradient(195deg, #EC407A, #D81B60)',
-            amount: '+10%',
-            label: 'So với tháng trước',
-          },
-        },
-        {
-          title: 'Số chủ đề mới',
-          count: 15,
-          icon: <LibraryAddIcon sx={{ marginBottom: '10px' }} />,
-          percentage: {
-            color: 'linear-gradient(195deg, #49a3f1, #1A73E8)',
-            amount: '-5%',
-            label: 'So với tháng trước',
-          },
-        },
-        {
-          title: 'Số chủ đề hiện tại',
-          count: 500,
-          icon: <GroupsIcon sx={{ marginBottom: '10px' }} />,
-          percentage: {
-            color: 'linear-gradient(195deg, #66BB6A, #43A047)',
-            amount: '+3%',
-            label: 'So với tháng trước',
-          },
-        },
-      ].map((item, index) => (
+      {items.map((item, index) => (
         <Box key={index} flex="1 1 250px" minWidth="250px" sx={{ flexGrow: 1 }}>
           <ComplexStatisticsCard
             title={item.title}

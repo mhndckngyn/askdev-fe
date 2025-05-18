@@ -1,19 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { Box, Paper, Typography } from '@mui/material';
+import { getTotalReportsByType } from './services';
 
 export interface IReportDashboard {
-  Question: number;
-  Answer: number;
-  COMMENT: number;
+  question: number;
+  answer: number;
+  comment: number;
 }
 
 const reportPieChart: React.FC = () => {
-  const report: IReportDashboard = {
-    Question: 50,
-    Answer: 30,
-    COMMENT: 20,
-  };
+  const [report, setReport] = useState<IReportDashboard>({
+    question: 0,
+    answer: 0,
+    comment: 0,
+  });
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getTotalReportsByType();
+        setReport(data.content);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   const option = {
     textStyle: {
@@ -55,16 +69,25 @@ const reportPieChart: React.FC = () => {
         },
         data: [
           {
-            value: report?.Question,
+            value: report?.question,
             name: 'Câu hỏi',
+            itemStyle: {
+              color: '#66BB6A',
+            },
           },
           {
-            value: report?.Answer,
+            value: report?.answer,
             name: 'Trả lời',
+            itemStyle: {
+              color: '#EC407A',
+            },
           },
           {
-            value: report?.COMMENT,
+            value: report?.comment,
             name: 'Phản hồi',
+            itemStyle: {
+              color: '#49a3f1',
+            },
           },
         ],
       },

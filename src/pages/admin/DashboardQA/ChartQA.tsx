@@ -8,46 +8,38 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 import ReactECharts from 'echarts-for-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getDashboardStatsInYear } from './services';
 
 interface IMonthlyStat {
-  Month: number;
+  month: number;
   newPosts: number;
-  currentPosts: number;
-  newTopics: number;
-  currentTopics: number;
-}
-
-const mockData: Record<number, IQAStatsByYearsQuery> = {
-  2024: {
-    MonthlyStats: Array.from({ length: 12 }, (_, index) => ({
-      Month: index + 1,
-      newPosts: Math.floor(Math.random() * 10) + 1,
-      currentPosts: Math.floor(Math.random() * 10),
-      newTopics: Math.floor(Math.random() * 20) + 5,
-      currentTopics: Math.floor(Math.random() * 20) + 5,
-    })),
-  },
-  2025: {
-    MonthlyStats: Array.from({ length: 12 }, (_, index) => ({
-      Month: index + 1,
-      newPosts: Math.floor(Math.random() * 8) + 2,
-      currentPosts: Math.floor(Math.random() * 6),
-      newTopics: Math.floor(Math.random() * 15) + 10,
-      currentTopics: Math.floor(Math.random() * 15) + 8,
-    })),
-  },
-};
-
-interface IQAStatsByYearsQuery {
-  MonthlyStats: IMonthlyStat[];
+  totalPosts: number;
+  newTags: number;
+  totalTags: number;
 }
 
 const Chart = () => {
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [monthlyStats, setMonthlyStats] = useState<IMonthlyStat[]>([]);
 
-  const data = mockData[selectedYear];
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await getDashboardStatsInYear(selectedYear);
+        if (response.success) {
+          setMonthlyStats(response.content);
+        } else {
+          console.error(response.message);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchStats();
+  }, [selectedYear]);
 
   const handleYearChange = (event: SelectChangeEvent<number>) => {
     setSelectedYear(event.target.value as number);
@@ -151,7 +143,7 @@ const Chart = () => {
               type: 'bar',
               data: Array.from(
                 { length: 12 },
-                (_, i) => data?.MonthlyStats[i]?.newPosts || 0,
+                (_, i) => monthlyStats[i]?.newPosts || 0,
               ),
               markPoint: {
                 data: [
@@ -174,7 +166,7 @@ const Chart = () => {
               type: 'bar',
               data: Array.from(
                 { length: 12 },
-                (_, i) => data?.MonthlyStats[i]?.currentPosts || 0,
+                (_, i) => monthlyStats[i]?.totalPosts || 0,
               ),
               barWidth: '22%',
               itemStyle: {
@@ -197,7 +189,7 @@ const Chart = () => {
               type: 'bar',
               data: Array.from(
                 { length: 12 },
-                (_, i) => data?.MonthlyStats[i]?.newTopics || 0,
+                (_, i) => monthlyStats[i]?.newTags || 0,
               ),
               barWidth: '22%',
               itemStyle: {
@@ -220,7 +212,7 @@ const Chart = () => {
               type: 'bar',
               data: Array.from(
                 { length: 12 },
-                (_, i) => data?.MonthlyStats[i]?.currentTopics || 0,
+                (_, i) => monthlyStats[i]?.totalTags || 0,
               ),
               barWidth: '22%',
               itemStyle: {
@@ -246,7 +238,7 @@ const Chart = () => {
                 type: 'bar',
                 data: Array.from(
                   { length: 12 },
-                  (_, i) => data?.MonthlyStats[i]?.newPosts || 0,
+                  (_, i) => monthlyStats[i]?.newPosts || 0,
                 ),
                 markPoint: {
                   data: [
@@ -269,7 +261,7 @@ const Chart = () => {
                 type: 'bar',
                 data: Array.from(
                   { length: 12 },
-                  (_, i) => data?.MonthlyStats[i]?.currentPosts || 0,
+                  (_, i) => monthlyStats[i]?.totalPosts || 0,
                 ),
                 barWidth: '22%',
                 itemStyle: {
@@ -294,7 +286,7 @@ const Chart = () => {
                 type: 'bar',
                 data: Array.from(
                   { length: 12 },
-                  (_, i) => data?.MonthlyStats[i]?.newTopics || 0,
+                  (_, i) => monthlyStats[i]?.newTags || 0,
                 ),
                 barWidth: '22%',
                 itemStyle: {
@@ -317,7 +309,7 @@ const Chart = () => {
                 type: 'bar',
                 data: Array.from(
                   { length: 12 },
-                  (_, i) => data?.MonthlyStats[i]?.currentTopics || 0,
+                  (_, i) => monthlyStats[i]?.totalTags || 0,
                 ),
                 barWidth: '22%',
                 itemStyle: {

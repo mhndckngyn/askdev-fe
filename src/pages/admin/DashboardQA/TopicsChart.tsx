@@ -1,22 +1,36 @@
 import ReactECharts from 'echarts-for-react';
 import { Paper, Typography } from '@mui/material';
-
+import { getDashboardTopTags } from './services';
+import { useEffect, useState } from 'react';
 export interface ITopicsDashboard {
   Topics: string;
   Count: number;
 }
 
 const TopicsChart = () => {
-  const Topicss: ITopicsDashboard[] = [
-    { Topics: 'ReactJS', Count: 30 },
-    { Topics: 'NodeJS', Count: 25 },
-    { Topics: 'TypeScript', Count: 15 },
-    { Topics: 'NextJS', Count: 20 },
-    { Topics: 'GraphQL', Count: 10 },
-  ];
+  const [topics, setTopics] = useState<ITopicsDashboard[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await getDashboardTopTags();
+
+        const mappedData = response.content.map((item: any) => ({
+          Topics: item.name || 'Các chủ đề khác',
+          Count: item.postCount,
+        }));
+        setTopics(mappedData);
+      } catch (error) {
+        console.error(error);
+        setTopics([]);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   const chartData =
-    Topicss?.map((topic) => ({
+    topics?.map((topic) => ({
       value: topic.Count,
       name: topic.Topics,
     })) || [];

@@ -9,7 +9,7 @@ export default function Homepage() {
       <DashboardStats />
       <DashboardCharts />
       <Box mt="25px" display="flex" width="100%" gap="1rem">
-        <Box sx={{ flex: '2', marginRight: '25px' }}>
+        <Box sx={{ flex: '2', marginRight: '5px' }}>
           <Rank />
         </Box>
         <Box sx={{ flex: '1' }}>

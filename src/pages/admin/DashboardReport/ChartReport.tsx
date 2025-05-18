@@ -7,9 +7,10 @@ import {
   Typography,
   SelectChangeEvent,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as echarts from 'echarts';
 import ReactECharts from 'echarts-for-react';
+import { getDailyReportStatsByMonthYear } from './services';
 
 interface IMonthlyStat {
   question: number[];
@@ -17,23 +18,14 @@ interface IMonthlyStat {
   comment: number[];
 }
 
-const mockData: Record<number, Record<number, IMonthlyStat>> = {
-  2025: {
-    5: {
-      question: Array.from({ length: 31 }, () =>
-        Math.floor(Math.random() * 10),
-      ),
-      answer: Array.from({ length: 31 }, () => Math.floor(Math.random() * 5)),
-      comment: Array.from({ length: 31 }, () => Math.floor(Math.random() * 8)),
-    },
-  },
-};
-
 const Chart = () => {
   const currentYear = new Date();
   const [selectedYear, setSelectedYear] = useState(currentYear.getFullYear());
-
+  const [selectedType, setSelectedType] = useState<
+    'ALL' | 'QUESTION' | 'ANSWER' | 'COMMENT'
+  >('ALL');
   const [currentMonth, setCurrentMonth] = useState(currentYear.getMonth() + 1);
+  const [monthlyStat, setMonthlyStat] = useState<IMonthlyStat | null>(null);
 
   const handleMonthChange = (event: SelectChangeEvent<number>) => {
     setCurrentMonth(event.target.value as number);
@@ -43,19 +35,32 @@ const Chart = () => {
     setSelectedYear(event.target.value as number);
   };
 
-  const [selectedType, setSelectedType] = useState<
-    'ALL' | 'QUESTION' | 'ANSWER' | 'COMMENT'
-  >('ALL');
-
   const handleTypeChange = (event: SelectChangeEvent) => {
     setSelectedType(
       event.target.value as 'ALL' | 'QUESTION' | 'ANSWER' | 'COMMENT',
     );
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getDailyReportStatsByMonthYear(
+          currentMonth,
+          selectedYear,
+        );
+        setMonthlyStat(response.content);
+      } catch (error) {
+        console.error(error);
+        setMonthlyStat(null);
+      }
+    };
+
+    fetchData();
+  }, [selectedYear, currentMonth]);
+
   const generateChartData = (): [string, number][] => {
     const daysInMonth = new Date(selectedYear, currentMonth, 0).getDate();
-    const monthData = mockData[selectedYear]?.[currentMonth];
+    const monthData = monthlyStat;
 
     const question = monthData?.question ?? [];
     const answer = monthData?.answer ?? [];
@@ -110,7 +115,7 @@ const Chart = () => {
       orient: 'vertical',
       right: '20',
       top: 'center',
-      color: ['#EC407A', '#FB8C00', '#49a3f1', '#66BB6A'],
+      color: ['#EC407A', '#FB8C00', '#66BB6A', '#49a3f1'],
     },
 
     calendar: [

@@ -1,94 +1,78 @@
-import { Box, Avatar, Typography, Divider, Paper } from '@mui/material';
-import cupIcon from '../../../assets/images/cup.svg';
-import { Star } from 'lucide-react';
+import { Box, Avatar, Typography, Paper } from '@mui/material';
+import { NotebookPen } from 'lucide-react';
+import { Trophy } from 'phosphor-react';
+import { getDashboardTopUsersStats } from './services';
+import { useEffect, useState } from 'react';
 
-const users = [
-  {
-    FullName: 'Nguyễn Văn A',
-    Subject: 'Subject1',
-    Count: 120,
-    AvatarPath: 'https://i.pravatar.cc/150?img=1',
-  },
-  {
-    FullName: 'Trần Thị B',
-    Subject: 'Subject2',
-    Count: 110,
-    AvatarPath: 'https://i.pravatar.cc/150?img=2',
-  },
-  {
-    FullName: 'Lê Văn C',
-    Subject: 'Subject3',
-    Count: 95,
-    AvatarPath: 'https://i.pravatar.cc/150?img=3',
-  },
-  {
-    FullName: 'Phạm Thị D',
-    Subject: 'Subject4',
-    Count: 90,
-    AvatarPath: 'https://i.pravatar.cc/150?img=4',
-  },
-  {
-    FullName: 'Võ Văn E',
-    Subject: 'Subject5',
-    Count: 88,
-    AvatarPath: 'https://i.pravatar.cc/150?img=5',
-  },
-  {
-    FullName: 'Đỗ Thị F',
-    Subject: 'Subject6',
-    Count: 85,
-    AvatarPath: 'https://i.pravatar.cc/150?img=6',
-  },
-  {
-    FullName: 'Ngô Văn G',
-    Subject: 'Subject7',
-    Count: 83,
-    AvatarPath: 'https://i.pravatar.cc/150?img=7',
-  },
-  {
-    FullName: 'Lý Thị H',
-    Subject: 'Subject8',
-    Count: 81,
-    AvatarPath: 'https://i.pravatar.cc/150?img=8',
-  },
-  {
-    FullName: 'Bùi Văn I',
-    Subject: 'Subject9',
-    Count: 78,
-    AvatarPath: 'https://i.pravatar.cc/150?img=9',
-  },
-  {
-    FullName: 'Hoàng Thị K',
-    Subject: 'NV010',
-    Count: 75,
-    AvatarPath: 'https://i.pravatar.cc/150?img=10',
-  },
-  {
-    FullName: 'Bùi Văn I',
-    Subject: 'Subject9',
-    Count: 78,
-    AvatarPath: 'https://i.pravatar.cc/150?img=9',
-  },
-  {
-    FullName: 'Bùi Văn I',
-    Subject: 'Subject9',
-    Count: 78,
-    AvatarPath: 'https://i.pravatar.cc/150?img=9',
-  },
-];
+interface TopUsers {
+  rank: number;
+  username: string;
+  avatar: string;
+  postCount: number;
+  topTopics: string[];
+}
+
+const TrophyWithNumber = ({ rank }: { rank: number }) => {
+  const colors: Record<string, { trophy: string }> = {
+    1: { trophy: '#FFD700' },
+    2: { trophy: '#C0C0C0' },
+    3: { trophy: '#CD7F32' },
+    default: { trophy: '#555555' },
+  };
+
+  const { trophy } = colors[rank.toString()] || colors.default;
+
+  return (
+    <Box sx={{ position: 'relative', display: 'inline-flex', marginRight: 2 }}>
+      <Trophy size={36} weight="fill" style={{ color: trophy }} />
+      <Typography
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -55%)',
+          fontWeight: '900',
+          fontSize: 18,
+          userSelect: 'none',
+          pointerEvents: 'none',
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          letterSpacing: '0.05em',
+          color: 'white',
+          textShadow: 'none',
+        }}>
+        {rank}
+      </Typography>
+    </Box>
+  );
+};
 
 const TopUsers = () => {
+  const [users, setUsers] = useState<TopUsers[]>([]);
+  useEffect(() => {
+    const fetchTopTags = async () => {
+      try {
+        const response = await getDashboardTopUsersStats();
+        if (response.success) {
+          setUsers(response.content);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchTopTags();
+  }, []);
+
   return (
     <Paper
       sx={{
         maxwidth: '100%',
         padding: '30px',
+        height: '820px',
       }}>
       <Box
         sx={{
-          mt: '-20px',
-          paddingBlock: 1.4,
-          paddingInline: 9,
+          paddingBottom: '15px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -97,7 +81,7 @@ const TopUsers = () => {
         <Typography
           sx={{
             fontWeight: 'Bold',
-            fontSize: '18px',
+            fontSize: '20px',
             textAlign: 'center',
             margin: 'auto',
             overflow: 'hidden',
@@ -108,8 +92,6 @@ const TopUsers = () => {
         </Typography>
       </Box>
 
-      <Divider sx={{ mt: '10px', mb: '15px', borderColor: 'black' }} />
-
       {users.map((user, index) => (
         <Box
           key={index}
@@ -118,46 +100,29 @@ const TopUsers = () => {
               cursor: 'pointer',
             },
             borderRadius: '10px',
-            padding: '5px 6px',
+            padding: '5px 5px',
             display: 'flex',
             justifyContent: 'left',
             alignItems: 'center',
-            marginBottom: '8px',
+            marginTop: '16px',
           }}>
-          {index === 0 ? (
-            <img
-              src={cupIcon}
-              style={{ width: '20px', marginRight: '15px' }}
-              alt="cup"
-            />
+          {index < 3 ? (
+            <TrophyWithNumber rank={index + 1} />
           ) : (
+            // Top 4–10: số trong vòng tròn
             <Box
               sx={{
                 color: 'white',
-                fontSize: '13px',
+                fontSize: 13,
                 borderRadius: '50%',
-                border:
-                  index === 0
-                    ? '1px solid #FFAA00'
-                    : index === 1
-                      ? '1px solid #00D95F'
-                      : index === 2
-                        ? '1px solid red'
-                        : '1px solid rgb(59, 59, 59)',
-                width: '20px',
-                height: '20px',
+                border: '1px solid rgb(59, 59, 59)',
+                width: 20,
+                height: 20,
                 display: 'flex',
-                backgroundColor:
-                  index === 0
-                    ? '#FFAA00'
-                    : index === 1
-                      ? '#00D95F'
-                      : index === 2
-                        ? 'red'
-                        : 'rgb(59, 59, 59)',
+                backgroundColor: 'rgb(59, 59, 59)',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginRight: '15px',
+                marginRight: 15,
               }}>
               {index + 1}
             </Box>
@@ -165,10 +130,7 @@ const TopUsers = () => {
           <Box>
             <Avatar
               sx={{ mr: '12px', width: '45px', height: '45px' }}
-              src={
-                user.AvatarPath ||
-                'https://localhost:44381/avatars/default-avatar.png'
-              }
+              src={user.avatar}
             />
           </Box>
           <Box>
@@ -178,36 +140,41 @@ const TopUsers = () => {
                 fontWeight: 'bold',
                 fontSize: '16px',
               }}>
-              {user.FullName}
+              {user.username}
             </Typography>
             <Typography sx={{ color: '#858494', fontSize: '14px' }}>
-              {user.Subject}
+              {(() => {
+                const maxVisible = 3;
+                const visibleTopics = user.topTopics.slice(0, maxVisible);
+                const hiddenCount =
+                  user.topTopics.length - visibleTopics.length;
+                return `${visibleTopics.join(', ')}${hiddenCount > 0 ? `, +${hiddenCount}` : ''}`;
+              })()}
             </Typography>
           </Box>
           <Box
             sx={{
-              fontSize: '16px',
+              fontSize: '14px',
               color: 'white',
               marginLeft: 'auto',
               borderRadius: '8px',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              padding: '4px 7px',
+              padding: '4px 10px',
               whiteSpace: 'nowrap',
-              backgroundColor: '#37cf79e6',
+              background: 'linear-gradient(135deg, #7E57C2, #42A5F5)',
               fontWeight: 'bold',
+              boxShadow: '0 2px 8px rgba(66, 165, 245, 0.4)',
             }}>
-            <Star
+            <NotebookPen
               size={16}
               style={{
-                color: '#FFAA00',
-                fill: '#FFAA00',
-                verticalAlign: 'middle',
+                color: 'white',
                 marginRight: '6px',
               }}
             />
-            {user.Count}
+            {user.postCount}
           </Box>
         </Box>
       ))}

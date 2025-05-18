@@ -13,106 +13,50 @@ import {
   Typography,
   Box,
 } from '@mui/material';
+import { getDashboardTopTagsStats } from './services';
+import { useEffect, useState } from 'react';
 
-const data = [
-  {
-    rank: 1,
-    topic: 'Lập trình Web',
-    avatars: [
-      'https://i.pravatar.cc/150?img=1',
-      'https://i.pravatar.cc/150?img=2',
-    ],
-    count: 120,
-    rate: 90, // Sử dụng giá trị số thay vì chuỗi phần trăm
-  },
-  {
-    rank: 2,
-    topic: 'Trí tuệ nhân tạo',
-    avatars: [
-      'https://i.pravatar.cc/150?img=3',
-      'https://i.pravatar.cc/150?img=4',
-    ],
-    count: 98,
-    rate: 85,
-  },
-  {
-    rank: 3,
-    topic: 'Phân tích dữ liệu',
-    avatars: ['https://i.pravatar.cc/150?img=5'],
-    count: 76,
-    rate: 70,
-  },
-  {
-    rank: 4,
-    topic: 'Lập trình Python',
-    avatars: [
-      'https://i.pravatar.cc/150?img=6',
-      'https://i.pravatar.cc/150?img=7',
-    ],
-    count: 63,
-    rate: 65,
-  },
-  {
-    rank: 5,
-    topic: 'Phát triển ứng dụng di động',
-    avatars: [
-      'https://i.pravatar.cc/150?img=8',
-      'https://i.pravatar.cc/150?img=9',
-    ],
-    count: 59,
-    rate: 60,
-  },
-  {
-    rank: 6,
-    topic: 'DevOps',
-    avatars: ['https://i.pravatar.cc/150?img=10'],
-    count: 50,
-    rate: 55,
-  },
-  {
-    rank: 7,
-    topic: 'UI/UX Design',
-    avatars: [
-      'https://i.pravatar.cc/150?img=11',
-      'https://i.pravatar.cc/150?img=12',
-    ],
-    count: 48,
-    rate: 50,
-  },
-  {
-    rank: 8,
-    topic: 'Cybersecurity',
-    avatars: ['https://i.pravatar.cc/150?img=13'],
-    count: 41,
-    rate: 48,
-  },
-  {
-    rank: 9,
-    topic: 'Machine Learning',
-    avatars: [
-      'https://i.pravatar.cc/150?img=14',
-      'https://i.pravatar.cc/150?img=15',
-    ],
-    count: 39,
-    rate: 45,
-  },
-  {
-    rank: 10,
-    topic: 'Blockchain',
-    avatars: ['https://i.pravatar.cc/150?img=16'],
-    count: 35,
-    rate: 40,
-  },
-];
+interface TopTag {
+  rank: number;
+  avatars: string[];
+  tagName: string;
+  questionCount: number;
+  percentage: number;
+}
 
 const TopicTable: React.FC = () => {
+  const [data, setData] = useState<TopTag[]>([]);
+
+  const getProgressColor = (percentage: number) => {
+    if (percentage > 75) return '#EC407A';
+    if (percentage > 50) return '#FB8C00';
+    if (percentage > 25) return '#66BB6A';
+    return '#49a3f1';
+  };
+
+  useEffect(() => {
+    const fetchTopTags = async () => {
+      try {
+        const response = await getDashboardTopTagsStats();
+        if (response.success) {
+          setData(response.content);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchTopTags();
+  }, []);
+
   return (
     <Paper
       sx={{
         maxwidth: '100%',
-        padding: '35px',
-
+        paddingTop: '35px',
+        paddingBottom: '15px',
         overflow: 'hidden',
+        height: '820px',
       }}>
       <Box
         sx={{
@@ -138,32 +82,53 @@ const TopicTable: React.FC = () => {
         </Typography>
       </Box>
 
-      <TableContainer
-        component={Paper}
-        style={{
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-          borderRadius: '8px',
-        }}>
+      <TableContainer elevation={0} component={Paper} style={{}}>
         <Table>
           <TableHead>
             <TableRow style={{ backgroundColor: '#f4f4f4' }}>
               <TableCell
                 align="center"
-                style={{ fontWeight: 'bold', color: '#333', width: '10%' }}>
+                style={{
+                  fontWeight: 'bold',
+                  color: '#333',
+                  width: '15%',
+                  fontSize: '16px',
+                  borderBottom: 'none',
+                }}>
                 Thứ hạng
               </TableCell>
               <TableCell
-                style={{ fontWeight: 'bold', color: '#333', width: '30%' }}>
-                Chủ đề
+                style={{
+                  fontWeight: 'bold',
+                  color: '#333',
+                  width: '30%',
+                  fontSize: '16px',
+                  borderBottom: 'none',
+                }}>
+                Tên chủ đề
               </TableCell>
               <TableCell
                 align="left"
-                style={{ fontWeight: 'bold', color: '#333', width: '20%' }}>
+                style={{
+                  fontWeight: 'bold',
+                  color: '#333',
+                  width: '20%',
+                  textAlign: 'center',
+                  fontSize: '16px',
+                  borderBottom: 'none',
+                }}>
                 Avatars
               </TableCell>
               <TableCell
                 align="left"
-                style={{ fontWeight: 'bold', color: '#333', width: '20%' }}>
+                style={{
+                  fontWeight: 'bold',
+                  color: '#333',
+                  width: '15%',
+                  textAlign: 'center',
+                  fontSize: '16px',
+                  borderBottom: 'none',
+                }}>
                 Số lượng
               </TableCell>
               <TableCell
@@ -173,6 +138,8 @@ const TopicTable: React.FC = () => {
                   color: '#333',
                   width: '20%',
                   textAlign: 'center',
+                  fontSize: '16px',
+                  borderBottom: 'none',
                 }}>
                 Tỉ lệ
               </TableCell>
@@ -180,50 +147,80 @@ const TopicTable: React.FC = () => {
           </TableHead>
           <TableBody>
             {data.map((row, index) => (
-              <TableRow
-                key={index}
-                style={{
-                  backgroundColor: index % 2 === 0 ? '#f9f9f9' : '#fff',
-                }}>
+              <TableRow key={index} sx={{ borderBottom: 'none' }}>
                 <TableCell
                   align="center"
-                  style={{ padding: '16px', fontSize: '1em' }}>
+                  style={{
+                    padding: '16px',
+                    fontSize: '16px',
+                    borderBottom: 'none',
+                  }}>
                   {row.rank}
                 </TableCell>
-                <TableCell style={{ padding: '16px', fontSize: '1em' }}>
-                  {row.topic}
+                <TableCell
+                  style={{
+                    padding: '16px',
+                    fontSize: '16px',
+                    borderBottom: 'none',
+                  }}>
+                  {row.tagName}
                 </TableCell>
-                <TableCell style={{ padding: '16px', textAlign: 'center' }}>
-                  <AvatarGroup max={4}>
-                    {row.avatars.map((url, idx) => (
-                      <Avatar
-                        key={idx}
-                        src={url}
-                        style={{ width: 32, height: 32 }}
-                      />
-                    ))}
-                  </AvatarGroup>
+                <TableCell style={{ padding: '16px', borderBottom: 'none' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <AvatarGroup
+                      max={6}
+                      sx={{
+                        '& .MuiAvatarGroup-avatar': {
+                          width: 32,
+                          height: 32,
+                          fontSize: 14,
+                        },
+                      }}>
+                      {row.avatars.map((url, idx) => (
+                        <Avatar key={idx} src={url} />
+                      ))}
+                    </AvatarGroup>
+                  </div>
                 </TableCell>
-                <TableCell style={{ padding: '16px' }}>{row.count}</TableCell>
-                <TableCell style={{ padding: '16px' }}>
+
+                <TableCell
+                  style={{
+                    padding: '16px',
+                    textAlign: 'center',
+                    borderBottom: 'none',
+                    fontSize: '16px',
+                  }}>
+                  {row.questionCount}
+                </TableCell>
+                <TableCell style={{ padding: '16px', borderBottom: 'none' }}>
+                  <Box
+                    style={{
+                      textAlign: 'center',
+                      fontSize: '16px',
+                      marginTop: '4px',
+                      color: '#666',
+                    }}>
+                    {row.percentage}%
+                  </Box>
                   <LinearProgress
                     variant="determinate"
-                    value={row.rate}
+                    value={row.percentage}
                     style={{
                       borderRadius: '4px',
                       height: '8px',
                       backgroundColor: '#e0e0e0',
                     }}
+                    sx={{
+                      '& .MuiLinearProgress-bar': {
+                        backgroundColor: getProgressColor(row.percentage),
+                      },
+                    }}
                   />
-                  <Box
-                    style={{
-                      textAlign: 'center',
-                      fontSize: '0.9em',
-                      marginTop: '4px',
-                      color: '#666',
-                    }}>
-                    {row.rate}%
-                  </Box>
                 </TableCell>
               </TableRow>
             ))}

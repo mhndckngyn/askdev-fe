@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   MenuItem,
@@ -10,43 +10,39 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 import ReactECharts from 'echarts-for-react';
+import { getDashboardTopTagsInYear } from './services';
 
 interface ICountErrorReportsByType {
-  Type: string;
-  Count: number;
+  tagName: string;
+  postCount: number;
 }
-
-const mockDataByYear: Record<number, ICountErrorReportsByType[]> = {
-  2023: [{ Type: 'Pascal', Count: 8 }],
-  2024: [
-    { Type: 'Pascal', Count: 4 },
-    { Type: 'C++', Count: 15 },
-    { Type: 'Python', Count: 10 },
-    { Type: 'Java', Count: 7 },
-  ],
-  2025: [
-    { Type: 'Pascal', Count: 6 },
-    { Type: 'C++', Count: 18 },
-    { Type: 'Python', Count: 14 },
-    { Type: 'Java', Count: 11 },
-    { Type: 'JavaScript', Count: 9 },
-  ],
-};
 
 const Chart: React.FC = () => {
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [data, setData] = useState<ICountErrorReportsByType[]>([]);
 
-  const data: ICountErrorReportsByType[] = mockDataByYear[selectedYear] || [];
+  useEffect(() => {
+    const fetchTopTags = async () => {
+      try {
+        const result = await getDashboardTopTagsInYear(selectedYear);
+        setData(result.content);
+      } catch (error) {
+        console.error(error);
+        setData([]);
+      }
+    };
+    fetchTopTags();
+  }, [selectedYear]);
 
   const handleYearChange = (event: SelectChangeEvent<number>) => {
     setSelectedYear(Number(event.target.value));
   };
 
   const reportData = data.map((item) => ({
-    score: item.Count,
-    amount: item.Count,
-    type: item.Type,
+    score: item.postCount,
+    amount: item.postCount,
+    type: item.tagName,
   }));
 
   const maxScore =
@@ -79,13 +75,13 @@ const Chart: React.FC = () => {
       top: '0%',
       min: 0,
       max: maxScore,
-      text: ['Thấp', 'Cao'],
+      text: ['Cao', 'Thấp'],
       textStyle: {
         fontFamily: 'Arial, sans-serif',
       },
       dimension: 0,
       inRange: {
-        color: ['#EC407A', '#FB8C00', '#49a3f1', '#66BB6A'],
+        color: ['#49a3f1', '#66BB6A', '#FB8C00', '#EC407A'],
       },
       itemHeight: '300',
     },
