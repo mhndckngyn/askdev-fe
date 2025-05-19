@@ -6,8 +6,10 @@ import PeopleIcon from '@mui/icons-material/People';
 import Box from '@mui/material/Box';
 import { getDashboardGeneralStats } from '../services';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const DashboardStats = () => {
+  const { t } = useTranslation('adminDashboardPage');
   const [stats, setStats] = useState({
     totalNewUsers: 0,
     percentNewUsers: 0,
@@ -51,43 +53,43 @@ const DashboardStats = () => {
       justifyContent="space-between">
       {[
         {
-          title: 'Số thành viên mới',
+          title: t('newUsers'),
           count: stats.totalNewUsers,
           icon: <PersonAddIcon sx={{ marginBottom: '10px' }} />,
           percentage: {
             color: 'linear-gradient(195deg, #FB8C00, #F57C00)',
             amount: formatGrowth(stats.percentNewUsers),
-            label: 'So với tháng trước',
+            label: t('comparison'),
           },
         },
         {
-          title: 'Số bài đăng',
+          title: t('posts'),
           count: stats.totalPosts,
           icon: <PostAddIcon sx={{ marginBottom: '10px' }} />,
           percentage: {
             color: 'linear-gradient(195deg, #EC407A, #D81B60)',
             amount: formatGrowth(stats.percentPosts),
-            label: 'So với tháng trước',
+            label: t('comparison'),
           },
         },
         {
-          title: 'Số báo cáo',
+          title: t('reports'),
           count: stats.totalReports,
           icon: <ReportProblemIcon sx={{ marginBottom: '10px' }} />,
           percentage: {
             color: 'linear-gradient(195deg, #49a3f1, #1A73E8)',
             amount: formatGrowth(stats.percentReports),
-            label: 'So với tháng trước',
+            label: t('comparison'),
           },
         },
         {
-          title: 'Số thành viên hiện tại',
+          title: t('currentUsers'),
           count: stats.totalUsers,
           icon: <PeopleIcon sx={{ marginBottom: '10px' }} />,
           percentage: {
             color: 'linear-gradient(195deg, #66BB6A, #43A047)',
             amount: formatGrowth(stats.percentUsers),
-            label: 'So với tháng trước',
+            label: t('comparison'),
           },
         },
       ].map((item, index) => (

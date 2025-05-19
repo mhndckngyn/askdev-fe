@@ -6,8 +6,10 @@ import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import GroupsIcon from '@mui/icons-material/AccountTree';
 import Box from '@mui/material/Box';
 import { getDashboardStats } from '../services';
+import { useTranslation } from 'react-i18next';
 
 const DashboardStats = () => {
+  const { t } = useTranslation('adminDashboardPage');
   const [stats, setStats] = useState({
     newPosts: 0,
     totalPosts: 0,
@@ -44,43 +46,43 @@ const DashboardStats = () => {
 
   const items = [
     {
-      title: 'Số bài đăng mới',
+      title: t('newPosts'),
       count: stats.newPosts,
       icon: <AddCircleOutlineIcon sx={{ marginBottom: '10px' }} />,
       percentage: {
         color: 'linear-gradient(195deg, #FB8C00, #F57C00)',
         amount: formatGrowth(stats.postGrowthNew),
-        label: 'So với tháng trước',
+        label: t('comparison'),
       },
     },
     {
-      title: 'Số bài đăng hiện tại',
+      title: t('currentPosts'),
       count: stats.totalPosts,
       icon: <ArticleIcon sx={{ marginBottom: '10px' }} />,
       percentage: {
         color: 'linear-gradient(195deg, #EC407A, #D81B60)',
         amount: formatGrowth(stats.postGrowthCurrent),
-        label: 'So với tháng trước',
+        label: t('comparison'),
       },
     },
     {
-      title: 'Số chủ đề mới',
+      title: t('newTags'),
       count: stats.newTags,
       icon: <LibraryAddIcon sx={{ marginBottom: '10px' }} />,
       percentage: {
         color: 'linear-gradient(195deg, #49a3f1, #1A73E8)',
         amount: formatGrowth(stats.tagGrowthNew),
-        label: 'So với tháng trước',
+        label: t('comparison'),
       },
     },
     {
-      title: 'Số chủ đề hiện tại',
+      title: t('currentTags'),
       count: stats.totalTags,
       icon: <GroupsIcon sx={{ marginBottom: '10px' }} />,
       percentage: {
         color: 'linear-gradient(195deg, #66BB6A, #43A047)',
         amount: formatGrowth(stats.tagGrowthCurrent),
-        label: 'So với tháng trước',
+        label: t('comparison'),
       },
     },
   ];

@@ -20,3 +20,10 @@ export async function getDashboardTopUsersStats() {
     route: 'admin/dashboard/top-users-posts',
   });
 }
+
+export async function getDashboardWeeklyTrends() {
+  return fetcher({
+    method: 'GET',
+    route: 'admin/dashboard/weekly-trends',
+  });
+}

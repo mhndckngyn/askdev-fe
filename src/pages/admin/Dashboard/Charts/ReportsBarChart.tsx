@@ -15,6 +15,7 @@ import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { useMantineColorScheme } from '@mantine/core';
 
 ChartJS.register(
   CategoryScale,
@@ -32,7 +33,7 @@ interface ChartDataset {
 
 interface ChartProps {
   labels: string[];
-  datasets: ChartDataset;
+  datasets: ChartDataset[];
   colors?: string;
 }
 
@@ -47,24 +48,21 @@ interface ReportsBarChartProps {
     | 'dark';
   title: string;
   description?: string;
-
   chart: ChartProps;
 }
 
-function configs(labels: string[], datasets: ChartDataset) {
+function configs(labels: string[], datasets: ChartDataset[]) {
   const data: ChartData<'bar'> = {
     labels,
-    datasets: [
-      {
-        label: datasets.label,
-        borderWidth: 0,
-        borderRadius: 4,
-        borderSkipped: false,
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        data: datasets.data,
-        maxBarThickness: 6,
-      },
-    ],
+    datasets: datasets.map((ds) => ({
+      label: ds.label,
+      borderWidth: 0,
+      borderRadius: 4,
+      borderSkipped: false,
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      data: ds.data,
+      maxBarThickness: 6,
+    })),
   };
 
   const options: ChartOptions<'bar'> = {
@@ -89,7 +87,6 @@ function configs(labels: string[], datasets: ChartDataset) {
           padding: 10,
           font: {
             size: 14,
-
             family: 'Roboto',
             style: 'normal',
             lineHeight: 2,
@@ -102,7 +99,6 @@ function configs(labels: string[], datasets: ChartDataset) {
           display: true,
           drawOnChartArea: true,
           drawTicks: false,
-
           color: 'rgba(255, 255, 255, .2)',
         },
         ticks: {
@@ -111,7 +107,6 @@ function configs(labels: string[], datasets: ChartDataset) {
           padding: 10,
           font: {
             size: 14,
-
             family: 'Roboto',
             style: 'normal',
             lineHeight: 2,
@@ -128,17 +123,26 @@ function ReportsBarChart({
   color,
   title,
   description,
-
   chart,
 }: ReportsBarChartProps) {
+  const { colorScheme } = useMantineColorScheme();
   const { data, options } = configs(
     chart.labels || [],
-    chart.datasets || { label: '', data: [] },
+    chart.datasets || [{ label: '', data: [] }],
   );
 
   return (
-    <Card sx={{ height: '100%' }}>
-      <Box padding="1rem">
+    <Card
+      elevation={0}
+      sx={{
+        height: '100%',
+        backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
+      }}>
+      <Box
+        padding="1rem"
+        sx={{
+          backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
+        }}>
         {useMemo(
           () => (
             <Box
@@ -148,7 +152,6 @@ function ReportsBarChart({
                 boxShadow: 3,
                 py: 2,
                 pr: 0.5,
-
                 height: '12.5rem',
               }}>
               <Bar data={data} options={options} redraw />
@@ -157,16 +160,25 @@ function ReportsBarChart({
           [color, chart],
         )}
 
-       
         <Box pt={3} pb={1} px={1}>
-        <Divider />
-          <Typography variant="h6" sx={{ textTransform: 'capitalize' }}>
+          <Divider
+            sx={{
+              mb: 1,
+              borderColor: colorScheme === 'dark' ? '#fff' : '#000',
+              backgroundColor: colorScheme === 'dark' ? '#fff' : '#000',
+            }}
+          />
+          <Typography
+            variant="h6"
+            color={colorScheme === 'dark' ? '#fff' : '#000'}
+            sx={{ textTransform: 'capitalize', whiteSpace: 'pre-line' }}>
             {title}
           </Typography>
           <Typography
             component="div"
             variant="button"
-            color="text.secondary"
+            textAlign={'right'}
+            color={colorScheme === 'dark' ? '#fff' : '#000'}
             fontWeight="light">
             {description}
           </Typography>

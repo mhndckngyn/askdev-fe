@@ -11,6 +11,8 @@ import {
 } from '@mui/material';
 import ReactECharts from 'echarts-for-react';
 import { getDashboardTopTagsInYear } from './services';
+import { useTranslation } from 'react-i18next';
+import { useMantineColorScheme } from '@mantine/core';
 
 interface ICountErrorReportsByType {
   tagName: string;
@@ -18,6 +20,8 @@ interface ICountErrorReportsByType {
 }
 
 const Chart: React.FC = () => {
+  const { t } = useTranslation('adminDashboardPage');
+  const { colorScheme } = useMantineColorScheme();
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [data, setData] = useState<ICountErrorReportsByType[]>([]);
@@ -51,8 +55,10 @@ const Chart: React.FC = () => {
       : 0;
 
   const option = {
+    backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
     textStyle: {
       fontFamily: 'Arial, sans-serif',
+      color: colorScheme === 'dark' ? '#fff' : '#000',
     },
     dataset: {
       source: [
@@ -75,9 +81,10 @@ const Chart: React.FC = () => {
       top: '0%',
       min: 0,
       max: maxScore,
-      text: ['Cao', 'Thấp'],
+      text: [t('high'), t('low')],
       textStyle: {
         fontFamily: 'Arial, sans-serif',
+        color: colorScheme === 'dark' ? '#fff' : '#000',
       },
       dimension: 0,
       inRange: {
@@ -86,15 +93,20 @@ const Chart: React.FC = () => {
       itemHeight: '300',
     },
     tooltip: {
+      backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
       trigger: 'item',
       formatter: function (params: any) {
-        return `${params.value[2]}<br/>${params.value[1]}`;
+        return `<strong>${t('tag')}</strong> : ${params.value[2]}<br/><strong>${t('quantity')}</strong> : ${params.value[1]}`;
       },
       textStyle: {
         fontFamily: 'Arial, sans-serif',
+        color: colorScheme === 'dark' ? '#fff' : '#000',
       },
     },
     toolbox: {
+      iconStyle: {
+        borderColor: colorScheme === 'dark' ? '#fff' : '#000',
+      },
       feature: {
         saveAsImage: {
           show: true,
@@ -106,6 +118,7 @@ const Chart: React.FC = () => {
     legend: {
       textStyle: {
         fontFamily: 'Arial, sans-serif',
+        color: colorScheme === 'dark' ? '#fff' : '#000',
       },
     },
     series: [
@@ -133,11 +146,14 @@ const Chart: React.FC = () => {
 
   return (
     <Paper
+      elevation={0}
       sx={{
+        backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
         width: '100%',
         mt: '24px',
         padding: '24px 24px 15px',
         overflow: 'hidden',
+        color: colorScheme === 'dark' ? '#fff' : '#000',
       }}>
       <Box
         sx={{
@@ -152,7 +168,7 @@ const Chart: React.FC = () => {
               fontSize: '18px',
               fontWeight: 'bold',
             }}>
-            {'Thông kê số bài đăng theo chủ đề theo năm'}
+            {t('postStatisticsByTagYear')}
           </Typography>
         </Box>
         <FormControl sx={{ width: '100px' }}>
@@ -160,14 +176,29 @@ const Chart: React.FC = () => {
             value={selectedYear}
             onChange={handleYearChange}
             sx={{
-              '&:hover .MuiOutlinedInput-notchedOutline': {},
-              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {},
+              color: colorScheme === 'dark' ? '#fff' : '#000',
+
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: colorScheme === 'dark' ? '#bbb' : '#333',
+              },
+
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: colorScheme === 'dark' ? '#4caf50' : '#1976d2',
+                borderWidth: '2px',
+              },
+
               '& fieldset': {
                 borderRadius: '8px',
+                borderColor: colorScheme === 'dark' ? '#666' : '#ccc',
               },
-              '& .MuiSelect-icon': {},
+
+              '& .MuiSelect-icon': {
+                color: colorScheme === 'dark' ? '#fff' : '#000',
+              },
+
               '& .MuiInputBase-input': {
                 padding: '10px',
+                color: colorScheme === 'dark' ? '#fff' : '#000',
               },
             }}
             MenuProps={{
@@ -178,8 +209,8 @@ const Chart: React.FC = () => {
                   mt: '2px',
                   borderRadius: '8px',
                   padding: '0 8px',
-                  backgroundImage:
-                    'url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSJ1cmwoI3BhaW50MF9yYWRpYWxfMjc0OV8xNDUxODYpIiBmaWxsLW9wYWNpdHk9IjAuMTIiLz4KPGRlZnM+CjxyYWRpYWxHcmFkaWVudCBpZD0icGFpbnQwX3JhZGlhbF8yNzQ5XzE0NTE4NiIgY3g9IjAiIGN5PSIwIiByPSIxIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgZ3JhZGllbnRUcmFuc2Zvcm09InRyYW5zbGF0ZSgxMjAgMS44MTgxMmUtMDUpIHJvdGF0ZSgtNDUpIHNjYWxlKDEyMy4yNSkiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMDBCOEQ5Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAwQjhEOSIgc3RvcC1vcGFjaXR5PSIwIi8+CjwvcmFkaWFsR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==), url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSJ1cmwoI3BhaW50MF9yYWRpYWxfMjc0OV8xNDUxODcpIiBmaWxsLW9wYWNpdHk9IjAuMTIiLz4KPGRlZnM+CjxyYWRpYWxHcmFkaWVudCBpZD0icGFpbnQwX3JhZGlhbF8yNzQ5XzE0NTE4NyIgY3g9IjAiIGN5PSIwIiByPSIxIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgZ3JhZGllbnRUcmFuc2Zvcm09InRyYW5zbGF0ZSgwIDEyMCkgcm90YXRlKDEzNSkgc2NhbGUoMTIzLjI1KSI+CjxzdG9wIHN0b3AtY29sb3I9IiNGRjU2MzAiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkY1NjMwIiBzdG9wLW9wYWNpdHk9IjAiLz4KPC9yYWRpYWxHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K)',
+                  color: colorScheme === 'dark' ? '#fff' : '#000',
+                  backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
                   backgroundPosition: 'top right, bottom left',
                   backgroundSize: '50%, 50%',
                   backgroundRepeat: 'no-repeat',

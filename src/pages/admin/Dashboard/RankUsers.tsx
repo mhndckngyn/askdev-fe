@@ -3,6 +3,8 @@ import { NotebookPen } from 'lucide-react';
 import { Trophy } from 'phosphor-react';
 import { getDashboardTopUsersStats } from './services';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useMantineColorScheme } from '@mantine/core';
 
 interface TopUsers {
   rank: number;
@@ -47,6 +49,8 @@ const TrophyWithNumber = ({ rank }: { rank: number }) => {
 };
 
 const TopUsers = () => {
+  const { t } = useTranslation('adminDashboardPage');
+  const { colorScheme } = useMantineColorScheme();
   const [users, setUsers] = useState<TopUsers[]>([]);
   useEffect(() => {
     const fetchTopTags = async () => {
@@ -65,10 +69,12 @@ const TopUsers = () => {
 
   return (
     <Paper
+      elevation={0}
       sx={{
         maxwidth: '100%',
         padding: '30px',
         height: '820px',
+        backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
       }}>
       <Box
         sx={{
@@ -87,8 +93,9 @@ const TopUsers = () => {
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
+            color: colorScheme === 'dark' ? '#fff' : '#000',
           }}>
-          Xếp hạng thành viên đăng bài
+          {t('top10ActiveUsers')}
         </Typography>
       </Box>
 
@@ -109,20 +116,19 @@ const TopUsers = () => {
           {index < 3 ? (
             <TrophyWithNumber rank={index + 1} />
           ) : (
-            // Top 4–10: số trong vòng tròn
             <Box
               sx={{
                 color: 'white',
-                fontSize: 13,
+                fontSize: 16,
                 borderRadius: '50%',
-                border: '1px solid rgb(59, 59, 59)',
-                width: 20,
-                height: 20,
+                width: 30,
+                height: 30,
                 display: 'flex',
-                backgroundColor: 'rgb(59, 59, 59)',
+                background: 'linear-gradient(135deg, #43CEA2, #185A9D)',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginRight: 15,
+                marginRight: 2.3,
+                marginLeft: 0.5,
               }}>
               {index + 1}
             </Box>
@@ -136,13 +142,17 @@ const TopUsers = () => {
           <Box>
             <Typography
               sx={{
-                color: '#0C092A',
                 fontWeight: 'bold',
                 fontSize: '16px',
+                color: colorScheme === 'dark' ? '#fff' : '#000',
               }}>
               {user.username}
             </Typography>
-            <Typography sx={{ color: '#858494', fontSize: '14px' }}>
+            <Typography
+              sx={{
+                color: colorScheme === 'dark' ? '#fff' : '#000',
+                fontSize: '14px',
+              }}>
               {(() => {
                 const maxVisible = 3;
                 const visibleTopics = user.topTopics.slice(0, maxVisible);

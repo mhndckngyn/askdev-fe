@@ -6,8 +6,10 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import Box from '@mui/material/Box';
 import { useEffect, useState } from 'react';
 import { getDashboardReportMonthlyStats } from '../services';
+import { useTranslation } from 'react-i18next';
 
 const DashboardStats = () => {
+  const { t } = useTranslation('adminDashboardPage');
   const [stats, setStats] = useState({
     questionReports: 0,
     questionGrowth: 0,
@@ -51,43 +53,43 @@ const DashboardStats = () => {
       justifyContent="space-between">
       {[
         {
-          title: 'Số báo cáo câu hỏi',
+          title: t('reportQuestion'),
           count: stats.questionReports,
           icon: <HelpOutlineIcon sx={{ marginBottom: '10px' }} />,
           percentage: {
             color: 'linear-gradient(195deg, #66BB6A, #43A047)',
             amount: formatGrowth(stats.questionGrowth),
-            label: 'So với tháng trước',
+            label: t('comparison'),
           },
         },
         {
-          title: 'Số báo cáo câu trả lời',
+          title: t('reportAnswer'),
           count: stats.answerReports,
           icon: <CommentIcon sx={{ marginBottom: '10px' }} />,
           percentage: {
             color: 'linear-gradient(195deg, #EC407A, #D81B60)',
             amount: formatGrowth(stats.answerGrowth),
-            label: 'So với tháng trước',
+            label: t('comparison'),
           },
         },
         {
-          title: 'Số báo cáo phản hồi',
+          title: t('reportComment'),
           count: stats.commentReports,
           icon: <RateReviewIcon sx={{ marginBottom: '10px' }} />,
           percentage: {
             color: 'linear-gradient(195deg, #49a3f1, #1A73E8)',
             amount: formatGrowth(stats.commentGrowth),
-            label: 'So với tháng trước',
+            label: t('comparison'),
           },
         },
         {
-          title: 'Tổng số báo cáo',
+          title: t('totalReports'),
           count: stats.totalReports,
           icon: <BarChartIcon sx={{ marginBottom: '10px' }} />,
           percentage: {
             color: 'linear-gradient(195deg, #FB8C00, #F57C00)',
             amount: formatGrowth(stats.growthPercent),
-            label: 'So với tháng trước',
+            label: t('comparison'),
           },
         },
       ].map((item, index) => (

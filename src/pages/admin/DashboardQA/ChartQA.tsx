@@ -10,6 +10,8 @@ import {
 import ReactECharts from 'echarts-for-react';
 import { useEffect, useState } from 'react';
 import { getDashboardStatsInYear } from './services';
+import { useTranslation } from 'react-i18next';
+import { useMantineColorScheme } from '@mantine/core';
 
 interface IMonthlyStat {
   month: number;
@@ -20,6 +22,8 @@ interface IMonthlyStat {
 }
 
 const Chart = () => {
+  const { t } = useTranslation('adminDashboardPage');
+  const { colorScheme } = useMantineColorScheme();
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [monthlyStats, setMonthlyStats] = useState<IMonthlyStat[]>([]);
@@ -45,43 +49,49 @@ const Chart = () => {
     setSelectedYear(event.target.value as number);
   };
 
-  const [selectedType, setSelectedType] = useState<'all' | 'post' | 'topic'>(
+  const [selectedType, setSelectedType] = useState<'all' | 'post' | 'tag'>(
     'all',
   );
 
   const handleTypeChange = (event: SelectChangeEvent) => {
-    setSelectedType(event.target.value as 'all' | 'post' | 'topic');
+    setSelectedType(event.target.value as 'all' | 'post' | 'tag');
   };
 
   const option = {
     barGap: '10%',
+    backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
     textStyle: {
       fontFamily: 'Arial, sans-serif',
+      color: colorScheme === 'dark' ? '#fff' : '#000',
     },
     animation: true,
     animationDuration: 700,
     tooltip: {
       trigger: 'axis',
+      backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
+      textStyle: {
+        color: colorScheme === 'dark' ? '#fff' : '#000',
+        fontFamily: 'Arial, sans-serif',
+      },
     },
     legend: {
       data:
         selectedType === 'all'
-          ? [
-              'Số bài đăng mới',
-              'Số bài đăng hiện tại',
-              'Số chủ đề mới',
-              'Số chủ đề hiện tại',
-            ]
+          ? [t('newPosts'), t('currentPosts'), t('newTags'), t('currentTags')]
           : selectedType === 'post'
-            ? ['Số bài đăng mới', 'Số bài đăng hiện tại']
-            : ['Số chủ đề mới', 'Số chủ đề hiện tại'],
+            ? [t('newPosts'), t('currentPosts')]
+            : [t('newTags'), t('currentTags')],
       textStyle: {
         fontFamily: 'Arial, sans-serif',
+        color: colorScheme === 'dark' ? '#fff' : '#000',
       },
       itemGap: 30,
     },
     toolbox: {
       show: true,
+      iconStyle: {
+        borderColor: colorScheme === 'dark' ? '#fff' : '#000',
+      },
       feature: {
         magicType: { show: true, type: ['line', 'bar'] },
         saveAsImage: { show: true },
@@ -107,18 +117,18 @@ const Chart = () => {
           },
         },
         data: [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Dec',
+          t('month.1'),
+          t('month.2'),
+          t('month.3'),
+          t('month.4'),
+          t('month.5'),
+          t('month.6'),
+          t('month.7'),
+          t('month.8'),
+          t('month.9'),
+          t('month.10'),
+          t('month.11'),
+          t('month.12'),
         ],
       },
     ],
@@ -139,7 +149,7 @@ const Chart = () => {
       selectedType === 'all'
         ? [
             {
-              name: 'Số bài đăng mới',
+              name: t('newPosts'),
               type: 'bar',
               data: Array.from(
                 { length: 12 },
@@ -162,7 +172,7 @@ const Chart = () => {
               },
             },
             {
-              name: 'Số bài đăng hiện tại',
+              name: t('currentPosts'),
               type: 'bar',
               data: Array.from(
                 { length: 12 },
@@ -185,7 +195,7 @@ const Chart = () => {
               },
             },
             {
-              name: 'Số chủ đề mới',
+              name: t('newTags'),
               type: 'bar',
               data: Array.from(
                 { length: 12 },
@@ -208,7 +218,7 @@ const Chart = () => {
               },
             },
             {
-              name: 'Số chủ đề hiện tại',
+              name: t('currentTags'),
               type: 'bar',
               data: Array.from(
                 { length: 12 },
@@ -234,7 +244,7 @@ const Chart = () => {
         : selectedType === 'post'
           ? [
               {
-                name: 'Số bài đăng mới',
+                name: t('newPosts'),
                 type: 'bar',
                 data: Array.from(
                   { length: 12 },
@@ -257,7 +267,7 @@ const Chart = () => {
                 },
               },
               {
-                name: 'Số bài đăng hiện tại',
+                name: t('currentPosts'),
                 type: 'bar',
                 data: Array.from(
                   { length: 12 },
@@ -282,7 +292,7 @@ const Chart = () => {
             ]
           : [
               {
-                name: 'Số chủ đề mới',
+                name: t('newTags'),
                 type: 'bar',
                 data: Array.from(
                   { length: 12 },
@@ -305,7 +315,7 @@ const Chart = () => {
                 },
               },
               {
-                name: 'Số chủ đề hiện tại',
+                name: t('currentTags'),
                 type: 'bar',
                 data: Array.from(
                   { length: 12 },
@@ -332,11 +342,14 @@ const Chart = () => {
 
   return (
     <Paper
+      elevation={0}
       sx={{
         width: '100%',
         mt: '24px',
         padding: '24px 24px 15px',
         overflow: 'hidden',
+        backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
+        color: colorScheme === 'dark' ? '#fff' : '#000',
       }}>
       <Box
         sx={{
@@ -350,26 +363,41 @@ const Chart = () => {
             sx={{
               fontSize: '18px',
               fontWeight: 'bold',
-              color: 'black',
+              color: colorScheme === 'dark' ? '#fff' : '#000',
             }}>
-            {'Thông kê số bài đăng và chủ đề theo năm'}
+            {t('yearlyStats')}
           </Typography>
         </Box>
 
         <Box sx={{ display: 'flex', gap: '12px' }}>
-          <FormControl sx={{ width: '140px' }}>
+          <FormControl sx={{ width: '120px' }}>
             <Select
               value={selectedType}
               onChange={handleTypeChange}
               sx={{
-                '&:hover .MuiOutlinedInput-notchedOutline': {},
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {},
+                color: colorScheme === 'dark' ? '#fff' : '#000',
+
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: colorScheme === 'dark' ? '#bbb' : '#333',
+                },
+
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: colorScheme === 'dark' ? '#4caf50' : '#1976d2',
+                  borderWidth: '2px',
+                },
+
                 '& fieldset': {
                   borderRadius: '8px',
+                  borderColor: colorScheme === 'dark' ? '#666' : '#ccc',
                 },
-                '& .MuiSelect-icon': {},
+
+                '& .MuiSelect-icon': {
+                  color: colorScheme === 'dark' ? '#fff' : '#000',
+                },
+
                 '& .MuiInputBase-input': {
                   padding: '10px',
+                  color: colorScheme === 'dark' ? '#fff' : '#000',
                 },
               }}
               MenuProps={{
@@ -380,8 +408,9 @@ const Chart = () => {
                     mt: '2px',
                     borderRadius: '8px',
                     padding: '0 8px',
-                    backgroundImage:
-                      'url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSJ1cmwoI3BhaW50MF9yYWRpYWxfMjc0OV8xNDUxODYpIiBmaWxsLW9wYWNpdHk9IjAuMTIiLz4KPGRlZnM+CjxyYWRpYWxHcmFkaWVudCBpZD0icGFpbnQwX3JhZGlhbF8yNzQ5XzE0NTE4NiIgY3g9IjAiIGN5PSIwIiByPSIxIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgZ3JhZGllbnRUcmFuc2Zvcm09InRyYW5zbGF0ZSgxMjAgMS44MTgxMmUtMDUpIHJvdGF0ZSgtNDUpIHNjYWxlKDEyMy4yNSkiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMDBCOEQ5Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAwQjhEOSIgc3RvcC1vcGFjaXR5PSIwIi8+CjwvcmFkaWFsR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==), url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSJ1cmwoI3BhaW50MF9yYWRpYWxfMjc0OV8xNDUxODcpIiBmaWxsLW9wYWNpdHk9IjAuMTIiLz4KPGRlZnM+CjxyYWRpYWxHcmFkaWVudCBpZD0icGFpbnQwX3JhZGlhbF8yNzQ5XzE0NTE4NyIgY3g9IjAiIGN5PSIwIiByPSIxIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgZ3JhZGllbnRUcmFuc2Zvcm09InRyYW5zbGF0ZSgwIDEyMCkgcm90YXRlKDEzNSkgc2NhbGUoMTIzLjI1KSI+CjxzdG9wIHN0b3AtY29sb3I9IiNGRjU2MzAiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkY1NjMwIiBzdG9wLW9wYWNpdHk9IjAiLz4KPC9yYWRpYWxHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K)',
+                    color: colorScheme === 'dark' ? '#fff' : '#000',
+                    backgroundColor:
+                      colorScheme === 'dark' ? '#121212' : '#fff',
                     backgroundPosition: 'top right, bottom left',
                     backgroundSize: '50%, 50%',
                     backgroundRepeat: 'no-repeat',
@@ -398,9 +427,9 @@ const Chart = () => {
                 },
               }}>
               {[
-                { label: 'Tất cả', value: 'all' },
-                { label: 'Bài đăng', value: 'post' },
-                { label: 'Chủ đề', value: 'topic' },
+                { label: t('all'), value: 'all' },
+                { label: t('post'), value: 'post' },
+                { label: t('tag'), value: 'tag' },
               ].map((item) => (
                 <MenuItem
                   key={item.value}
@@ -422,14 +451,29 @@ const Chart = () => {
               defaultValue={currentYear}
               onChange={handleYearChange}
               sx={{
-                '&:hover .MuiOutlinedInput-notchedOutline': {},
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {},
+                color: colorScheme === 'dark' ? '#fff' : '#000',
+
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: colorScheme === 'dark' ? '#bbb' : '#333',
+                },
+
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: colorScheme === 'dark' ? '#4caf50' : '#1976d2',
+                  borderWidth: '2px',
+                },
+
                 '& fieldset': {
                   borderRadius: '8px',
+                  borderColor: colorScheme === 'dark' ? '#666' : '#ccc',
                 },
-                '& .MuiSelect-icon': {},
+
+                '& .MuiSelect-icon': {
+                  color: colorScheme === 'dark' ? '#fff' : '#000',
+                },
+
                 '& .MuiInputBase-input': {
                   padding: '10px',
+                  color: colorScheme === 'dark' ? '#fff' : '#000',
                 },
               }}
               MenuProps={{
@@ -440,8 +484,9 @@ const Chart = () => {
                     mt: '2px',
                     borderRadius: '8px',
                     padding: '0 8px',
-                    backgroundImage:
-                      'url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSJ1cmwoI3BhaW50MF9yYWRpYWxfMjc0OV8xNDUxODYpIiBmaWxsLW9wYWNpdHk9IjAuMTIiLz4KPGRlZnM+CjxyYWRpYWxHcmFkaWVudCBpZD0icGFpbnQwX3JhZGlhbF8yNzQ5XzE0NTE4NiIgY3g9IjAiIGN5PSIwIiByPSIxIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgZ3JhZGllbnRUcmFuc2Zvcm09InRyYW5zbGF0ZSgxMjAgMS44MTgxMmUtMDUpIHJvdGF0ZSgtNDUpIHNjYWxlKDEyMy4yNSkiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMDBCOEQ5Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAwQjhEOSIgc3RvcC1vcGFjaXR5PSIwIi8+CjwvcmFkaWFsR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==), url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSJ1cmwoI3BhaW50MF9yYWRpYWxfMjc0OV8xNDUxODcpIiBmaWxsLW9wYWNpdHk9IjAuMTIiLz4KPGRlZnM+CjxyYWRpYWxHcmFkaWVudCBpZD0icGFpbnQwX3JhZGlhbF8yNzQ5XzE0NTE4NyIgY3g9IjAiIGN5PSIwIiByPSIxIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgZ3JhZGllbnRUcmFuc2Zvcm09InRyYW5zbGF0ZSgwIDEyMCkgcm90YXRlKDEzNSkgc2NhbGUoMTIzLjI1KSI+CjxzdG9wIHN0b3AtY29sb3I9IiNGRjU2MzAiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkY1NjMwIiBzdG9wLW9wYWNpdHk9IjAiLz4KPC9yYWRpYWxHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K)',
+                    color: colorScheme === 'dark' ? '#fff' : '#000',
+                    backgroundColor:
+                      colorScheme === 'dark' ? '#121212' : '#fff',
                     backgroundPosition: 'top right, bottom left',
                     backgroundSize: '50%, 50%',
                     backgroundRepeat: 'no-repeat',

@@ -3,6 +3,7 @@ import Divider from '@mui/material/Divider';
 import Icon from '@mui/material/Icon';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { useMantineColorScheme } from '@mantine/core';
 
 interface Percentage {
   color?: string;
@@ -23,9 +24,17 @@ function ComplexStatisticsCard({
   percentage = { color: '', amount: '', label: '' },
   icon,
 }: ComplexStatisticsCardProps) {
+  const { colorScheme } = useMantineColorScheme();
   return (
-    <Card>
+    <Card
+      elevation={0}
+      sx={{
+        backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
+      }}>
       <Box
+        sx={{
+          backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
+        }}
         overflow="visible"
         display="flex"
         justifyContent="space-between"
@@ -48,15 +57,40 @@ function ComplexStatisticsCard({
           </Icon>
         </Box>
         <Box textAlign="right" lineHeight={1.25} mt={2}>
-          <Typography variant="button" fontWeight="light" color="text">
+          <Typography
+            variant="button"
+            fontWeight="light"
+            color={colorScheme === 'dark' ? '#fff' : '#000'}>
             {title}
           </Typography>
-          <Typography variant="h4">{count}</Typography>
+          <Typography
+            sx={{
+              color: colorScheme === 'dark' ? '#fff' : '#000',
+            }}
+            variant="h4">
+            {count}
+          </Typography>
         </Box>
       </Box>
-      <Divider />
-      <Box pb={2} px={2} mt={2}>
-        <Typography component="p" variant="button" color="text" display="flex">
+      <Divider
+        sx={{
+          borderColor: colorScheme === 'dark' ? '#fff' : '#000',
+          backgroundColor: colorScheme === 'dark' ? '#fff' : '#000',
+        }}
+      />
+
+      <Box
+        pb={2}
+        px={2}
+        sx={{
+          backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
+          paddingTop: '15px',
+        }}>
+        <Typography
+          component="p"
+          variant="button"
+          color={colorScheme === 'dark' ? '#fff' : '#000'}
+          display="flex">
           <Typography
             component="span"
             variant="button"

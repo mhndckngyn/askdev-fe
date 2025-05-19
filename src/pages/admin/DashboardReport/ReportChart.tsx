@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { Box, Paper, Typography } from '@mui/material';
 import { getTotalReportsByType } from './services';
+import { useTranslation } from 'react-i18next';
+import { useMantineColorScheme } from '@mantine/core';
 
 export interface IReportDashboard {
   question: number;
@@ -10,6 +12,8 @@ export interface IReportDashboard {
 }
 
 const reportPieChart: React.FC = () => {
+  const { t } = useTranslation('adminDashboardPage');
+  const { colorScheme } = useMantineColorScheme();
   const [report, setReport] = useState<IReportDashboard>({
     question: 0,
     answer: 0,
@@ -32,16 +36,25 @@ const reportPieChart: React.FC = () => {
   const option = {
     textStyle: {
       fontFamily: 'Arial, sans-serif',
+      color: colorScheme === 'dark' ? '#fff' : '#000',
     },
     tooltip: {
+      backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
       trigger: 'item',
-      formatter: '{b}: {c} ({d}%)',
+      textStyle: {
+        fontFamily: 'Arial, sans-serif',
+        color: colorScheme === 'dark' ? '#fff' : '#000',
+      },
+      formatter: function (p: any) {
+        return `<strong>${p.name}</strong><br /><strong>${t('quantity')}</strong> : ${p.value}<br /><strong>${t('rate')}</strong> : ${p.percent}%`;
+      },
     },
     legend: {
       top: 'bottom',
       textStyle: {
         fontFamily: 'Arial, sans-serif',
         fontSize: 16,
+        color: colorScheme === 'dark' ? '#fff' : '#000',
       },
     },
     series: [
@@ -62,6 +75,7 @@ const reportPieChart: React.FC = () => {
             show: true,
             fontSize: 40,
             fontWeight: 'bold',
+            color: colorScheme === 'dark' ? '#fff' : '#000',
           },
         },
         labelLine: {
@@ -70,21 +84,21 @@ const reportPieChart: React.FC = () => {
         data: [
           {
             value: report?.question,
-            name: 'Câu hỏi',
+            name: t('question'),
             itemStyle: {
               color: '#66BB6A',
             },
           },
           {
             value: report?.answer,
-            name: 'Trả lời',
+            name: t('answer'),
             itemStyle: {
               color: '#EC407A',
             },
           },
           {
             value: report?.comment,
-            name: 'Phản hồi',
+            name: t('comment'),
             itemStyle: {
               color: '#49a3f1',
             },
@@ -95,11 +109,14 @@ const reportPieChart: React.FC = () => {
   };
   return (
     <Paper
+      elevation={0}
       sx={{
         width: '100%',
         padding: '24px',
         height: '100%',
         mt: '24px',
+        color: colorScheme === 'dark' ? '#fff' : '#000',
+        backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
       }}>
       <Box
         sx={{
@@ -112,7 +129,7 @@ const reportPieChart: React.FC = () => {
             fontSize: '18px',
             fontWeight: 'bold',
           }}>
-          {'Thông kê báo cáo'}
+          {t('reportStatistics')}
         </Typography>
       </Box>
       <ReactECharts

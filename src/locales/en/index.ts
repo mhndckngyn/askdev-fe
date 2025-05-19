@@ -1,6 +1,7 @@
 import adminAnswerPage from './admin-answer-page.json';
 import adminQuestionPage from './admin-question-page.json';
 import adminTagPage from './admin-tag-page.json';
+import adminDashboardPage from './admin-dashboard-page.json';
 import adminReportPage from './admin-report-page.json';
 import adminSidebar from './admin-sidebar.json';
 import api from './api.json';
@@ -23,6 +24,7 @@ import welcome from './welcome.json';
 export default {
   adminAnswerPage,
   adminQuestionPage,
+  adminDashboardPage,
   adminTagPage,
   adminReportPage,
   adminSidebar,

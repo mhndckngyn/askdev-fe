@@ -11,6 +11,8 @@ import { useEffect, useState } from 'react';
 import * as echarts from 'echarts';
 import ReactECharts from 'echarts-for-react';
 import { getDailyReportStatsByMonthYear } from './services';
+import { useTranslation } from 'react-i18next';
+import { useMantineColorScheme } from '@mantine/core';
 
 interface IMonthlyStat {
   question: number[];
@@ -19,6 +21,8 @@ interface IMonthlyStat {
 }
 
 const Chart = () => {
+  const { t } = useTranslation('adminDashboardPage');
+  const { colorScheme } = useMantineColorScheme();
   const currentYear = new Date();
   const [selectedYear, setSelectedYear] = useState(currentYear.getFullYear());
   const [selectedType, setSelectedType] = useState<
@@ -100,14 +104,24 @@ const Chart = () => {
   const max = Math.max(...values);
 
   const option = {
-    backgroundColor: '#fff',
+    textStyle: {
+      fontFamily: 'Arial, sans-serif',
+      color: colorScheme === 'dark' ? '#fff' : '#000',
+    },
+    backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
     tooltip: {
+      backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
       position: 'top',
+      textStyle: {
+        fontFamily: 'Arial, sans-serif',
+        color: colorScheme === 'dark' ? '#fff' : '#000',
+      },
       formatter: function (p: any) {
-        const format = echarts.time.format(p.data[0], ' Ngày ' + '{dd}', false);
-        return format + ' (' + p.data[1] + ')';
+        const format = echarts.time.format(p.data[0], `{dd}`, false);
+        return `<strong>${t('dayWithNumber')}</strong> : ${format}<br /><strong>${t('quantity')}</strong> : ${p.data[1]}`;
       },
     },
+
     visualMap: {
       min: min,
       max: max,
@@ -116,6 +130,9 @@ const Chart = () => {
       right: '20',
       top: 'center',
       color: ['#EC407A', '#FB8C00', '#66BB6A', '#49a3f1'],
+      textStyle: {
+        color: colorScheme === 'dark' ? '#fff' : '#000',
+      },
     },
 
     calendar: [
@@ -125,7 +142,7 @@ const Chart = () => {
           `${selectedYear}-${String(currentMonth).padStart(2, '0')}-01`,
           `${selectedYear}-${String(currentMonth).padStart(2, '0')}-${new Date(selectedYear, currentMonth, 0).getDate()}`,
         ],
-        cellSize: ['auto', 20],
+        cellSize: ['auto', 40],
         splitLine: {
           show: false,
         },
@@ -149,22 +166,27 @@ const Chart = () => {
         width: '80%',
         height: '80%',
         dayLabel: {
+          color: colorScheme === 'dark' ? '#fff' : '#000',
           show: true,
-          nameMap: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+          nameMap: Array.from({ length: 7 }, (_, index) =>
+            t(`day.${index}` as any),
+          ),
           margin: 20,
           fontSize: 16,
         },
+        backgroundColor: colorScheme === 'dark' ? '#222' : '#f0f0f0',
       },
     ],
     series: [
       {
+        backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
         type: 'heatmap',
         coordinateSystem: 'calendar',
         calendarIndex: 0,
         data: chartData,
         label: {
           show: true,
-          color: '#000',
+          color: colorScheme === 'dark' ? '#fff' : '#000',
           fontSize: 14,
           position: 'inside',
           formatter: function (param: any) {
@@ -179,8 +201,8 @@ const Chart = () => {
         },
         itemStyle: {
           borderRadius: 16,
-          borderWidth: 8,
-          borderColor: '#fff',
+          borderWidth: 12,
+          borderColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
         },
       },
     ],
@@ -188,11 +210,13 @@ const Chart = () => {
 
   return (
     <Paper
+      elevation={0}
       sx={{
         width: '100%',
         mt: '24px',
         padding: '24px 24px 15px',
         overflow: 'hidden',
+        backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
       }}>
       <Box
         sx={{
@@ -206,26 +230,41 @@ const Chart = () => {
             sx={{
               fontSize: '18px',
               fontWeight: 'bold',
-              color: 'black',
+              color: colorScheme === 'dark' ? '#fff' : '#000',
             }}>
-            {'Thông kê số báo cáo theo tháng'}
+            {t('reportStatisticsByMonth')}
           </Typography>
         </Box>
 
         <Box sx={{ display: 'flex', gap: '12px' }}>
-          <FormControl sx={{ width: '110px' }}>
+          <FormControl sx={{ width: '120px' }}>
             <Select
               value={selectedType}
               onChange={handleTypeChange}
               sx={{
-                '&:hover .MuiOutlinedInput-notchedOutline': {},
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {},
+                color: colorScheme === 'dark' ? '#fff' : '#000',
+
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: colorScheme === 'dark' ? '#bbb' : '#333',
+                },
+
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: colorScheme === 'dark' ? '#4caf50' : '#1976d2',
+                  borderWidth: '2px',
+                },
+
                 '& fieldset': {
                   borderRadius: '8px',
+                  borderColor: colorScheme === 'dark' ? '#666' : '#ccc',
                 },
-                '& .MuiSelect-icon': {},
+
+                '& .MuiSelect-icon': {
+                  color: colorScheme === 'dark' ? '#fff' : '#000',
+                },
+
                 '& .MuiInputBase-input': {
                   padding: '10px',
+                  color: colorScheme === 'dark' ? '#fff' : '#000',
                 },
               }}
               MenuProps={{
@@ -236,8 +275,9 @@ const Chart = () => {
                     mt: '2px',
                     borderRadius: '8px',
                     padding: '0 8px',
-                    backgroundImage:
-                      'url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSJ1cmwoI3BhaW50MF9yYWRpYWxfMjc0OV8xNDUxODYpIiBmaWxsLW9wYWNpdHk9IjAuMTIiLz4KPGRlZnM+CjxyYWRpYWxHcmFkaWVudCBpZD0icGFpbnQwX3JhZGlhbF8yNzQ5XzE0NTE4NiIgY3g9IjAiIGN5PSIwIiByPSIxIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgZ3JhZGllbnRUcmFuc2Zvcm09InRyYW5zbGF0ZSgxMjAgMS44MTgxMmUtMDUpIHJvdGF0ZSgtNDUpIHNjYWxlKDEyMy4yNSkiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMDBCOEQ5Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAwQjhEOSIgc3RvcC1vcGFjaXR5PSIwIi8+CjwvcmFkaWFsR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==), url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSJ1cmwoI3BhaW50MF9yYWRpYWxfMjc0OV8xNDUxODcpIiBmaWxsLW9wYWNpdHk9IjAuMTIiLz4KPGRlZnM+CjxyYWRpYWxHcmFkaWVudCBpZD0icGFpbnQwX3JhZGlhbF8yNzQ5XzE0NTE4NyIgY3g9IjAiIGN5PSIwIiByPSIxIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgZ3JhZGllbnRUcmFuc2Zvcm09InRyYW5zbGF0ZSgwIDEyMCkgcm90YXRlKDEzNSkgc2NhbGUoMTIzLjI1KSI+CjxzdG9wIHN0b3AtY29sb3I9IiNGRjU2MzAiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkY1NjMwIiBzdG9wLW9wYWNpdHk9IjAiLz4KPC9yYWRpYWxHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K)',
+                    color: colorScheme === 'dark' ? '#fff' : '#000',
+                    backgroundColor:
+                      colorScheme === 'dark' ? '#121212' : '#fff',
                     backgroundPosition: 'top right, bottom left',
                     backgroundSize: '50%, 50%',
                     backgroundRepeat: 'no-repeat',
@@ -254,10 +294,10 @@ const Chart = () => {
                 },
               }}>
               {[
-                { label: 'Tất cả', value: 'ALL' },
-                { label: 'Câu hỏi', value: 'QUESTION' },
-                { label: 'Trả lời', value: 'ANSWER' },
-                { label: 'Phản hồi', value: 'COMMENT' },
+                { label: t('all'), value: 'ALL' },
+                { label: t('question'), value: 'QUESTION' },
+                { label: t('answer'), value: 'ANSWER' },
+                { label: t('comment'), value: 'COMMENT' },
               ].map((item) => (
                 <MenuItem
                   key={item.value}
@@ -274,35 +314,57 @@ const Chart = () => {
             </Select>
           </FormControl>
 
-          <FormControl sx={{ width: '110px' }}>
+          <FormControl sx={{ width: '130px' }}>
             <Select
               defaultValue={currentMonth}
               onChange={handleMonthChange}
               sx={{
-                '&:hover .MuiOutlinedInput-notchedOutline': {},
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {},
+                color: colorScheme === 'dark' ? '#fff' : '#000',
+
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: colorScheme === 'dark' ? '#bbb' : '#333',
+                },
+
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: colorScheme === 'dark' ? '#4caf50' : '#1976d2',
+                  borderWidth: '2px',
+                },
+
                 '& fieldset': {
                   borderRadius: '8px',
+                  borderColor: colorScheme === 'dark' ? '#666' : '#ccc',
                 },
-                '& .MuiSelect-icon': {},
+
+                '& .MuiSelect-icon': {
+                  color: colorScheme === 'dark' ? '#fff' : '#000',
+                },
+
                 '& .MuiInputBase-input': {
                   padding: '10px',
+                  color: colorScheme === 'dark' ? '#fff' : '#000',
                 },
               }}
               MenuProps={{
                 PaperProps: {
                   elevation: 0,
                   sx: {
-                    width: '120px',
                     mt: '2px',
                     borderRadius: '8px',
                     padding: '0 8px',
-                    backgroundImage:
-                      'url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSJ1cmwoI3BhaW50MF9yYWRpYWxfMjc0OV8xNDUxODYpIiBmaWxsLW9wYWNpdHk9IjAuMTIiLz4KPGRlZnM+CjxyYWRpYWxHcmFkaWVudCBpZD0icGFpbnQwX3JhZGlhbF8yNzQ5XzE0NTE4NiIgY3g9IjAiIGN5PSIwIiByPSIxIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgZ3JhZGllbnRUcmFuc2Zvcm09InRyYW5zbGF0ZSgxMjAgMS44MTgxMmUtMDUpIHJvdGF0ZSgtNDUpIHNjYWxlKDEyMy4yNSkiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMDBCOEQ5Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAwQjhEOSIgc3RvcC1vcGFjaXR5PSIwIi8+CjwvcmFkaWFsR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==), url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSJ1cmwoI3BhaW50MF9yYWRpYWxfMjc0OV8xNDUxODcpIiBmaWxsLW9wYWNpdHk9IjAuMTIiLz4KPGRlZnM+CjxyYWRpYWxHcmFkaWVudCBpZD0icGFpbnQwX3JhZGlhbF8yNzQ5XzE0NTE4NyIgY3g9IjAiIGN5PSIwIiByPSIxIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgZ3JhZGllbnRUcmFuc2Zvcm09InRyYW5zbGF0ZSgwIDEyMCkgcm90YXRlKDEzNSkgc2NhbGUoMTIzLjI1KSI+CjxzdG9wIHN0b3AtY29sb3I9IiNGRjU2MzAiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkY1NjMwIiBzdG9wLW9wYWNpdHk9IjAiLz4KPC9yYWRpYWxHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K)',
                     backgroundPosition: 'top right, bottom left',
                     backgroundSize: '50%, 50%',
                     backgroundRepeat: 'no-repeat',
                     backdropFilter: 'blur(20px)',
+                    color: colorScheme === 'dark' ? '#fff' : '#000',
+                    backgroundColor:
+                      colorScheme === 'dark' ? '#121212' : '#fff',
+                  },
+                },
+                MenuListProps: {
+                  sx: {
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(3, 1fr)',
+                    gap: 2,
                   },
                 },
                 anchorOrigin: {
@@ -326,7 +388,7 @@ const Chart = () => {
                         mt: '3px',
                       },
                     }}>
-                    Tháng {month}
+                    {t(`month.${month}` as any)}
                   </MenuItem>
                 );
               })}
@@ -338,14 +400,29 @@ const Chart = () => {
               defaultValue={currentYear.getFullYear()}
               onChange={handleYearChange}
               sx={{
-                '&:hover .MuiOutlinedInput-notchedOutline': {},
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {},
+                color: colorScheme === 'dark' ? '#fff' : '#000',
+
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: colorScheme === 'dark' ? '#bbb' : '#333',
+                },
+
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: colorScheme === 'dark' ? '#4caf50' : '#1976d2',
+                  borderWidth: '2px',
+                },
+
                 '& fieldset': {
                   borderRadius: '8px',
+                  borderColor: colorScheme === 'dark' ? '#666' : '#ccc',
                 },
-                '& .MuiSelect-icon': {},
+
+                '& .MuiSelect-icon': {
+                  color: colorScheme === 'dark' ? '#fff' : '#000',
+                },
+
                 '& .MuiInputBase-input': {
                   padding: '10px',
+                  color: colorScheme === 'dark' ? '#fff' : '#000',
                 },
               }}
               MenuProps={{
@@ -356,8 +433,9 @@ const Chart = () => {
                     mt: '2px',
                     borderRadius: '8px',
                     padding: '0 8px',
-                    backgroundImage:
-                      'url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSJ1cmwoI3BhaW50MF9yYWRpYWxfMjc0OV8xNDUxODYpIiBmaWxsLW9wYWNpdHk9IjAuMTIiLz4KPGRlZnM+CjxyYWRpYWxHcmFkaWVudCBpZD0icGFpbnQwX3JhZGlhbF8yNzQ5XzE0NTE4NiIgY3g9IjAiIGN5PSIwIiByPSIxIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgZ3JhZGllbnRUcmFuc2Zvcm09InRyYW5zbGF0ZSgxMjAgMS44MTgxMmUtMDUpIHJvdGF0ZSgtNDUpIHNjYWxlKDEyMy4yNSkiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMDBCOEQ5Ii8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAwQjhEOSIgc3RvcC1vcGFjaXR5PSIwIi8+CjwvcmFkaWFsR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==), url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSJ1cmwoI3BhaW50MF9yYWRpYWxfMjc0OV8xNDUxODcpIiBmaWxsLW9wYWNpdHk9IjAuMTIiLz4KPGRlZnM+CjxyYWRpYWxHcmFkaWVudCBpZD0icGFpbnQwX3JhZGlhbF8yNzQ5XzE0NTE4NyIgY3g9IjAiIGN5PSIwIiByPSIxIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgZ3JhZGllbnRUcmFuc2Zvcm09InRyYW5zbGF0ZSgwIDEyMCkgcm90YXRlKDEzNSkgc2NhbGUoMTIzLjI1KSI+CjxzdG9wIHN0b3AtY29sb3I9IiNGRjU2MzAiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkY1NjMwIiBzdG9wLW9wYWNpdHk9IjAiLz4KPC9yYWRpYWxHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K)',
+                    color: colorScheme === 'dark' ? '#fff' : '#000',
+                    backgroundColor:
+                      colorScheme === 'dark' ? '#121212' : '#fff',
                     backgroundPosition: 'top right, bottom left',
                     backgroundSize: '50%, 50%',
                     backgroundRepeat: 'no-repeat',
@@ -397,7 +475,11 @@ const Chart = () => {
       <ReactECharts
         option={option}
         key={`${selectedYear}-${currentMonth}-${selectedType}`}
-        style={{ height: 450, width: '100%' }}
+        style={{
+          height: 450,
+          width: '100%',
+          backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
+        }}
       />
     </Paper>
   );
