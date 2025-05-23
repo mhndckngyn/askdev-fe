@@ -1,20 +1,35 @@
 import { useState, useEffect } from 'react';
 import {
   Box,
-  TextField,
+  TextInput,
   Button,
-  Typography,
+  Text,
   Avatar,
   Collapse,
-  IconButton,
+  ActionIcon,
   Tooltip,
-} from '@mui/material';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FlagIcon from '@mui/icons-material/Flag';
-import ReplyIcon from '@mui/icons-material/Reply';
+  Badge,
+  Transition,
+  Group,
+  Stack,
+  Textarea,
+  Container,
+  ThemeIcon,
+  Card,
+  useMantineColorScheme,
+  useMantineTheme,
+  Flex,
+  rem,
+} from '@mantine/core';
+import {
+  IconThumbUp,
+  IconThumbDown,
+  IconEdit,
+  IconTrash,
+  IconFlag,
+  IconMessageCircle,
+  IconSend,
+} from '@tabler/icons-react';
 import { useParams } from 'react-router-dom';
 import {
   createAnswer,
@@ -33,7 +48,10 @@ import EditPage from './EditPage';
 import { useUserStore } from '../../stores/useUserStore';
 import dayjs from 'dayjs';
 
-export default function answerView() {
+export default function AnswerView() {
+  const { colorScheme } = useMantineColorScheme();
+  const theme = useMantineTheme();
+  const isDark = colorScheme === 'dark';
   const { user } = useUserStore();
 
   const { id } = useParams<{ id: string }>();
@@ -89,6 +107,7 @@ export default function answerView() {
     try {
       const response = await createAnswer(id, newanswer);
       if (response.success) {
+        setNewanswer('');
         fetchAnswers();
       } else {
         console.error(response.message);
@@ -141,7 +160,6 @@ export default function answerView() {
       const response = await createComment(answerId, content);
       if (response.success) {
         setNewComment((prev) => ({ ...prev, [answerId]: '' }));
-
         fetchComments(answerId);
       } else {
       }
@@ -253,238 +271,607 @@ export default function answerView() {
     fetchComments(answerId);
   };
 
+  const gradientBg = isDark
+    ? 'linear-gradient(135deg, rgba(55, 59, 83, 0.8) 0%, rgba(28, 30, 41, 0.9) 100%)'
+    : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%)';
+
+  const cardBg = isDark
+    ? 'linear-gradient(145deg, rgba(45, 48, 68, 0.95) 0%, rgba(35, 38, 54, 0.98) 100%)'
+    : 'linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)';
+
+  const commentBg = isDark
+    ? 'rgba(30, 35, 50, 0.6)'
+    : 'rgba(248, 250, 252, 0.8)';
+
   return (
-    <Box sx={{ padding: '12px' }}>
-      <Box sx={{ display: 'flex', gap: 1, mb: 1.5 }}>
-        <TextField
-          fullWidth
-          placeholder="Viết bình luận..."
-          size="small"
-          value={newanswer}
-          onChange={(e) => setNewanswer(e.target.value)}
-        />
-        <Button variant="contained" onClick={handleAddanswer}>
-          Gửi
-        </Button>
+    <Container size="lg" px="md">
+      <Box
+        style={{
+          background: gradientBg,
+          backdropFilter: 'blur(20px)',
+          borderRadius: rem(20),
+          border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
+          padding: rem(32),
+          marginBottom: rem(24),
+        }}>
+        {/* Answer Input Section */}
+        <Card
+          shadow="xl"
+          radius="xl"
+          withBorder
+          style={{
+            background: cardBg,
+            backdropFilter: 'blur(10px)',
+            border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
+            marginBottom: rem(32),
+            overflow: 'visible',
+          }}>
+          <Card.Section p="xl">
+            <Group align="center" mb="lg">
+              <ThemeIcon
+                size="lg"
+                radius="xl"
+                variant="gradient"
+                gradient={{ from: 'violet', to: 'indigo', deg: 45 }}>
+                <IconMessageCircle size={20} />
+              </ThemeIcon>
+              <Text
+                size="xl"
+                fw={700}
+                variant="gradient"
+                gradient={{ from: 'violet', to: 'indigo', deg: 45 }}>
+                Chia sẻ câu trả lời của bạn
+              </Text>
+            </Group>
+
+            <Stack gap="md">
+              <Textarea
+                placeholder="Viết câu trả lời chi tiết của bạn..."
+                value={newanswer}
+                onChange={(e) => setNewanswer(e.currentTarget.value)}
+                minRows={4}
+                maxRows={8}
+                radius="xl"
+                size="lg"
+                styles={{
+                  input: {
+                    backgroundColor: isDark
+                      ? 'rgba(255, 255, 255, 0.05)'
+                      : 'rgba(255, 255, 255, 0.8)',
+                    border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
+                    '&:focus': {
+                      borderColor: theme.colors.violet[6],
+                      boxShadow: `0 0 0 2px ${theme.colors.violet[2]}`,
+                    },
+                  },
+                }}
+              />
+              <Flex justify="flex-end">
+                <Button
+                  onClick={handleAddanswer}
+                  disabled={!newanswer.trim()}
+                  rightSection={<IconSend size={18} />}
+                  variant="gradient"
+                  gradient={{ from: 'violet', to: 'indigo', deg: 45 }}
+                  radius="xl"
+                  size="lg"
+                  style={{
+                    boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
+                    transform: newanswer.trim() ? 'translateY(-2px)' : 'none',
+                    transition: 'all 0.3s ease',
+                  }}>
+                  Gửi câu trả lời
+                </Button>
+              </Flex>
+            </Stack>
+          </Card.Section>
+        </Card>
+
+        {/* Answers List */}
+        <Stack gap="xl">
+          {answers.map((answer) => (
+            <Transition
+              key={answer.id}
+              mounted={true}
+              transition="slide-up"
+              duration={500}
+              timingFunction="ease">
+              {(styles) => (
+                <Card
+                  shadow="xl"
+                  radius="xl"
+                  withBorder
+                  style={{
+                    ...styles,
+                    background: cardBg,
+                    backdropFilter: 'blur(10px)',
+                    border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
+                    transition: 'all 0.3s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.boxShadow = isDark
+                      ? '0 20px 40px rgba(0, 0, 0, 0.4)'
+                      : '0 20px 40px rgba(0, 0, 0, 0.1)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = isDark
+                      ? '0 8px 32px rgba(0, 0, 0, 0.2)'
+                      : '0 8px 32px rgba(0, 0, 0, 0.05)';
+                  }}>
+                  <Card.Section p="xl">
+                    {/* Answer Header */}
+                    <Group justify="space-between" align="flex-start" mb="lg">
+                      <Group align="flex-start" gap="md">
+                        <Avatar
+                          src={answer.user.profilePicture}
+                          size={60}
+                          radius="xl"
+                          style={{
+                            background:
+                              'linear-gradient(45deg, #ff6b6b, #ee5a52)',
+                            boxShadow: '0 8px 24px rgba(255, 107, 107, 0.3)',
+                          }}>
+                          {!answer.user.profilePicture &&
+                            answer.user.username[0].toUpperCase()}
+                        </Avatar>
+                        <Stack gap="xs" style={{ flex: 1 }}>
+                          <Group gap="md" align="center">
+                            <Text
+                              size="lg"
+                              fw={700}
+                              c={isDark ? 'white' : 'dark'}>
+                              {answer.user.username}
+                            </Text>
+                            <Badge
+                              variant="gradient"
+                              gradient={{ from: 'blue', to: 'cyan', deg: 45 }}
+                              radius="xl"
+                              size="sm">
+                              {dayjs(answer.createdAt).format(
+                                'HH:mm DD/MM/YYYY',
+                              )}
+                            </Badge>
+                          </Group>
+                          <Text
+                            size="md"
+                            c={isDark ? 'gray.3' : 'gray.7'}
+                            style={{
+                              lineHeight: 1.6,
+                              wordBreak: 'break-word',
+                              whiteSpace: 'pre-wrap',
+                              maxWidth: '590px',
+                              overflowWrap: 'break-word',
+                            }}>
+                            {answer.content}
+                          </Text>
+                        </Stack>
+                      </Group>
+
+                      {/* Action Buttons */}
+                      <Group gap="xs">
+                        {user?.id == answer.userId ? (
+                          <>
+                            <Tooltip label="Chỉnh sửa" position="top">
+                              <ActionIcon
+                                onClick={() => handleEdit(answer, 'ANSWER')}
+                                variant="light"
+                                color="blue"
+                                size="lg"
+                                radius="xl"
+                                style={{
+                                  transition: 'all 0.2s ease',
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.transform =
+                                    'scale(1.1)';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.transform = 'scale(1)';
+                                }}>
+                                <IconEdit size={18} />
+                              </ActionIcon>
+                            </Tooltip>
+                            <Tooltip label="Xóa" position="top">
+                              <ActionIcon
+                                onClick={handleDelete}
+                                variant="light"
+                                color="red"
+                                size="lg"
+                                radius="xl"
+                                style={{
+                                  transition: 'all 0.2s ease',
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.transform =
+                                    'scale(1.1)';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.transform = 'scale(1)';
+                                }}>
+                                <IconTrash size={18} />
+                              </ActionIcon>
+                            </Tooltip>
+                          </>
+                        ) : (
+                          <Tooltip label="Báo cáo" position="top">
+                            <ActionIcon
+                              onClick={() => handleReport(answer, 'ANSWER')}
+                              variant="light"
+                              color="yellow"
+                              size="lg"
+                              radius="xl"
+                              style={{
+                                transition: 'all 0.2s ease',
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'scale(1.1)';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'scale(1)';
+                              }}>
+                              <IconFlag size={18} />
+                            </ActionIcon>
+                          </Tooltip>
+                        )}
+                      </Group>
+                    </Group>
+
+                    {/* Vote and Reply Section */}
+                    <Group gap="lg" align="center" mb="md">
+                      <Group gap="xs" align="center">
+                        <ActionIcon
+                          onClick={() => handleLike(answer.id)}
+                          variant={
+                            answer.voteStatus === 'like' ? 'filled' : 'light'
+                          }
+                          color="green"
+                          size="lg"
+                          radius="xl"
+                          style={{
+                            transition: 'all 0.2s ease',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'scale(1.15)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'scale(1)';
+                          }}>
+                          <IconThumbUp size={18} />
+                        </ActionIcon>
+                        <Badge
+                          variant={
+                            answer.voteStatus === 'like' ? 'filled' : 'light'
+                          }
+                          color="green"
+                          radius="xl"
+                          size="lg">
+                          {answer.upvotes}
+                        </Badge>
+                      </Group>
+
+                      <Group gap="xs" align="center">
+                        <ActionIcon
+                          onClick={() => handleDislike(answer.id)}
+                          variant={
+                            answer.voteStatus === 'dislike' ? 'filled' : 'light'
+                          }
+                          color="red"
+                          size="lg"
+                          radius="xl"
+                          style={{
+                            transition: 'all 0.2s ease',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'scale(1.15)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'scale(1)';
+                          }}>
+                          <IconThumbDown size={18} />
+                        </ActionIcon>
+                        <Badge
+                          variant={
+                            answer.voteStatus === 'dislike' ? 'filled' : 'light'
+                          }
+                          color="red"
+                          radius="xl"
+                          size="lg">
+                          {answer.downvotes}
+                        </Badge>
+                      </Group>
+
+                      <Button
+                        leftSection={<IconMessageCircle size={18} />}
+                        onClick={() =>
+                          setcommentingId(
+                            commentingId === answer.id ? null : answer.id,
+                          )
+                        }
+                        variant="gradient"
+                        gradient={{ from: 'blue', to: 'cyan', deg: 45 }}
+                        radius="xl"
+                        size="md"
+                        style={{
+                          transition: 'all 0.2s ease',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'translateY(-2px)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'translateY(0)';
+                        }}>
+                        Phản hồi
+                      </Button>
+                    </Group>
+
+                    {/* Comment Input */}
+                    <Collapse in={commentingId === answer.id}>
+                      <Box
+                        p="lg"
+                        style={{
+                          backgroundColor: commentBg,
+                          borderRadius: rem(16),
+                          border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
+                        }}>
+                        <Group gap="md" align="flex-end">
+                          <TextInput
+                            placeholder="Viết phản hồi..."
+                            value={newcomment[answer.id] || ''}
+                            onChange={(e) =>
+                              handlecommentChange(
+                                answer.id,
+                                e.currentTarget.value,
+                              )
+                            }
+                            radius="xl"
+                            size="md"
+                            style={{ flex: 1 }}
+                            styles={{
+                              input: {
+                                backgroundColor: isDark
+                                  ? 'rgba(255, 255, 255, 0.05)'
+                                  : 'rgba(255, 255, 255, 0.8)',
+                                border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
+                              },
+                            }}
+                          />
+                          <Button
+                            onClick={() => {
+                              handlecommentSubmit(answer.id);
+                              setcommentingId(null);
+                            }}
+                            disabled={!newcomment[answer.id]?.trim()}
+                            variant="gradient"
+                            gradient={{ from: 'blue', to: 'cyan', deg: 45 }}
+                            radius="xl"
+                            size="md">
+                            Gửi
+                          </Button>
+                        </Group>
+                      </Box>
+                    </Collapse>
+                  </Card.Section>
+
+                  {/* Comments Section */}
+                  {comments[answer.id]?.length > 0 && (
+                    <Card.Section
+                      style={{
+                        borderTop: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)'}`,
+                        backgroundColor: commentBg,
+                      }}>
+                      {comments[answer.id]?.map((comment, commentIndex) => (
+                        <Transition
+                          key={comment.id}
+                          mounted={true}
+                          transition="slide-right"
+                          duration={300}
+                          timingFunction="ease">
+                          {(styles) => (
+                            <Box
+                              p="lg"
+                              style={{
+                                ...styles,
+                                borderTop:
+                                  commentIndex > 0
+                                    ? `1px solid ${isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'}`
+                                    : 'none',
+                                transition: 'background-color 0.2s ease',
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = isDark
+                                  ? 'rgba(255, 255, 255, 0.02)'
+                                  : 'rgba(0, 0, 0, 0.02)';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor =
+                                  'transparent';
+                              }}>
+                              <Group align="flex-start" gap="md">
+                                <Avatar
+                                  src={comment.user.profilePicture}
+                                  size={40}
+                                  radius="xl"
+                                  style={{
+                                    background:
+                                      'linear-gradient(45deg, #74b9ff, #0984e3)',
+                                  }}>
+                                  {!comment.user.profilePicture &&
+                                    comment.user.username[0].toUpperCase()}
+                                </Avatar>
+
+                                <Stack gap="xs" style={{ flex: 1 }}>
+                                  <Group gap="sm" align="center">
+                                    <Text
+                                      size="sm"
+                                      fw={600}
+                                      c={isDark ? 'white' : 'dark'}>
+                                      {comment.user.username}
+                                    </Text>
+                                    <Badge
+                                      variant="light"
+                                      color="cyan"
+                                      radius="xl"
+                                      size="xs">
+                                      {dayjs(comment.createdAt).format(
+                                        'HH:mm DD/MM/YYYY',
+                                      )}
+                                    </Badge>
+                                  </Group>
+
+                                  <Text
+                                    size="sm"
+                                    c={isDark ? 'gray.3' : 'gray.7'}
+                                    style={{
+                                      lineHeight: 1.5,
+                                      wordBreak: 'break-word',
+                                      whiteSpace: 'pre-wrap',
+                                      maxWidth: '100%',
+                                      overflowWrap: 'break-word',
+                                    }}>
+                                    {comment.content}
+                                  </Text>
+
+                                  <Group gap="lg" align="center">
+                                    <Group gap="xs" align="center">
+                                      <ActionIcon
+                                        onClick={() =>
+                                          handleLikeComment(
+                                            comment.id,
+                                            answer.id,
+                                          )
+                                        }
+                                        variant={
+                                          comment.voteStatus === 'like'
+                                            ? 'filled'
+                                            : 'light'
+                                        }
+                                        color="green"
+                                        size="sm"
+                                        radius="xl">
+                                        <IconThumbUp size={14} />
+                                      </ActionIcon>
+                                      <Text size="xs" c="dimmed">
+                                        {comment.upvotes}
+                                      </Text>
+                                    </Group>
+
+                                    <Group gap="xs" align="center">
+                                      <ActionIcon
+                                        onClick={() =>
+                                          handleDislikeComment(
+                                            comment.id,
+                                            answer.id,
+                                          )
+                                        }
+                                        variant={
+                                          comment.voteStatus === 'dislike'
+                                            ? 'filled'
+                                            : 'light'
+                                        }
+                                        color="red"
+                                        size="sm"
+                                        radius="xl">
+                                        <IconThumbDown size={14} />
+                                      </ActionIcon>
+                                      <Text size="xs" c="dimmed">
+                                        {comment.downvotes}
+                                      </Text>
+                                    </Group>
+                                  </Group>
+                                </Stack>
+
+                                {/* Comment Actions */}
+                                <Group gap="xs">
+                                  {user?.id == comment.userId ? (
+                                    <>
+                                      <Tooltip label="Chỉnh sửa">
+                                        <ActionIcon
+                                          onClick={() =>
+                                            handleEdit(comment, 'COMMENT')
+                                          }
+                                          variant="light"
+                                          color="blue"
+                                          size="sm"
+                                          radius="xl">
+                                          <IconEdit size={14} />
+                                        </ActionIcon>
+                                      </Tooltip>
+                                      <Tooltip label="Xóa">
+                                        <ActionIcon
+                                          onClick={() => handleDelete()}
+                                          variant="light"
+                                          color="red"
+                                          size="sm"
+                                          radius="xl">
+                                          <IconTrash size={14} />
+                                        </ActionIcon>
+                                      </Tooltip>
+                                    </>
+                                  ) : (
+                                    <Tooltip label="Báo cáo">
+                                      <ActionIcon
+                                        onClick={() =>
+                                          handleReport(comment, 'COMMENT')
+                                        }
+                                        variant="light"
+                                        color="yellow"
+                                        size="sm"
+                                        radius="xl">
+                                        <IconFlag size={14} />
+                                      </ActionIcon>
+                                    </Tooltip>
+                                  )}
+                                </Group>
+                              </Group>
+                            </Box>
+                          )}
+                        </Transition>
+                      ))}
+                    </Card.Section>
+                  )}
+                </Card>
+              )}
+            </Transition>
+          ))}
+        </Stack>
+
+        {/* Empty State */}
+        {answers.length === 0 && (
+          <Card
+            shadow="xl"
+            radius="xl"
+            withBorder
+            style={{
+              background: cardBg,
+              backdropFilter: 'blur(10px)',
+              border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
+              textAlign: 'center',
+              padding: rem(48),
+            }}>
+            <Stack align="center" gap="lg">
+              <ThemeIcon
+                size={80}
+                radius="xl"
+                variant="gradient"
+                gradient={{ from: 'blue', to: 'cyan', deg: 45 }}>
+                <IconMessageCircle size={40} />
+              </ThemeIcon>
+              <Stack align="center" gap="xs">
+                <Text size="xl" fw={700} c={isDark ? 'white' : 'dark'}>
+                  Chưa có câu trả lời nào
+                </Text>
+                <Text size="md" c="dimmed">
+                  Hãy là người đầu tiên chia sẻ câu trả lời cho câu hỏi này!
+                </Text>
+              </Stack>
+            </Stack>
+          </Card>
+        )}
       </Box>
 
-      {answers.map((answer) => (
-        <Box
-          key={answer.id}
-          sx={{
-            mb: 2,
-            border: '1px solid #ccc',
-            borderRadius: 2,
-            p: 1.5,
-            backgroundColor: '#f9f9f9',
-          }}>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: 1,
-            }}>
-            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-              <Avatar sx={{ width: 32, height: 32 }}>
-                {!answer.user.profilePicture && answer.user.username[0]}
-              </Avatar>
-              <Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Typography fontWeight="bold" fontSize={14}>
-                    {answer.user.username}
-                  </Typography>
-                  <Typography fontSize={12} color="gray">
-                    {dayjs(answer.createdAt).format('HH:mm DD/MM/YYYY')}
-                  </Typography>
-                </Box>
-                <Typography fontSize={14}>{answer.content}</Typography>
-              </Box>
-            </Box>
-
-            <Box sx={{ display: 'flex', gap: 1 }}>
-              {user?.id == answer.userId ? (
-                <>
-                  <Tooltip title="Chỉnh sửa">
-                    <IconButton onClick={() => handleEdit(answer, 'ANSWER')}>
-                      <EditIcon sx={{ fontSize: 20, color: '#0288d1' }} />
-                    </IconButton>
-                  </Tooltip>
-
-                  <Tooltip title="Xóa">
-                    <IconButton onClick={handleDelete}>
-                      <DeleteIcon sx={{ fontSize: 20, color: '#d32f2f' }} />
-                    </IconButton>
-                  </Tooltip>
-                </>
-              ) : (
-                <Tooltip title="Báo cáo">
-                  <IconButton onClick={() => handleReport(answer, 'ANSWER')}>
-                    <FlagIcon sx={{ fontSize: 20, color: '#f57c00' }} />
-                  </IconButton>
-                </Tooltip>
-              )}
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              gap: 1,
-              mt: 0.5,
-              ml: 5,
-              alignItems: 'center',
-            }}>
-            <IconButton size="small" onClick={() => handleLike(answer.id)}>
-              <ThumbUpIcon
-                fontSize="small"
-                sx={{ color: answer.voteStatus === 'like' ? 'green' : 'gray' }}
-              />
-            </IconButton>
-            <Typography variant="caption">{answer.upvotes}</Typography>
-            <IconButton size="small" onClick={() => handleDislike(answer.id)}>
-              <ThumbDownIcon
-                fontSize="small"
-                sx={{ color: answer.voteStatus === 'dislike' ? 'red' : 'gray' }}
-              />
-            </IconButton>
-
-            <Typography variant="caption">{answer.downvotes}</Typography>
-
-            <Tooltip title="Phản hồi">
-              <IconButton
-                onClick={() =>
-                  setcommentingId(commentingId === answer.id ? null : answer.id)
-                }>
-                <ReplyIcon sx={{ fontSize: 24, color: '#1976d2' }} />
-              </IconButton>
-            </Tooltip>
-          </Box>
-          <Collapse in={commentingId === answer.id} sx={{ mt: 1, ml: 5 }}>
-            <Box sx={{ display: 'flex', gap: 1 }}>
-              <TextField
-                fullWidth
-                size="small"
-                placeholder="Phản hồi..."
-                value={newcomment[answer.id] || ''}
-                onChange={(e) => handlecommentChange(answer.id, e.target.value)}
-              />
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={() => {
-                  handlecommentSubmit(answer.id);
-                  setcommentingId(null);
-                }}>
-                Gửi
-              </Button>
-            </Box>
-          </Collapse>
-          <Box sx={{ ml: 5, mt: 1 }}>
-            {comments[answer.id]?.map((comment) => (
-              <Box
-                key={comment.id}
-                sx={{
-                  mt: 1,
-                  display: 'flex',
-                  gap: 1,
-                  alignItems: 'flex-start',
-                  border: '1px solid #ddd',
-                  borderRadius: 2,
-                  p: 1,
-                  backgroundColor: '#fff',
-                }}>
-                <Avatar sx={{ width: 24, height: 24, fontSize: 12 }}>
-                  {!comment.user.profilePicture && comment.user.username[0]}
-                </Avatar>
-                <Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Typography fontWeight="bold" fontSize={13}>
-                      {comment.user.username}
-                    </Typography>
-                    <Typography fontSize={12} color="gray">
-                      {dayjs(comment.createdAt).format('HH:mm DD/MM/YYYY')}
-                    </Typography>
-                  </Box>
-
-                  <Typography fontSize={13}>{comment.content}</Typography>
-
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      gap: 1,
-                      alignItems: 'center',
-                      mt: 0.5,
-                    }}>
-                    <IconButton
-                      size="small"
-                      onClick={() => handleLikeComment(comment.id, answer.id)}>
-                      <ThumbUpIcon
-                        fontSize="small"
-                        sx={{
-                          color:
-                            comment.voteStatus === 'like' ? 'green' : 'gray',
-                        }}
-                      />
-                    </IconButton>
-                    <Typography variant="caption">{comment.upvotes}</Typography>
-                    <IconButton
-                      size="small"
-                      onClick={() =>
-                        handleDislikeComment(comment.id, answer.id)
-                      }>
-                      <ThumbDownIcon
-                        fontSize="small"
-                        sx={{
-                          color:
-                            comment.voteStatus === 'dislike' ? 'red' : 'gray',
-                        }}
-                      />
-                    </IconButton>
-                    <Typography variant="caption">
-                      {comment.downvotes}
-                    </Typography>
-                  </Box>
-                </Box>
-
-                <Box
-                  sx={{
-                    display: 'flex',
-                    gap: 1,
-                    alignItems: 'center',
-                    ml: 'auto',
-                  }}>
-                  {user?.id == comment.userId ? (
-                    <>
-                      <Tooltip title="Chỉnh sửa">
-                        <IconButton
-                          onClick={() => handleEdit(comment, 'COMMENT')}
-                          size="small">
-                          <EditIcon sx={{ fontSize: 20, color: '#0288d1' }} />
-                        </IconButton>
-                      </Tooltip>
-
-                      <Tooltip title="Xóa">
-                        <IconButton onClick={() => handleDelete()} size="small">
-                          <DeleteIcon sx={{ fontSize: 20, color: '#d32f2f' }} />
-                        </IconButton>
-                      </Tooltip>
-                    </>
-                  ) : (
-                    <Tooltip title="Báo cáo">
-                      <IconButton
-                        onClick={() => handleReport(comment, 'COMMENT')}
-                        size="small">
-                        <FlagIcon sx={{ fontSize: 20, color: '#f57c00' }} />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                </Box>
-              </Box>
-            ))}
-          </Box>
-        </Box>
-      ))}
-
+      {/* Modals */}
       <ReportPage
         open={openReportModal}
         handleToggle={handleCloseReportModal}
@@ -500,6 +887,6 @@ export default function answerView() {
         type={editingType}
         oldContent={editingContent}
       />
-    </Box>
+    </Container>
   );
 }

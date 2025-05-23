@@ -72,7 +72,7 @@ function TagTableComponent({
         <ActionIcon
           size="sm"
           variant="subtle"
-          color="orange"
+          color="pink"
           onClick={() => handleEdit(tag)}>
           <IconEdit size={18} />
         </ActionIcon>
@@ -82,7 +82,7 @@ function TagTableComponent({
         <ActionIcon
           size="sm"
           variant="subtle"
-          color="pink"
+          color="orange"
           onClick={() => {
             handleTagDetailPage(tag);
           }}>
