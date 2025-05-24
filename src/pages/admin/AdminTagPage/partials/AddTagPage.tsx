@@ -107,7 +107,7 @@ function AddPage({ open, handleToggle, onSuccess }: Props) {
       ? '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255,255,255,0.05)'
       : '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255,255,255,0.8)',
     '&::-webkit-scrollbar': {
-      width: '6px',
+      display: 'none',
     },
     '&::-webkit-scrollbar-track': {
       background: 'transparent',

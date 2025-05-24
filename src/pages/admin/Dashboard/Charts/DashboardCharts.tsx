@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Grow from '@mui/material/Grow';
+import Skeleton from '@mui/material/Skeleton';
+import Card from '@mui/material/Card';
 import ReportsBarChart from './ReportsBarChart';
 import { getDashboardWeeklyTrends } from '../services';
 import { subDays, startOfDay } from 'date-fns';
@@ -38,7 +42,7 @@ const baseChartData = (t: (key: string) => string) => ({
 
 export default function DashboardCharts() {
   const { t } = useTranslation('adminDashboardPage');
-
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState({
     user: baseChartData(t as (key: string) => string),
     question: baseChartData(t as (key: string) => string),
@@ -55,8 +59,8 @@ export default function DashboardCharts() {
   useEffect(() => {
     async function fetchData() {
       try {
+        setLoading(true);
         const res = await getDashboardWeeklyTrends();
-
         const labels = generateWeeklyLabels(t as (key: string) => string);
 
         setData({
@@ -93,50 +97,158 @@ export default function DashboardCharts() {
         });
       } catch (error) {
         console.error(error);
+      } finally {
+        setTimeout(() => setLoading(false), 800); // Add smooth loading transition
       }
     }
 
     fetchData();
   }, [t]);
 
+  const SkeletonLoader = () => (
+    <Card
+      sx={{
+        height: '320px',
+        borderRadius: '20px',
+        background: 'linear-gradient(145deg, #f8fafc, #e2e8f0)',
+        position: 'relative',
+        overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: '-100%',
+          width: '100%',
+          height: '100%',
+          background: `linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)`,
+        },
+      }}>
+      <Skeleton
+        variant="rectangular"
+        height={200}
+        sx={{
+          borderRadius: '16px',
+          mb: 2,
+        }}
+      />
+      <Skeleton variant="text" height={32} width="60%" sx={{ mb: 1 }} />
+      <Skeleton variant="text" height={24} width="40%" />
+    </Card>
+  );
+
+  if (loading) {
+    return (
+      <Container sx={{ mt: 4 }}>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: '1fr',
+              md: 'repeat(2, 1fr)',
+              lg: 'repeat(3, 1fr)',
+            },
+            gap: 3,
+            width: '100%',
+          }}>
+          {[1, 2, 3].map((index) => (
+            <Grow
+              key={index}
+              in
+              timeout={600 + index * 200}
+              style={{ transformOrigin: '0 0 0' }}>
+              <Box>
+                <SkeletonLoader />
+              </Box>
+            </Grow>
+          ))}
+        </Box>
+      </Container>
+    );
+  }
+
+  const chartConfigs = [
+    {
+      key: 'user',
+      title: t('chart.users'),
+      description: `${t('averagePerDay', {
+        value: calculateAverage(data.user.datasets[0].data),
+      })}`,
+      colors: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      data: data.user,
+    },
+    {
+      key: 'question',
+      title: t('chart.questions'),
+      description: `${t('averagePerDay', {
+        value: calculateAverage(data.question.datasets[0].data),
+      })}`,
+      colors: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+      data: data.question,
+    },
+    {
+      key: 'report',
+      title: t('chart.reports'),
+      description: `${t('averagePerDay', {
+        value: calculateAverage(data.report.datasets[0].data),
+      })}`,
+      colors: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+      data: data.report,
+    },
+  ];
+
   return (
-    <Box
-      mt="25px"
-      display="flex"
-      flexWrap="wrap"
-      gap="1rem"
-      width="100%"
-      justifyContent="space-between">
-      <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
-        <ReportsBarChart
-          title={t('chart.users')}
-          description={`${t('averagePerDay', { value: calculateAverage(data.user.datasets[0].data) })}`}
-          chart={{
-            ...data.user,
-            colors: 'linear-gradient(135deg, #49a3f1, #1A73E8)',
-          }}
-        />
+    <Container sx={{ mt: 4 }}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            md: 'repeat(2, 1fr)',
+            lg: 'repeat(3, 1fr)',
+          },
+          gap: 3,
+          width: '100%',
+          maxWidth: '100%',
+          boxSizing: 'border-box',
+        }}>
+        {chartConfigs.map((config, index) => (
+          <Grow
+            key={config.key}
+            in
+            timeout={800 + index * 200}
+            style={{
+              width: '100%',
+              maxWidth: '100%',
+            }}>
+            <Box
+              sx={{
+                width: '100%',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                '&:hover': {
+                  '& .chart-wrapper': {
+                    transform: 'scale(1.02)',
+                  },
+                },
+              }}>
+              <Box
+                className="chart-wrapper"
+                sx={{
+                  transition: 'transform 0.3s ease',
+                  height: '100%',
+                }}>
+                <ReportsBarChart
+                  title={config.title}
+                  description={config.description}
+                  chart={{
+                    ...config.data,
+                    colors: config.colors,
+                  }}
+                />
+              </Box>
+            </Box>
+          </Grow>
+        ))}
       </Box>
-      <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
-        <ReportsBarChart
-          title={t('chart.questions')}
-          description={`${t('averagePerDay', { value: calculateAverage(data.question.datasets[0].data) })}`}
-          chart={{
-            ...data.question,
-            colors: 'linear-gradient(135deg, #EC407A, #D81B60)',
-          }}
-        />
-      </Box>
-      <Box sx={{ flex: '1 1 300px', minWidth: '300px' }}>
-        <ReportsBarChart
-          title={t('chart.reports')}
-          description={`${t('averagePerDay', { value: calculateAverage(data.report.datasets[0].data) })}`}
-          chart={{
-            ...data.report,
-            colors: 'linear-gradient(135deg, #66BB6A, #43A047)',
-          }}
-        />
-      </Box>
-    </Box>
+    </Container>
   );
 }
