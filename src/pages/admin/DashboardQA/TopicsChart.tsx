@@ -55,10 +55,7 @@ const TopicsChart = () => {
         : 'rgba(248, 250, 252, 0.5)',
     tooltip: {
       trigger: 'item',
-      background:
-        colorScheme === 'dark'
-          ? 'rgba(30, 41, 59, 0.3)'
-          : 'rgba(248, 250, 252, 0.5)',
+      backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
       textStyle: {
         color: colorScheme === 'dark' ? '#fff' : '#000',
         fontFamily: 'Arial, sans-serif',

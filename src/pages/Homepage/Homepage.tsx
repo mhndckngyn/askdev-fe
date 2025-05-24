@@ -1,108 +1,112 @@
-import React from 'react';
-import {
-  Box,
-  Typography,
-  Container,
-  Paper,
-  Avatar,
-  Chip,
-  Card,
-  CardContent,
-  LinearProgress,
-  Divider,
-} from '@mui/material';
-import Grid from '@mui/material/Grid';
-import {
-  QuestionAnswer,
-  TrendingUp,
-  People,
-  Star,
-  ThumbUp,
-  Visibility,
-} from '@mui/icons-material';
+import TrendingQuestions from './TrendingQuestions';
+import TopContributors from './TopContributors';
+import Stats from './Stats';
+import Categoriespage from './Categories';
+import { Box, Typography, Container } from '@mui/material';
+import { HelpOutline, Label, People, Forum } from '@mui/icons-material';
 import { useMantineColorScheme } from '@mantine/core';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import {
+  getSummary,
+  getTrendingQuestions,
+  getTopContributors,
+  getTopTags,
+} from './services';
 
 export default function Homepage() {
+  const { t } = useTranslation('home');
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
 
+  const [trendingQuestions, setTrendingQuestions] = useState([]);
+  const [topContributors, setTopContributors] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  const [statsData, setStatsData] = useState({
+    questions: 0,
+    members: 0,
+    answers: 0,
+    tags: 0,
+  });
+
+  useEffect(() => {
+    getSummary()
+      .then((data) => {
+        setStatsData({
+          questions: data.content.questionCount ?? 0,
+          members: data.content.userCount ?? 0,
+          answers: data.content.answerCount ?? 0,
+          tags: data.content.tagCount ?? 0,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+    getTrendingQuestions()
+      .then((data) => {
+        setTrendingQuestions(data.content);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+    getTopContributors()
+      .then((data) => {
+        setTopContributors(data.content);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+    getTopTags()
+      .then((data) => {
+        const coloredCategories = data.content.map((tag: any, index: any) => {
+          const colors = [
+            '#2196f3',
+            '#9c27b0',
+            '#4caf50',
+            '#ff5722',
+            '#607d8b',
+          ];
+          return {
+            ...tag,
+            color: colors[index % colors.length],
+          };
+        });
+        setCategories(coloredCategories);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   const stats = [
     {
-      icon: <QuestionAnswer />,
-      value: '12,345',
-      label: 'Câu hỏi',
+      icon: <HelpOutline />,
+      value: statsData.questions,
+      label: t('question'),
       color: '#3f51b5',
     },
-    { icon: <People />, value: '8,920', label: 'Thành viên', color: '#4caf50' },
-    { icon: <Star />, value: '45,678', label: 'Câu trả lời', color: '#ff9800' },
     {
-      icon: <TrendingUp />,
-      value: '98%',
-      label: 'Giải quyết',
+      icon: <People />,
+      value: statsData.members,
+      label: t('user'),
+      color: '#4caf50',
+    },
+    {
+      icon: <Forum />,
+      value: statsData.answers,
+      label: t('answer'),
+      color: '#ff9800',
+    },
+    {
+      icon: <Label />,
+      value: statsData.tags,
+      label: t('tag'),
       color: '#e91e63',
-    },
-  ];
-
-  const trendingQuestions = [
-    {
-      id: 1,
-      title: 'Làm thế nào để tối ưu hóa hiệu suất React application?',
-      author: 'NguyenVanA',
-      avatar: 'https://i.pravatar.cc/40?img=1',
-      votes: 24,
-      answers: 8,
-      views: 156,
-      tags: ['React', 'Performance', 'JavaScript'],
-      time: '2 giờ trước',
-    },
-    {
-      id: 2,
-      title: 'Sự khác biệt giữa var, let và const trong JavaScript?',
-      author: 'TranThiB',
-      avatar: 'https://i.pravatar.cc/40?img=2',
-      votes: 18,
-      answers: 12,
-      views: 203,
-      tags: ['JavaScript', 'ES6', 'Variables'],
-      time: '4 giờ trước',
-    },
-    {
-      id: 3,
-      title: 'Cách thiết kế database cho ứng dụng e-commerce?',
-      author: 'LeVanC',
-      avatar: 'https://i.pravatar.cc/40?img=3',
-      votes: 31,
-      answers: 6,
-      views: 298,
-      tags: ['Database', 'MySQL', 'E-commerce'],
-      time: '6 giờ trước',
-    },
-  ];
-
-  const topContributors = [
-    {
-      name: 'Alice Johnson',
-      points: 2840,
-      answers: 89,
-      avatar: 'https://i.pravatar.cc/50?img=4',
-    },
-    {
-      name: 'Bob Smith',
-      points: 2156,
-      answers: 67,
-      avatar: 'https://i.pravatar.cc/50?img=5',
-    },
-    {
-      name: 'Carol Davis',
-      points: 1923,
-      answers: 54,
-      avatar: 'https://i.pravatar.cc/50?img=6',
-    },
-    {
-      name: 'David Wilson',
-      points: 1678,
-      answers: 42,
-      avatar: 'https://i.pravatar.cc/50?img=7',
     },
   ];
 
@@ -115,7 +119,6 @@ export default function Homepage() {
           : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         transition: 'all 0.3s ease-in-out',
       }}>
-      {/* Header */}
       <Box
         sx={{
           background: isDark ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.1)',
@@ -139,7 +142,7 @@ export default function Homepage() {
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}>
-              Q&A Platform
+              {t('title')}
             </Typography>
           </Box>
         </Container>
@@ -155,7 +158,7 @@ export default function Homepage() {
               mb: 2,
               textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
             }}>
-            Nơi chia sẻ kiến thức
+            {t('maincontent')}
           </Typography>
           <Typography
             variant="h5"
@@ -165,313 +168,17 @@ export default function Homepage() {
               maxWidth: 600,
               mx: 'auto',
             }}>
-            Đặt câu hỏi, nhận câu trả lời từ cộng đồng chuyên gia và phát triển
-            cùng nhau
+            {t('content')}
           </Typography>
         </Box>
-
-        {/* Stats Section */}
-        <Grid
-          container
-          spacing={3}
-          sx={{
-            mb: 6,
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-          }}>
-          {stats.slice(0, 4).map((stat, index) => (
-            <Grid
-              key={index}
-              sx={{
-                flex: '1 1 calc(25% - 24px)', // trừ spacing (3 * 8px)
-                minWidth: '250px',
-                maxWidth: '100%',
-              }}>
-              <Paper
-                elevation={8}
-                sx={{
-                  p: 3,
-                  textAlign: 'center',
-                  background: isDark
-                    ? 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)'
-                    : 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%)',
-                  backdropFilter: 'blur(10px)',
-                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.3)'}`,
-                  borderRadius: 3,
-                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                  '&:hover': {
-                    transform: 'translateY(-5px)',
-                    boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
-                  },
-                }}>
-                <Box
-                  sx={{
-                    color: stat.color,
-                    mb: 2,
-                    fontSize: '2.5rem',
-                    animation: 'pulse 2s infinite',
-                  }}>
-                  {React.cloneElement(stat.icon, { sx: { fontSize: '4rem' } })}
-                </Box>
-                <Typography
-                  variant="h4"
-                  sx={{
-                    fontWeight: 'bold',
-                    color: isDark ? 'white' : 'text.primary',
-                    mb: 1,
-                  }}>
-                  {stat.value}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  sx={{
-                    color: isDark ? 'rgba(255,255,255,0.7)' : 'text.secondary',
-                  }}>
-                  {stat.label}
-                </Typography>
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
-
+        <Stats stats={stats} />
         <Box display="flex" width="100%" gap="1rem">
           <Box sx={{ flex: '2', marginRight: '5px' }}>
-            <Paper
-              elevation={8}
-              sx={{
-                p: 3,
-                mb: 4,
-                background: isDark
-                  ? 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)'
-                  : 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.8) 100%)',
-                backdropFilter: 'blur(15px)',
-                border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.3)'}`,
-                borderRadius: 3,
-              }}>
-              <Typography
-                variant="h5"
-                sx={{
-                  fontWeight: 'bold',
-                  mb: 3,
-                  color: isDark ? 'white' : 'text.primary',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1,
-                }}>
-                <TrendingUp sx={{ color: '#ff9800' }} />
-                Câu hỏi thịnh hành
-              </Typography>
-
-              {trendingQuestions.map((question) => (
-                <Card
-                  key={question.id}
-                  sx={{
-                    mb: 2,
-                    background: isDark
-                      ? 'rgba(255,255,255,0.05)'
-                      : 'rgba(255,255,255,0.7)',
-                    backdropFilter: 'blur(10px)',
-                    border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.3)'}`,
-                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                    '&:hover': {
-                      transform: 'translateX(5px)',
-                      boxShadow: '0 5px 20px rgba(0,0,0,0.2)',
-                    },
-                  }}>
-                  <CardContent>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        gap: 2,
-                      }}>
-                      <Avatar
-                        src={question.avatar}
-                        sx={{ width: 40, height: 40 }}
-                      />
-                      <Box sx={{ flex: 1 }}>
-                        <Typography
-                          variant="h6"
-                          sx={{
-                            fontWeight: 'bold',
-                            mb: 1,
-                            color: isDark ? 'white' : 'text.primary',
-                          }}>
-                          {question.title}
-                        </Typography>
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 2,
-                            mb: 2,
-                          }}>
-                          <Typography
-                            variant="body2"
-                            sx={{
-                              color: isDark
-                                ? 'rgba(255,255,255,0.7)'
-                                : 'text.secondary',
-                            }}>
-                            bởi {question.author} • {question.time}
-                          </Typography>
-                        </Box>
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 2,
-                            mb: 2,
-                          }}>
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: 0.5,
-                            }}>
-                            <ThumbUp sx={{ fontSize: 16, color: '#4caf50' }} />
-                            <Typography
-                              variant="body2"
-                              sx={{ color: isDark ? 'white' : 'text.primary' }}>
-                              {question.votes}
-                            </Typography>
-                          </Box>
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: 0.5,
-                            }}>
-                            <QuestionAnswer
-                              sx={{ fontSize: 16, color: '#2196f3' }}
-                            />
-                            <Typography
-                              variant="body2"
-                              sx={{ color: isDark ? 'white' : 'text.primary' }}>
-                              {question.answers}
-                            </Typography>
-                          </Box>
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: 0.5,
-                            }}>
-                            <Visibility
-                              sx={{ fontSize: 16, color: '#ff9800' }}
-                            />
-                            <Typography
-                              variant="body2"
-                              sx={{ color: isDark ? 'white' : 'text.primary' }}>
-                              {question.views}
-                            </Typography>
-                          </Box>
-                        </Box>
-                        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                          {question.tags.map((tag, tagIndex) => (
-                            <Chip
-                              key={tagIndex}
-                              label={tag}
-                              size="small"
-                              sx={{
-                                backgroundColor: isDark
-                                  ? 'rgba(255,255,255,0.1)'
-                                  : 'rgba(63,81,181,0.1)',
-                                color: isDark ? 'white' : '#3f51b5',
-                              }}
-                            />
-                          ))}
-                        </Box>
-                      </Box>
-                    </Box>
-                  </CardContent>
-                </Card>
-              ))}
-            </Paper>
+            <TrendingQuestions trendingQuestions={trendingQuestions} />
           </Box>
-
           <Box sx={{ flex: '1' }}>
-            <Paper
-              elevation={8}
-              sx={{
-                p: 3,
-                mb: 3,
-                background: isDark
-                  ? 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)'
-                  : 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.8) 100%)',
-                backdropFilter: 'blur(15px)',
-                border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.3)'}`,
-                borderRadius: 3,
-              }}>
-              <Typography
-                variant="h6"
-                sx={{
-                  fontWeight: 'bold',
-                  mb: 2,
-                  color: isDark ? 'white' : 'text.primary',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1,
-                }}>
-                <Star sx={{ color: '#ffd700' }} />
-                Top Contributors
-              </Typography>
-
-              {topContributors.map((contributor, index) => (
-                <Box key={index} sx={{ mb: 2 }}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 2,
-                      mb: 1,
-                    }}>
-                    <Avatar
-                      src={contributor.avatar}
-                      sx={{ width: 32, height: 32 }}
-                    />
-                    <Box sx={{ flex: 1 }}>
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          fontWeight: 'bold',
-                          color: isDark ? 'white' : 'text.primary',
-                        }}>
-                        {contributor.name}
-                      </Typography>
-                      <Typography
-                        variant="caption"
-                        sx={{
-                          color: isDark
-                            ? 'rgba(255,255,255,0.7)'
-                            : 'text.secondary',
-                        }}>
-                        {contributor.points} điểm • {contributor.answers} câu
-                        trả lời
-                      </Typography>
-                    </Box>
-                  </Box>
-                  <LinearProgress
-                    variant="determinate"
-                    value={(contributor.points / 3000) * 100}
-                    sx={{
-                      height: 4,
-                      borderRadius: 2,
-                      backgroundColor: isDark
-                        ? 'rgba(255,255,255,0.1)'
-                        : 'rgba(0,0,0,0.1)',
-                      '& .MuiLinearProgress-bar': {
-                        backgroundColor: '#4caf50',
-                      },
-                    }}
-                  />
-                  {index < topContributors.length - 1 && (
-                    <Divider sx={{ mt: 2, opacity: 0.3 }} />
-                  )}
-                </Box>
-              ))}
-            </Paper>
+            <TopContributors topContributors={topContributors} />
+            <Categoriespage categories={categories} />
           </Box>
         </Box>
       </Container>

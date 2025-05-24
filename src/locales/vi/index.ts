@@ -20,8 +20,10 @@ import tagsPage from './tags-page.json';
 import userMenu from './user-menu.json';
 import userSidebar from './user-sidebar.json';
 import welcome from './welcome.json';
+import home from './home-page.json';
 
 export default {
+  home,
   adminAnswerPage,
   adminQuestionPage,
   adminDashboardPage,

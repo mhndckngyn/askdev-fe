@@ -1,0 +1,15 @@
+{
+  "question": "Question",
+  "user": "Member",
+  "answer": "Answer",
+  "tag": "Tag",
+  "title": "Q&A Platform",
+  "maincontent": "A place to share knowledge",
+  "content": "Ask questions, get answers from a community of experts, and grow together",
+  "titleQuestion": "Trending Questions",
+  "by": "by",
+  "seeDetails": "See details",
+  "popularCategories": "Popular Tags",
+  "topContributors": "Top Contributors",
+  "point": "Points"
+}

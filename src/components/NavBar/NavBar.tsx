@@ -1,5 +1,6 @@
 import { logo } from '@/assets/images';
 import LanguageSelector from '@/components/LanguageSelector';
+import NotificationBell from '@/components/NotificationBell';
 import ThemeSwitcher from '@/components/ThemeSwitcher';
 import UserMenu from '@/components/UserMenu';
 import { useUserStore } from '@/stores/useUserStore';
@@ -105,6 +106,7 @@ export default function NavBar() {
         </Center>
 
         <Flex align="center" justify="end" gap="sm">
+          <NotificationBell />
           <ThemeSwitcher />
           <LanguageSelector />
 

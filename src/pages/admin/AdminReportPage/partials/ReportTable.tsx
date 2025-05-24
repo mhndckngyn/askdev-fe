@@ -259,17 +259,7 @@ function ReportTableComponent({
             width: 280,
             title: t('reason'),
             textAlign: 'left',
-            render: (record) => (
-              <div
-                style={{
-                  maxWidth: 280,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}>
-                {record.reason}
-              </div>
-            ),
+            render: (record) => <Text lineClamp={2}>{record.reason}</Text>,
           },
 
           {

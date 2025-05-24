@@ -64,7 +64,6 @@ const QuestionView = () => {
     fetchQuestion();
   }, [id]);
 
-  // Theme-based styles
   const getThemeStyles = () => ({
     loadingContainer: {
       background: isDark

@@ -110,7 +110,6 @@ const Chart = () => {
     },
 
     tooltip: {
-      zIndex: 9999,
       backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f1f3f5',
       position: 'top',
       textStyle: {
@@ -748,22 +747,14 @@ const Chart = () => {
         </Box>
       </Box>
 
-      <Box
-        sx={{
-          position: 'relative',
-          borderRadius: '20px',
-          overflow: 'hidden',
-          padding: '8px',
-        }}>
-        <ReactECharts
-          option={option}
-          key={`${selectedYear}-${currentMonth}-${selectedType}`}
-          style={{
-            height: 450,
-            width: '100%',
-          }}
-        />
-      </Box>
+      <ReactECharts
+        option={option}
+        key={`${selectedYear}-${currentMonth}-${selectedType}`}
+        style={{
+          height: 450,
+          width: '100%',
+        }}
+      />
     </Paper>
   );
 };
