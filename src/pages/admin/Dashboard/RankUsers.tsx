@@ -34,7 +34,7 @@ const TrophyWithNumber = ({ rank }: { rank: number }) => {
     },
   };
 
-  const { trophy, bg } = colors[rank.toString()] || colors.default;
+  const { trophy } = colors[rank.toString()] || colors.default;
 
   return (
     <Box
@@ -55,7 +55,8 @@ const TrophyWithNumber = ({ rank }: { rank: number }) => {
           fontSize: 14,
           userSelect: 'none',
           pointerEvents: 'none',
-          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          fontFamily:
+            '"Inter", "Segoe UI", "Roboto", "Noto Sans", "Helvetica Neue", Arial, sans-serif',
           letterSpacing: '0.05em',
           color: 'white',
           textShadow: '0 1px 2px rgba(0,0,0,0.3)',

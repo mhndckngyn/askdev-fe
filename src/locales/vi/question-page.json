@@ -1,0 +1,29 @@
+{
+  "editHistory": "Lịch sử chỉnh sửa",
+  "edit": "Chỉnh sửa",
+  "delete": "Xóa",
+  "report": "Báo cáo",
+  "reportReason": "Lý do báo cáo",
+  "reportPlaceholder": "Vui lòng mô tả chi tiết lý do báo cáo nội dung này...",
+  "reportButton": {
+    "submitting": "Đang gửi...",
+    "submit": "Gửi báo cáo"
+  },
+  "liked": "Đã thích",
+  "disliked": "Không thích",
+  "interaction": "Tương tác",
+  "comment": "Bình luận",
+  "currentContent": "Nội dung hiện tại",
+  "newContent": "Nội dung mới",
+  "enterNewContent": "Nhập nội dung mới để thay thế",
+  "updating": "Đang cập nhật...",
+  "updateContent": "Cập nhật nội dung",
+  "shareAnswer": "Chia sẻ câu trả lời của bạn",
+  "writeDetailedAnswer": "Viết câu trả lời chi tiết của bạn...",
+  "sendAnswer": "Gửi câu trả lời",
+  "feedback": "Phản hồi",
+  "writeFeedback": "Viết phản hồi...",
+  "send": "Gửi",
+  "questionsByTag": "Câu hỏi theo thẻ",
+  "noQuestionsForTag": "Không tìm thấy câu hỏi nào cho thẻ này"
+}

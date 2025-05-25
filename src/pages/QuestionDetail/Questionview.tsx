@@ -26,8 +26,10 @@ import ReportPage from './ReportPage';
 import { useUserStore } from '../../stores/useUserStore';
 import { Link } from 'react-router-dom';
 import memberRoutePaths from '@/routes/user/member/paths';
+import { useTranslation } from 'react-i18next';
 
 const QuestionView = () => {
+  const { t } = useTranslation('question');
   const { user } = useUserStore();
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
@@ -158,7 +160,7 @@ const QuestionView = () => {
           borderRadius: '24px',
           margin: '20px',
         }}>
-        <Typography sx={themeStyles.loadingText}>Đang tải...</Typography>
+        <Typography sx={themeStyles.loadingText}></Typography>
       </Box>
     );
   }
@@ -262,7 +264,7 @@ const QuestionView = () => {
                           ? 'linear-gradient(135deg, #bb86fc 0%, #3700b3 100%)'
                           : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                         color: 'white',
-                        fontSize: '12px',
+                        fontSize: '14px',
                         fontWeight: '600',
                         height: '28px',
                         '& .MuiChip-label': {
@@ -312,89 +314,90 @@ const QuestionView = () => {
                   p: 1,
                   ...themeStyles.actionButtonsContainer,
                 }}>
-                {user?.id == data.userId ? (
-                  <>
-                    <Tooltip title="Lịch sử chỉnh sửa" arrow>
-                      <IconButton
-                        onClick={handleToggleHistory}
-                        sx={{
-                          background:
-                            'linear-gradient(135deg, #4caf50 0%, #81c784 100%)',
-                          color: 'white',
-                          width: 44,
-                          height: 44,
-                          transition: 'all 0.3s ease',
-                          '&:hover': {
-                            transform: 'translateY(-2px) scale(1.05)',
-                            boxShadow: '0 8px 20px rgba(76, 175, 80, 0.4)',
-                          },
-                        }}>
-                        <HistoryIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
+                {user &&
+                  (user?.id == data.userId ? (
+                    <>
+                      <Tooltip title={t('editHistory')} arrow>
+                        <IconButton
+                          onClick={handleToggleHistory}
+                          sx={{
+                            background:
+                              'linear-gradient(135deg, #4caf50 0%, #81c784 100%)',
+                            color: 'white',
+                            width: 44,
+                            height: 44,
+                            transition: 'all 0.3s ease',
+                            '&:hover': {
+                              transform: 'translateY(-2px) scale(1.05)',
+                              boxShadow: '0 8px 20px rgba(76, 175, 80, 0.4)',
+                            },
+                          }}>
+                          <HistoryIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
 
-                    <Tooltip title="Chỉnh sửa" arrow>
-                      <IconButton
-                        component={Link}
-                        to={memberRoutePaths.editQuestion.replace(
-                          ':id',
-                          data.id,
-                        )}
-                        sx={{
-                          background:
-                            'linear-gradient(135deg, #2196f3 0%, #64b5f6 100%)',
-                          color: 'white',
-                          width: 44,
-                          height: 44,
-                          transition: 'all 0.3s ease',
-                          '&:hover': {
-                            transform: 'translateY(-2px) scale(1.05)',
-                            boxShadow: '0 8px 20px rgba(33, 150, 243, 0.4)',
-                          },
-                        }}>
-                        <EditIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
+                      <Tooltip title={t('edit')} arrow>
+                        <IconButton
+                          component={Link}
+                          to={memberRoutePaths.editQuestion.replace(
+                            ':id',
+                            data.id,
+                          )}
+                          sx={{
+                            background:
+                              'linear-gradient(135deg, #2196f3 0%, #64b5f6 100%)',
+                            color: 'white',
+                            width: 44,
+                            height: 44,
+                            transition: 'all 0.3s ease',
+                            '&:hover': {
+                              transform: 'translateY(-2px) scale(1.05)',
+                              boxShadow: '0 8px 20px rgba(33, 150, 243, 0.4)',
+                            },
+                          }}>
+                          <EditIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
 
-                    <Tooltip title="Xóa" arrow>
+                      <Tooltip title={t('delete')} arrow>
+                        <IconButton
+                          onClick={handleDelete}
+                          sx={{
+                            background:
+                              'linear-gradient(135deg, #f44336 0%, #ef5350 100%)',
+                            color: 'white',
+                            width: 44,
+                            height: 44,
+                            transition: 'all 0.3s ease',
+                            '&:hover': {
+                              transform: 'translateY(-2px) scale(1.05)',
+                              boxShadow: '0 8px 20px rgba(244, 67, 54, 0.4)',
+                            },
+                          }}>
+                          <DeleteIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </>
+                  ) : (
+                    <Tooltip title={t('report')} arrow>
                       <IconButton
-                        onClick={handleDelete}
+                        onClick={handleToggleReport}
                         sx={{
                           background:
-                            'linear-gradient(135deg, #f44336 0%, #ef5350 100%)',
+                            'linear-gradient(135deg, #ff9800 0%, #ffb74d 100%)',
                           color: 'white',
                           width: 44,
                           height: 44,
                           transition: 'all 0.3s ease',
                           '&:hover': {
                             transform: 'translateY(-2px) scale(1.05)',
-                            boxShadow: '0 8px 20px rgba(244, 67, 54, 0.4)',
+                            boxShadow: '0 8px 20px rgba(255, 152, 0, 0.4)',
                           },
                         }}>
-                        <DeleteIcon fontSize="small" />
+                        <FlagIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
-                  </>
-                ) : (
-                  <Tooltip title="Báo cáo" arrow>
-                    <IconButton
-                      onClick={handleToggleReport}
-                      sx={{
-                        background:
-                          'linear-gradient(135deg, #ff9800 0%, #ffb74d 100%)',
-                        color: 'white',
-                        width: 44,
-                        height: 44,
-                        transition: 'all 0.3s ease',
-                        '&:hover': {
-                          transform: 'translateY(-2px) scale(1.05)',
-                          boxShadow: '0 8px 20px rgba(255, 152, 0, 0.4)',
-                        },
-                      }}>
-                      <FlagIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                )}
+                  ))}
               </Box>
             </Box>
           </Zoom>

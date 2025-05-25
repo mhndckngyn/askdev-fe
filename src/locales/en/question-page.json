@@ -1,0 +1,30 @@
+{
+  "editHistory": "Edit History",
+  "edit": "Edit",
+  "delete": "Delete",
+  "report": "Report",
+  "reportReason": "Report reason",
+  "reportPlaceholder": "Please describe in detail the reason for reporting this content...",
+  "reportButton": {
+    "submitting": "Submitting...",
+    "submit": "Submit report"
+  },
+
+  "liked": "Liked",
+  "disliked": "Disliked",
+  "interaction": "Interaction",
+  "comment": "Comment",
+  "currentContent": "Current content",
+  "newContent": "New content",
+  "enterNewContent": "Enter new content to replace",
+  "updating": "Updating...",
+  "updateContent": "Update content",
+  "shareAnswer": "Share your answer",
+  "writeDetailedAnswer": "Write your detailed answer...",
+  "sendAnswer": "Submit answer",
+  "feedback": "Feedback",
+  "writeFeedback": "Write your feedback...",
+  "send": "Send",
+  "questionsByTag": "Questions by Tag",
+  "noQuestionsForTag": "No questions found for this tag"
+}

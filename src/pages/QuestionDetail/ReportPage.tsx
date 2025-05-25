@@ -12,7 +12,7 @@ import { X, Flag, AlertTriangle, Send } from 'lucide-react';
 import { useMantineColorScheme } from '@mantine/core';
 import { createReport } from './Services/ReportServices';
 import { useState, useEffect } from 'react';
-
+import { useTranslation } from 'react-i18next';
 interface Props {
   open: boolean;
   handleToggle: () => void;
@@ -28,6 +28,7 @@ function ReportPage({
   contentId,
   content,
 }: Props) {
+  const { t } = useTranslation('question');
   const [reason, setReason] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -217,15 +218,7 @@ function ReportPage({
                         marginBottom: '4px',
                         letterSpacing: '-0.5px',
                       }}>
-                      Báo cáo nội dung
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        color: isDark ? 'rgba(255, 255, 255, 0.6)' : '#6b7280',
-                        fontSize: '14px',
-                      }}>
-                      Giúp chúng tôi cải thiện cộng đồng
+                      {t('report')}
                     </Typography>
                   </Box>
                 </Box>
@@ -368,8 +361,8 @@ function ReportPage({
 
               {/* Reason Input */}
               <TextField
-                label="Lý do báo cáo"
-                placeholder="Vui lòng mô tả chi tiết lý do báo cáo nội dung này..."
+                label={t('reportReason')}
+                placeholder={t('reportPlaceholder')}
                 fullWidth
                 multiline
                 minRows={4}
@@ -470,7 +463,9 @@ function ReportPage({
                 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Send size={20} />
-                  {isSubmitting ? 'Đang gửi...' : 'Gửi báo cáo'}
+                  {isSubmitting
+                    ? t('reportButton.submitting')
+                    : t('reportButton.submit')}
                 </Box>
               </Button>
             </Box>

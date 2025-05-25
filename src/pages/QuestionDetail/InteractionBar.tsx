@@ -20,8 +20,10 @@ import {
   getVoteStatus,
 } from './Services/QuestionServices';
 import { ApiResponse } from '@/types';
+import { useTranslation } from 'react-i18next';
 
 export default function InteractionBar() {
+  const { t } = useTranslation('question');
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
 
@@ -196,6 +198,9 @@ export default function InteractionBar() {
                     '75%': { transform: 'scale(1.1)' },
                     '100%': { transform: 'scale(1)' },
                   },
+                  '&:hover': {
+                    transform: 'scale(1.05)',
+                  },
                 }}>
                 {interaction === 'like' ? (
                   <ThumbUpIcon sx={{ fontSize: '24px' }} />
@@ -212,10 +217,10 @@ export default function InteractionBar() {
                     textShadow: '0 1px 2px rgba(0,0,0,0.2)',
                   }}>
                   {interaction === 'like'
-                    ? 'Đã thích'
+                    ? t('liked')
                     : interaction === 'dislike'
-                      ? 'Không thích'
-                      : 'Tương tác'}
+                      ? t('disliked')
+                      : t('interaction')}
                 </Typography>
               </Box>
 
@@ -235,6 +240,9 @@ export default function InteractionBar() {
                       color: 'white',
                     },
                     boxShadow: '0 2px 8px rgba(76, 175, 80, 0.3)',
+                    '&:hover': {
+                      transform: 'scale(1.05)',
+                    },
                   }}
                 />
                 <Chip
@@ -251,6 +259,9 @@ export default function InteractionBar() {
                       color: 'white',
                     },
                     boxShadow: '0 2px 8px rgba(244, 67, 54, 0.3)',
+                    '&:hover': {
+                      transform: 'scale(1.05)',
+                    },
                   }}
                 />
               </Box>
@@ -291,7 +302,7 @@ export default function InteractionBar() {
                   fontWeight: '600',
                   textShadow: '0 1px 2px rgba(0,0,0,0.2)',
                 }}>
-                Bình luận
+                {t('comment')}
               </Typography>
             </Box>
           </Box>
@@ -396,7 +407,7 @@ export default function InteractionBar() {
                     fontSize: '11px',
                     fontWeight: '500',
                   }}>
-                  Thích
+                  {t('liked')}
                 </Typography>
               </Box>
 
@@ -417,7 +428,7 @@ export default function InteractionBar() {
                     fontSize: '11px',
                     fontWeight: '500',
                   }}>
-                  Không thích
+                  {t('disliked')}
                 </Typography>
               </Box>
             </Box>

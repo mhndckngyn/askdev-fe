@@ -73,6 +73,7 @@ export default function TrendingQuestions({
         <Card
           key={question.id}
           sx={{
+            borderRadius: 3,
             mb: 2,
             background: isDark
               ? 'rgba(255,255,255,0.05)'

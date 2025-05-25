@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { getEditHistory } from './Services/QuestionServices';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   open: boolean;
@@ -41,6 +42,7 @@ interface History {
 }
 
 function QuestionHistory({ open, handleToggle, question }: Props) {
+  const { t } = useTranslation('question');
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
 
@@ -202,7 +204,7 @@ function QuestionHistory({ open, handleToggle, question }: Props) {
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
                     }}>
-                    Lịch sử câu hỏi
+                    {t('editHistory')}
                   </Typography>
                 </Box>
 
@@ -259,7 +261,7 @@ function QuestionHistory({ open, handleToggle, question }: Props) {
                   }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                     <Avatar
-                      src={'https://i.pravatar.cc/150?img=7'}
+                      src={question.user.profilePicture}
                       sx={{
                         width: 72,
                         height: 72,
@@ -287,7 +289,7 @@ function QuestionHistory({ open, handleToggle, question }: Props) {
                             color: themeColors.text,
                             fontSize: '1.1rem',
                           }}>
-                          {question.username}
+                          {question.user.username}
                         </Typography>
                         <Chip
                           icon={<Clock size={14} />}
@@ -396,18 +398,6 @@ function QuestionHistory({ open, handleToggle, question }: Props) {
 
                   {history.images?.length > 0 && (
                     <Box sx={{ mt: 4 }}>
-                      <Typography
-                        variant="h6"
-                        sx={{
-                          mb: 2,
-                          color: themeColors.text,
-                          fontWeight: 600,
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 1,
-                        }}>
-                        🖼️ Hình ảnh đính kèm
-                      </Typography>
                       <ImageGrid files={history.images} />
                     </Box>
                   )}

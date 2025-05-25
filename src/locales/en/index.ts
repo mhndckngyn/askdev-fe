@@ -21,8 +21,10 @@ import userMenu from './user-menu.json';
 import userSidebar from './user-sidebar.json';
 import welcome from './welcome.json';
 import home from './home-page.json';
+import question from './question-page.json';
 
 export default {
+  question,
   home,
   adminAnswerPage,
   adminQuestionPage,

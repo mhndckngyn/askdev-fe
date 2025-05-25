@@ -14,6 +14,7 @@ import { useState, useEffect } from 'react';
 import { updateAnswer } from './Services/AnswersServices';
 import { updateComment } from './Services/CommentServices';
 import { useMantineColorScheme } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   open: boolean;
@@ -24,6 +25,7 @@ interface Props {
 }
 
 function EditPage({ open, handleToggle, id, type, oldContent }: Props) {
+  const { t } = useTranslation('question');
   const [newContent, setNewContent] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -171,7 +173,7 @@ function EditPage({ open, handleToggle, id, type, oldContent }: Props) {
                     alignItems: 'center',
                     gap: 1,
                   }}>
-                  Chỉnh sửa nội dung
+                  {t('edit')}
                   <Sparkles
                     size={18}
                     style={{ color: isDarkMode ? '#64b5f6' : '#1976d2' }}
@@ -222,7 +224,7 @@ function EditPage({ open, handleToggle, id, type, oldContent }: Props) {
                     alignItems: 'center',
                     gap: 1,
                   }}>
-                  📝 Nội dung hiện tại
+                  {t('currentContent')}
                 </Typography>
                 <Typography
                   variant="body1"
@@ -263,7 +265,7 @@ function EditPage({ open, handleToggle, id, type, oldContent }: Props) {
 
               {/* New Content Input */}
               <TextField
-                label="✨ Nội dung mới"
+                label={t('newContent')}
                 fullWidth
                 multiline
                 minRows={6}
@@ -299,7 +301,7 @@ function EditPage({ open, handleToggle, id, type, oldContent }: Props) {
                   },
                 }}
                 error={!!error}
-                helperText={error ? error : 'Nhập nội dung mới để thay thế'}
+                helperText={error ? error : t('enterNewContent')}
               />
 
               {/* Submit Button */}
@@ -324,7 +326,7 @@ function EditPage({ open, handleToggle, id, type, oldContent }: Props) {
                       : 'rgba(25, 118, 210, 0.3)',
                   },
                 }}>
-                {isSubmitting ? '⏳ Đang cập nhật...' : '🚀 Cập nhật nội dung'}
+                {isSubmitting ? t('updating') : t('updateContent')}
               </Button>
             </Box>
           </Paper>

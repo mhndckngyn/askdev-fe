@@ -6,10 +6,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Avatar,
   AvatarGroup,
-  LinearProgress,
   Typography,
   Box,
   Card,
@@ -18,7 +16,6 @@ import {
   Stack,
   Fade,
   Grow,
-  IconButton,
 } from '@mui/material';
 import { styled, keyframes } from '@mui/material/styles';
 import { getDashboardTopTagsStats } from './services';
@@ -56,7 +53,7 @@ const progressFill = keyframes`
 `;
 
 // Ultra-modern styled components
-const MainContainer = styled(Card)(({ theme }) => ({
+const MainContainer = styled(Card)(() => ({
   position: 'relative',
   background: 'transparent',
   backdropFilter: 'blur(40px)',
@@ -79,7 +76,7 @@ const MainContainer = styled(Card)(({ theme }) => ({
   },
 }));
 
-const HeaderSection = styled(Box)(({ theme }) => ({
+const HeaderSection = styled(Box)(() => ({
   position: 'relative',
   padding: '32px 40px',
   background:
@@ -99,7 +96,7 @@ const HeaderSection = styled(Box)(({ theme }) => ({
   },
 }));
 
-const StyledTable = styled(Table)(({ theme }) => ({
+const StyledTable = styled(Table)(() => ({
   background: 'transparent',
   '& .MuiTableCell-root': {
     border: 'none',
@@ -107,7 +104,7 @@ const StyledTable = styled(Table)(({ theme }) => ({
   },
 }));
 
-const TableRowStyled = styled(TableRow)(({ theme }) => ({
+const TableRowStyled = styled(TableRow)(() => ({
   position: 'relative',
   cursor: 'pointer',
   transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -143,7 +140,7 @@ const TableRowStyled = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const RankBadge = styled(Box)(({ theme }) => ({
+const RankBadge = styled(Box)(() => ({
   width: '48px',
   height: '48px',
   borderRadius: '16px',
@@ -173,7 +170,7 @@ const RankBadge = styled(Box)(({ theme }) => ({
   },
 }));
 
-const TagContainer = styled(Box)(({ theme }) => ({
+const TagContainer = styled(Box)(() => ({
   position: 'relative',
   display: 'inline-block',
   '&::before': {
@@ -194,7 +191,7 @@ const TagContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-const TagChip = styled(Chip)(({ theme }) => ({
+const TagChip = styled(Chip)(() => ({
   fontWeight: 600,
   fontSize: '0.95rem',
   borderRadius: '18px',
@@ -209,7 +206,7 @@ const TagChip = styled(Chip)(({ theme }) => ({
   },
 }));
 
-const AvatarContainer = styled(Box)(({ theme }) => ({
+const AvatarContainer = styled(Box)(() => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -244,7 +241,7 @@ const AvatarContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-const CountDisplay = styled(Typography)(({ theme }) => ({
+const CountDisplay = styled(Typography)(() => ({
   fontWeight: 700,
   fontSize: '1.3rem',
   background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)',
@@ -269,7 +266,7 @@ const CountDisplay = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const ProgressContainer = styled(Box)(({ theme }) => ({
+const ProgressContainer = styled(Box)(() => ({
   position: 'relative',
   padding: '8px 0',
 }));
@@ -290,7 +287,7 @@ const ProgressBar = styled(Box)<{ isDark?: boolean }>(({ isDark }) => ({
     : 'inset 0 2px 4px rgba(0, 0, 0, 0.1)',
 }));
 
-const ProgressFill = styled(Box)(({ theme }) => ({
+const ProgressFill = styled(Box)(() => ({
   height: '100%',
   borderRadius: '12px',
   position: 'relative',
@@ -330,7 +327,6 @@ const TopicTable: React.FC = () => {
   const { colorScheme } = useMantineColorScheme();
   const { t } = useTranslation('adminDashboardPage');
   const [data, setData] = useState<TopTag[]>([]);
-  const [animationDelay, setAnimationDelay] = useState(0);
 
   const getRankColors = (rank: number) => {
     if (rank === 1) return 'linear-gradient(135deg, #ffd700 0%, #ff8c00 100%)';
@@ -439,6 +435,9 @@ const TopicTable: React.FC = () => {
                       'linear-gradient(90deg, #6366f1, #a855f7, #ec4899)',
                     borderRadius: '2px',
                   },
+
+                  fontFamily:
+                    '"Inter", "Segoe UI", "Roboto", "Noto Sans", "Helvetica Neue", Arial, sans-serif',
                 }}>
                 {t('top10Tags')}
               </Typography>

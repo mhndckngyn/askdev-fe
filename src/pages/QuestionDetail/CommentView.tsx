@@ -46,9 +46,11 @@ import {
 import ReportPage from './ReportPage';
 import EditPage from './EditPage';
 import { useUserStore } from '../../stores/useUserStore';
-import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
+import FormatTime from './formatTime';
 
 export default function AnswerView() {
+  const { t } = useTranslation('question');
   const { colorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
   const isDark = colorScheme === 'dark';
@@ -320,13 +322,13 @@ export default function AnswerView() {
                 fw={700}
                 variant="gradient"
                 gradient={{ from: 'violet', to: 'indigo', deg: 45 }}>
-                Chia sẻ câu trả lời của bạn
+                {t('shareAnswer')}
               </Text>
             </Group>
 
             <Stack gap="md">
               <Textarea
-                placeholder="Viết câu trả lời chi tiết của bạn..."
+                placeholder={t('writeDetailedAnswer')}
                 value={newanswer}
                 onChange={(e) => setNewanswer(e.currentTarget.value)}
                 minRows={4}
@@ -360,7 +362,7 @@ export default function AnswerView() {
                     transform: newanswer.trim() ? 'translateY(-2px)' : 'none',
                     transition: 'all 0.3s ease',
                   }}>
-                  Gửi câu trả lời
+                  {t('sendAnswer')}
                 </Button>
               </Flex>
             </Stack>
@@ -428,14 +430,12 @@ export default function AnswerView() {
                               variant="gradient"
                               gradient={{ from: 'blue', to: 'cyan', deg: 45 }}
                               radius="xl"
-                              size="sm">
-                              {dayjs(answer.createdAt).format(
-                                'HH:mm DD/MM/YYYY',
-                              )}
+                              size="lg">
+                              <FormatTime createdAt={answer.createdAt} />
                             </Badge>
                           </Group>
                           <Text
-                            size="md"
+                            size="lg"
                             c={isDark ? 'gray.3' : 'gray.7'}
                             style={{
                               lineHeight: 1.6,
@@ -453,7 +453,7 @@ export default function AnswerView() {
                       <Group gap="xs">
                         {user?.id == answer.userId ? (
                           <>
-                            <Tooltip label="Chỉnh sửa" position="top">
+                            <Tooltip label={t('edit')} position="top">
                               <ActionIcon
                                 onClick={() => handleEdit(answer, 'ANSWER')}
                                 variant="light"
@@ -470,10 +470,10 @@ export default function AnswerView() {
                                 onMouseLeave={(e) => {
                                   e.currentTarget.style.transform = 'scale(1)';
                                 }}>
-                                <IconEdit size={18} />
+                                <IconEdit size={20} />
                               </ActionIcon>
                             </Tooltip>
-                            <Tooltip label="Xóa" position="top">
+                            <Tooltip label={t('delete')} position="top">
                               <ActionIcon
                                 onClick={handleDelete}
                                 variant="light"
@@ -490,12 +490,12 @@ export default function AnswerView() {
                                 onMouseLeave={(e) => {
                                   e.currentTarget.style.transform = 'scale(1)';
                                 }}>
-                                <IconTrash size={18} />
+                                <IconTrash size={20} />
                               </ActionIcon>
                             </Tooltip>
                           </>
                         ) : (
-                          <Tooltip label="Báo cáo" position="top">
+                          <Tooltip label={t('report')} position="top">
                             <ActionIcon
                               onClick={() => handleReport(answer, 'ANSWER')}
                               variant="light"
@@ -511,7 +511,7 @@ export default function AnswerView() {
                               onMouseLeave={(e) => {
                                 e.currentTarget.style.transform = 'scale(1)';
                               }}>
-                              <IconFlag size={18} />
+                              <IconFlag size={20} />
                             </ActionIcon>
                           </Tooltip>
                         )}
@@ -538,7 +538,7 @@ export default function AnswerView() {
                           onMouseLeave={(e) => {
                             e.currentTarget.style.transform = 'scale(1)';
                           }}>
-                          <IconThumbUp size={18} />
+                          <IconThumbUp size={25} />
                         </ActionIcon>
                         <Badge
                           variant={
@@ -546,7 +546,7 @@ export default function AnswerView() {
                           }
                           color="green"
                           radius="xl"
-                          size="lg">
+                          size="xl">
                           {answer.upvotes}
                         </Badge>
                       </Group>
@@ -569,7 +569,7 @@ export default function AnswerView() {
                           onMouseLeave={(e) => {
                             e.currentTarget.style.transform = 'scale(1)';
                           }}>
-                          <IconThumbDown size={18} />
+                          <IconThumbDown size={25} />
                         </ActionIcon>
                         <Badge
                           variant={
@@ -577,7 +577,7 @@ export default function AnswerView() {
                           }
                           color="red"
                           radius="xl"
-                          size="lg">
+                          size="xl">
                           {answer.downvotes}
                         </Badge>
                       </Group>
@@ -602,7 +602,7 @@ export default function AnswerView() {
                         onMouseLeave={(e) => {
                           e.currentTarget.style.transform = 'translateY(0)';
                         }}>
-                        Phản hồi
+                        {t('feedback')}
                       </Button>
                     </Group>
 
@@ -617,7 +617,7 @@ export default function AnswerView() {
                         }}>
                         <Group gap="md" align="flex-end">
                           <TextInput
-                            placeholder="Viết phản hồi..."
+                            placeholder={t('writeFeedback')}
                             value={newcomment[answer.id] || ''}
                             onChange={(e) =>
                               handlecommentChange(
@@ -647,7 +647,7 @@ export default function AnswerView() {
                             gradient={{ from: 'blue', to: 'cyan', deg: 45 }}
                             radius="xl"
                             size="md">
-                            Gửi
+                            {t('send')}
                           </Button>
                         </Group>
                       </Box>
@@ -713,15 +713,15 @@ export default function AnswerView() {
                                       variant="light"
                                       color="cyan"
                                       radius="xl"
-                                      size="xs">
-                                      {dayjs(comment.createdAt).format(
-                                        'HH:mm DD/MM/YYYY',
-                                      )}
+                                      size="sm">
+                                      <FormatTime
+                                        createdAt={comment.createdAt}
+                                      />
                                     </Badge>
                                   </Group>
 
                                   <Text
-                                    size="sm"
+                                    size="md"
                                     c={isDark ? 'gray.3' : 'gray.7'}
                                     style={{
                                       lineHeight: 1.5,
@@ -748,11 +748,11 @@ export default function AnswerView() {
                                             : 'light'
                                         }
                                         color="green"
-                                        size="sm"
+                                        size="lg"
                                         radius="xl">
-                                        <IconThumbUp size={14} />
+                                        <IconThumbUp size={18} />
                                       </ActionIcon>
-                                      <Text size="xs" c="dimmed">
+                                      <Text size="md" c="dimmed">
                                         {comment.upvotes}
                                       </Text>
                                     </Group>
@@ -771,11 +771,11 @@ export default function AnswerView() {
                                             : 'light'
                                         }
                                         color="red"
-                                        size="sm"
+                                        size="lg"
                                         radius="xl">
-                                        <IconThumbDown size={14} />
+                                        <IconThumbDown size={18} />
                                       </ActionIcon>
-                                      <Text size="xs" c="dimmed">
+                                      <Text size="md" c="dimmed">
                                         {comment.downvotes}
                                       </Text>
                                     </Group>
@@ -786,40 +786,40 @@ export default function AnswerView() {
                                 <Group gap="xs">
                                   {user?.id == comment.userId ? (
                                     <>
-                                      <Tooltip label="Chỉnh sửa">
+                                      <Tooltip label={t('edit')}>
                                         <ActionIcon
                                           onClick={() =>
                                             handleEdit(comment, 'COMMENT')
                                           }
                                           variant="light"
                                           color="blue"
-                                          size="sm"
+                                          size="lg"
                                           radius="xl">
-                                          <IconEdit size={14} />
+                                          <IconEdit size={20} />
                                         </ActionIcon>
                                       </Tooltip>
-                                      <Tooltip label="Xóa">
+                                      <Tooltip label={t('delete')}>
                                         <ActionIcon
                                           onClick={() => handleDelete()}
                                           variant="light"
                                           color="red"
-                                          size="sm"
+                                          size="lg"
                                           radius="xl">
-                                          <IconTrash size={14} />
+                                          <IconTrash size={20} />
                                         </ActionIcon>
                                       </Tooltip>
                                     </>
                                   ) : (
-                                    <Tooltip label="Báo cáo">
+                                    <Tooltip label={t('report')}>
                                       <ActionIcon
                                         onClick={() =>
                                           handleReport(comment, 'COMMENT')
                                         }
                                         variant="light"
                                         color="yellow"
-                                        size="sm"
+                                        size="lg"
                                         radius="xl">
-                                        <IconFlag size={14} />
+                                        <IconFlag size={20} />
                                       </ActionIcon>
                                     </Tooltip>
                                   )}
