@@ -10,7 +10,10 @@
     "user-not-found": "Không tìm thấy người dùng. Vui lòng đăng nhập lại.",
     "not-authenticated": "Chưa được xác thực.",
     "logout-sucessful": "Đăng xuất thành công.",
-    "verification-send-failed": "Chúng tôi không thể gửi email xác thực. Vui lòng đăng nhập lại để thử lại."
+    "verification-send-failed": "Chúng tôi không thể gửi email xác thực. Vui lòng đăng nhập lại để thử lại.",
+    "account-not-verified": "Tài khoản chưa được xác thực.",
+    "cannot-change-oauth-password": "Thay đổi mật khẩu không được hỗ trợ cho tài khoản OAuth.",
+    "incorrect-current-password": "Mật khẩu hiện tại không chính xác."
   },
   "user": {
     "signup-error": "Lỗi bất ngờ khi đăng ký.",

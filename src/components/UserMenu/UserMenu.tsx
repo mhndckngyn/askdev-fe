@@ -37,9 +37,15 @@ export default function UserMenu({ bottom = false }: { bottom: boolean }) {
   const userLinks = (
     <>
       <Menu.Item leftSection={<IconUser size={16} />}>{t('profile')}</Menu.Item>
-      <Menu.Item
+      {/* <Menu.Item
         component={Link}
         to={memberRoutePaths.editProfile}
+        leftSection={<IconKey size={16} />}>
+        {t('account-settings')}
+      </Menu.Item> */}
+      <Menu.Item
+        component={Link}
+        to={memberRoutePaths.changePassword}
         leftSection={<IconKey size={16} />}>
         {t('account-settings')}
       </Menu.Item>

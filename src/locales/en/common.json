@@ -12,5 +12,6 @@
     "description": "You have unsaved changes. Are you sure you want to leave?",
     "yes": "Yes",
     "no": "No"
-  }
+  },
+  "go-home": "Go to homepage"
 }
