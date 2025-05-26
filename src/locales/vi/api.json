@@ -13,7 +13,10 @@
     "verification-send-failed": "Chúng tôi không thể gửi email xác thực. Vui lòng đăng nhập lại để thử lại.",
     "account-not-verified": "Tài khoản chưa được xác thực.",
     "cannot-change-oauth-password": "Thay đổi mật khẩu không được hỗ trợ cho tài khoản OAuth.",
-    "incorrect-current-password": "Mật khẩu hiện tại không chính xác."
+    "incorrect-current-password": "Mật khẩu hiện tại không chính xác.",
+    "reset-password-token-invalid": "Token đặt lại mật khẩu không hợp lệ.",
+    "reset-password-token-expired": "Token đặt lại mật khẩu đã hết hạn. Bạn có thể thử yêu cầu token mới.",
+    "reset-password-unexpected-error": "Lỗi bất ngờ khi gửi email đặt lại mật khẩu."
   },
   "user": {
     "signup-error": "Lỗi bất ngờ khi đăng ký.",

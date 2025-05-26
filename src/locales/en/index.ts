@@ -14,6 +14,7 @@ import navbar from './navbar.json';
 import passwordStrengthInput from './password-strength-input.json';
 import postQuestion from './post-question.json';
 import profilePage from './profile-page.json';
+import resetPassword from './reset-password.json';
 import richTextEditor from './rich-text-editor.json';
 import statics from './static.json';
 import tagsPage from './tags-page.json';
@@ -43,6 +44,7 @@ export default {
   postQuestion,
   profilePage,
   statics,
+  resetPassword,
   richTextEditor,
   tagsPage,
   userMenu,

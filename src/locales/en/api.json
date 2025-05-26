@@ -13,7 +13,10 @@
     "verification-send-failed": "We couldn't send you a verification email. Please log in to try again.",
     "account-not-verified": "Account is not verified.",
     "cannot-change-oauth-password": "Password change for OAuth accounts is not supported.",
-    "incorrect-current-password": "Current password is incorrect"
+    "incorrect-current-password": "Current password is incorrect",
+    "reset-password-token-invalid": "The token for password reset is invalid.",
+    "reset-password-token-expired": "The token for password reset is expired. You can try to request a new one.",
+    "reset-password-unexpected-error": "Unexpected error when resetting password."
   },
   "user": {
     "signup-check-email": "Account created. Please check your email to verify your account.",

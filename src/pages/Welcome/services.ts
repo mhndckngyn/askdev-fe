@@ -13,3 +13,12 @@ export async function submitLoginForm(
 ): Promise<ApiResponse> {
   return fetcher({ method: 'POST', route: 'auth/login', payload });
 }
+
+export async function submitPasswordResetRequest(email: string) {
+  const payload = { email };
+  return fetcher({
+    method: 'POST',
+    route: 'auth/password-reset/request',
+    payload,
+  });
+}
