@@ -1,0 +1,8 @@
+{
+  "QUESTION_VOTE": "{{username}} voted your question \"{{title}}\"",
+  "ANSWER_VOTE": "{{username}} voted your answer in question \"{{title}}\"",
+  "COMMENT": "{{username}} commented on the answer \"{{title}}\"",
+  "ANSWER": "{{username}} answered your question \"{{title}}\"",
+  "ANSWER_CHOSEN": "Your answer in \"{{title}}\" was chosen as the best",
+  "DEFAULT_MESSAGE": "You have a new notification"
+}

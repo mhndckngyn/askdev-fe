@@ -1,4 +1,3 @@
-// NotificationIcon.tsx
 import React from 'react';
 import { NotificationType } from '../types/notification';
 
@@ -30,10 +29,6 @@ export default function NotificationIcon({ type }: NotificationIconProps) {
         return { icon: '💡', bg: '#2e7d32' };
       case 'ANSWER_CHOSEN':
         return { icon: '✅', bg: '#2e7d32' };
-      case 'REPORT':
-        return { icon: '⚠️', bg: '#d32f2f' };
-      case 'EDIT':
-        return { icon: '✏️', bg: '#9c27b0' };
       default:
         return { icon: '🔔', bg: '#757575' };
     }

@@ -1,4 +1,3 @@
-// types.ts
 export interface User {
   username: string;
   profilePicture: string;
@@ -7,11 +6,11 @@ export interface User {
 export interface Notification {
   id: string;
   type: NotificationType;
-  message: string;
-  user: User;
+  actor: User;
   contentTitle: string;
-  createdAt: Date;
+  createdAt: string;
   isRead: boolean;
+  message: string;
 }
 
 export type NotificationType =
@@ -19,8 +18,6 @@ export type NotificationType =
   | 'ANSWER_VOTE'
   | 'COMMENT'
   | 'ANSWER'
-  | 'ANSWER_CHOSEN'
-  | 'REPORT'
-  | 'EDIT';
+  | 'ANSWER_CHOSEN';
 
 export type FilterType = 'all' | 'unread';

@@ -1,4 +1,3 @@
-// NotificationItem.tsx
 import {
   ListItem,
   ListItemAvatar,
@@ -16,7 +15,7 @@ import {
   MarkEmailUnread as MarkEmailUnreadIcon,
 } from '@mui/icons-material';
 import { Notification } from '../types/notification';
-import { getTimeAgo } from '../utils/timeUtils';
+import FormatTime from '../utils/timeUtils';
 import NotificationIcon from './NotificationIcon';
 
 interface NotificationItemProps {
@@ -44,7 +43,7 @@ export default function NotificationItem({
       <ListItemAvatar>
         <Box sx={{ position: 'relative' }}>
           <Avatar
-            src={notification.user.profilePicture}
+            src={notification.actor.profilePicture}
             sx={{ width: 40, height: 40 }}
           />
           <Box
@@ -66,21 +65,7 @@ export default function NotificationItem({
         primary={
           <Box>
             <Typography variant="body2" sx={{ lineHeight: 1.4 }}>
-              <Typography component="span" sx={{ fontWeight: 600 }}>
-                {notification.user.username}
-              </Typography>{' '}
               {notification.message}
-            </Typography>
-
-            <Typography
-              variant="body2"
-              sx={{
-                color: 'primary.main',
-                fontWeight: 500,
-                fontSize: '0.8125rem',
-                mt: 0.5,
-              }}>
-              {notification.contentTitle}
             </Typography>
           </Box>
         }
@@ -88,7 +73,7 @@ export default function NotificationItem({
           <Typography
             variant="caption"
             sx={{ color: 'text.secondary', mt: 0.5 }}>
-            {getTimeAgo(notification.createdAt)}
+            <FormatTime createdAt={notification.createdAt} />
           </Typography>
         }
       />

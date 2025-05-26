@@ -1,15 +1,81 @@
-// useNotification.ts
-import { useState, useMemo } from 'react';
+import {
+  deleteNotificationById,
+  deleteAllNotificationss,
+  markNotificationAsRead,
+  markAllNotificationsAsRead,
+  markNotificationAsUnread,
+  markAllNotificationsAsUnread,
+  getAllNotifications,
+} from './services';
+
+import { useUserStore } from '../../../stores/useUserStore';
+import { useTranslation } from 'react-i18next';
+
+import { useState, useMemo, useEffect } from 'react';
 import { Notification, FilterType } from '../types/notification';
-import { mockNotifications } from '../data/mockNotifications';
 
 export function useNotification() {
-  const [notifications, setNotifications] =
-    useState<Notification[]>(mockNotifications);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const user = useUserStore((state) => state.user);
+  const { t } = useTranslation('notification');
+
+  useEffect(() => {
+    getAllNotifications()
+      .then((res) => {
+        if (res.success && res.content) {
+          const withMessages = res.content.map((notification: Notification) => {
+            let message = '';
+            switch (notification.type) {
+              case 'QUESTION_VOTE':
+                message = t('QUESTION_VOTE', {
+                  username: notification.actor.username,
+                  title: notification.contentTitle,
+                });
+                break;
+              case 'ANSWER_VOTE':
+                message = t('ANSWER_VOTE', {
+                  username: notification.actor.username,
+                  title: notification.contentTitle,
+                });
+                break;
+              case 'COMMENT':
+                message = t('COMMENT', {
+                  username: notification.actor.username,
+                  title: notification.contentTitle,
+                });
+                break;
+              case 'ANSWER':
+                message = t('ANSWER', {
+                  username: notification.actor.username,
+                  title: notification.contentTitle,
+                });
+                break;
+              case 'ANSWER_CHOSEN':
+                message = t('ANSWER_CHOSEN', {
+                  title: notification.contentTitle,
+                });
+                break;
+              default:
+                message = t('DEFAULT_MESSAGE');
+            }
+
+            return {
+              ...notification,
+              message,
+            };
+          });
+
+          setNotifications(withMessages);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [user, t]);
+
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [currentFilter, setCurrentFilter] = useState<FilterType>('all');
 
-  // Computed values
   const unreadCount = notifications.filter((n) => !n.isRead).length;
   const readCount = notifications.filter((n) => n.isRead).length;
 
@@ -23,34 +89,53 @@ export function useNotification() {
     }
   }, [notifications, currentFilter]);
 
-  // Notification actions
-  const markAsRead = (notificationId: string) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === notificationId ? { ...n, isRead: true } : n)),
-    );
+  const markAsRead = async (notificationId: string) => {
+    const response = await markNotificationAsRead(notificationId);
+    if (response.success) {
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === notificationId ? { ...n, isRead: true } : n)),
+      );
+    }
   };
 
-  const markAsUnread = (notificationId: string) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === notificationId ? { ...n, isRead: false } : n)),
-    );
+  const markAsUnread = async (notificationId: string) => {
+    const response = await markNotificationAsUnread(notificationId);
+    if (response.success) {
+      setNotifications((prev) =>
+        prev.map((n) =>
+          n.id === notificationId ? { ...n, isRead: false } : n,
+        ),
+      );
+    }
   };
 
-  const markAllAsRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+  const markAllAsRead = async () => {
+    const response = await markAllNotificationsAsRead();
+    if (response.success) {
+      setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+    }
   };
 
-  const markAllAsUnread = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: false })));
+  const markAllAsUnread = async () => {
+    const response = await markAllNotificationsAsUnread();
+    if (response.success) {
+      setNotifications((prev) => prev.map((n) => ({ ...n, isRead: false })));
+    }
   };
 
-  const deleteNotification = (notificationId: string) => {
-    setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
+  const deleteNotification = async (notificationId: string) => {
+    const response = await deleteNotificationById(notificationId);
+    if (response.success) {
+      setNotifications((prev) => prev.filter((n) => n.id !== notificationId));
+    }
   };
 
-  const deleteAllNotifications = () => {
-    setNotifications([]);
-    setCurrentFilter('all');
+  const deleteAllNotifications = async () => {
+    const response = await deleteAllNotificationss();
+    if (response.success) {
+      setNotifications([]);
+      setCurrentFilter('all');
+    }
   };
 
   // Popover actions

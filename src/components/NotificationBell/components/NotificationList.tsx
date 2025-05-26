@@ -1,4 +1,3 @@
-// NotificationList.tsx
 import React, { useState, useEffect } from 'react';
 import { List, Box, Typography, Button, Divider } from '@mui/material';
 import { NotificationsOff as NotificationsOffIcon } from '@mui/icons-material';

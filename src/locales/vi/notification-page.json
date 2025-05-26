@@ -1,0 +1,8 @@
+{
+  "QUESTION_VOTE": "{{username}} đã vote câu hỏi \"{{title}}\" của bạn",
+  "ANSWER_VOTE": "{{username}} đã vote câu trả lời của bạn trong câu hỏi \"{{title}}\"",
+  "COMMENT": "{{username}} đã bình luận trong câu trả lời \"{{title}}\"",
+  "ANSWER": "{{username}} đã trả lời câu hỏi \"{{title}}\" của bạn",
+  "ANSWER_CHOSEN": "Câu trả lời của bạn trong \"{{title}}\" đã được chọn là hay nhất",
+  "DEFAULT_MESSAGE": "Bạn có một thông báo mới"
+}
