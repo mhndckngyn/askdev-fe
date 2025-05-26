@@ -76,23 +76,23 @@ export default function AdminSidebar() {
 
   return (
     <nav className={styles.navbar}>
-      <div className={styles.navMain}>
-        <Link to="/" className={styles.header}>
-          <Image src={logo} h={32} w={32} />
-          <Text visibleFrom="sm" size="xl" fw="bold">
-            AskDev
-          </Text>
-        </Link>
-        {links}
-      </div>
-
-      <div className={styles.navFooter}>
-        <div className={styles.footerBtn}>
-          <ThemeSwitcher />
-          <LanguageSelector />
+      <div className={styles.container}>
+        <div className={styles.navMain}>
+          <Link to="/" className={styles.header}>
+            <Image src={logo} h={32} w={32} />
+            <Text visibleFrom="sm" size="xl" fw="bold">
+              AskDev
+            </Text>
+          </Link>
+          {links}
         </div>
-
-        <UserMenu bottom={true} />
+        <div className={styles.navFooter}>
+          <div className={styles.footerBtn}>
+            <ThemeSwitcher />
+            <LanguageSelector />
+          </div>
+          <UserMenu bottom={true} />
+        </div>
       </div>
     </nav>
   );

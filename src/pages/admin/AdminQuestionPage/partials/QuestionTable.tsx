@@ -158,19 +158,19 @@ function QuestionTableComponent({
         },
         {
           accessor: 'views',
-          width: 80,
+          width: 100,
           title: t('views'),
           textAlign: 'right',
         },
         {
           accessor: 'votes',
-          width: 80,
+          width: 100,
           title: t('votes'),
           textAlign: 'right',
         },
         {
           accessor: 'answers',
-          width: 80,
+          width: 120,
           title: t('answers'),
           textAlign: 'right',
         },
@@ -187,13 +187,13 @@ function QuestionTableComponent({
         {
           accessor: 'createdAt',
           title: t('postedOn'),
-          width: '10%',
+          width: 120,
           render: (row) => <Text size="sm">{formatDate(row.createdAt)}</Text>,
         },
         {
           accessor: 'editedAt',
           title: t('lastEdited'),
-          width: '10%',
+          width: 120,
           render: (row) => (
             /* hiển thị ngày edit chỉ khi khác ngày tạo */
             <Text size="sm">

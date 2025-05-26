@@ -217,7 +217,7 @@ function ReportTableComponent({
           },
           {
             accessor: 'contentType',
-            width: 120,
+            width: 140,
             title: t('contentType'),
             textAlign: 'center',
             render: ({ contentType }) => {

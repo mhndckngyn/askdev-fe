@@ -9,7 +9,7 @@
 
 .navMain {
   position: sticky;
-  top: calc(61px + var(--mantine-spacing-md));
+  top: calc(64px + var(--mantine-spacing-md));
 }
 
 .actionButton {

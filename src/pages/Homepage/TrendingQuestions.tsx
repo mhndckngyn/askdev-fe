@@ -126,7 +126,7 @@ export default function TrendingQuestions({
                         ? 'rgba(255,255,255,0.7)'
                         : 'text.secondary',
                     }}>
-                    {t('by')} {<strong>{question.author}</strong>} •
+                    {t('by')} {<strong>{question.author}</strong>} {"• "}
                     {<FormatTime createdAt={question.time} />}
                   </Typography>
                 </Box>

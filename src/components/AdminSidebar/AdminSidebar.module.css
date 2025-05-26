@@ -1,9 +1,15 @@
 .navbar {
   width: 280px;
   padding: var(--mantine-spacing-md);
+  border-right: 1px solid var(--mantine-color-default-border);
+}
+
+.container {
   display: flex;
   flex-direction: column;
-  border-right: 1px solid var(--mantine-color-default-border);
+  height: calc(100vh - calc(var(--mantine-spacing-md) * 2) - 2px);
+  position: sticky;
+  top: var(--mantine-spacing-md);
 }
 
 .navMain {
@@ -14,7 +20,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
   margin-bottom: calc(var(--mantine-spacing-md) * 1.5);
   padding-bottom: var(--mantine-spacing-md);
   border-bottom: 1px solid var(--mantine-color-default-border);
