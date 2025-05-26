@@ -30,7 +30,7 @@ const Chart: React.FC = () => {
     const fetchTopTags = async () => {
       try {
         const result = await getDashboardTopTagsInYear(selectedYear);
-        setData(result.content);
+        setData(result.content ?? []);
       } catch (error) {
         console.error(error);
         setData([]);

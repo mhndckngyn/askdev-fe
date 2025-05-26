@@ -47,7 +47,7 @@ export default function Homepage() {
 
     getTrendingQuestions()
       .then((data) => {
-        setTrendingQuestions(data.content);
+        setTrendingQuestions(data.content ?? []);
       })
       .catch((err) => {
         console.error(err);
@@ -55,7 +55,7 @@ export default function Homepage() {
 
     getTopContributors()
       .then((data) => {
-        setTopContributors(data.content);
+        setTopContributors(data.content ?? []);
       })
       .catch((err) => {
         console.error(err);
@@ -76,7 +76,7 @@ export default function Homepage() {
             color: colors[index % colors.length],
           };
         });
-        setCategories(coloredCategories);
+        setCategories(coloredCategories ?? []);
       })
       .catch((err) => {
         console.error(err);

@@ -81,7 +81,7 @@ const TopicsChart = () => {
         name: t('tag'),
         type: 'pie',
         radius: '90%',
-        center: ['50%', '40%'],
+        center: ['50%', '45%'],
         data: chartData.map((item, index) => ({
           ...item,
           itemStyle: {

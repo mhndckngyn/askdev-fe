@@ -50,7 +50,7 @@ export default function TopContributors({
         {t('topContributors')}
       </Typography>
 
-      {topContributors.map((contributor, index) => (
+      {topContributors?.map((contributor, index) => (
         <Box
           key={index}
           sx={{

@@ -40,7 +40,7 @@ export default function Categoriespage({ categories }: CategoriespageProps) {
         {t('popularCategories')}
       </Typography>
 
-      {categories.map((category, index) => (
+      {categories?.map((category, index) => (
         <Box
           key={index}
           sx={{
