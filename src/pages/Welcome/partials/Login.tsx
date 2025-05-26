@@ -11,16 +11,18 @@ import {
   TextInput,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useDisclosure } from '@mantine/hooks';
 import {
   IconBrandGithubFilled,
   IconBrandGoogleFilled,
 } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getEmailLoginError } from '../schemas';
 import { submitLoginForm } from '../services';
 import { LoginFormValues } from '../types';
+import ForgotPasswordModal from './ForgotPasswordModal';
 
 export default function Login() {
   const { t: tCommon } = useTranslation('common');
@@ -32,6 +34,8 @@ export default function Login() {
 
   const navigate = useNavigate();
   const [isSubmitting, setSubmitting] = useState(false);
+
+  const [opened, { open, close }] = useDisclosure();
 
   const form = useForm<LoginFormValues>({
     initialValues: {
@@ -68,50 +72,49 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Stack>
-        <TextInput
-          label="Email"
-          placeholder={t('enter-email')}
-          {...form.getInputProps('email')}
-          required
-        />
-
-        <PasswordInput
-          label={t('password')}
-          placeholder={t('enter-password')}
-          {...form.getInputProps('password')}
-          required
-        />
-
-        <Button fullWidth type="submit" loading={isSubmitting}>
-          {tCommon('login')}
-        </Button>
-
-        <Flex justify="flex-end">
-          <Anchor component={Link} to="/password-reset" size="sm">
-            {t('forgot-password')}
-          </Anchor>
-        </Flex>
-
-        <Divider label={t('continue-with')} labelPosition="center" />
-        <Group grow>
-          <Button
-            component="a"
-            href="http://localhost:3000/auth/google"
-            leftSection={<IconBrandGoogleFilled size={16} />}
-            variant="default">
-            Google
+    <>
+      <ForgotPasswordModal opened={opened} close={close} />
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack>
+          <TextInput
+            label="Email"
+            placeholder={t('enter-email')}
+            {...form.getInputProps('email')}
+            required
+          />
+          <PasswordInput
+            label={t('password')}
+            placeholder={t('enter-password')}
+            {...form.getInputProps('password')}
+            required
+          />
+          <Button fullWidth type="submit" loading={isSubmitting}>
+            {tCommon('login')}
           </Button>
-          <Button
-            component="a"
-            href="http://localhost:3000/auth/github"
-            leftSection={<IconBrandGithubFilled size={16} />}
-            variant="default">
-            GitHub
-          </Button>
-        </Group>
-      </Stack>
-    </form>
+          <Flex justify="flex-end">
+            <Anchor component="button" onClick={open} size="sm">
+              {t('forgot-password')}
+            </Anchor>
+          </Flex>
+          <Divider label={t('continue-with')} labelPosition="center" />
+          <Group grow>
+            <Button
+              component="a"
+              href="http://localhost:3000/auth/google"
+              leftSection={<IconBrandGoogleFilled size={16} />}
+              variant="default">
+              Google
+            </Button>
+            <Button
+              component="a"
+              href="http://localhost:3000/auth/github"
+              leftSection={<IconBrandGithubFilled size={16} />}
+              variant="default">
+              GitHub
+            </Button>
+          </Group>
+        </Stack>
+      </form>
+    </>
   );
 }

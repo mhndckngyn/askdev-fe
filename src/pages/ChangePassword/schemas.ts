@@ -10,6 +10,17 @@ export function getCurrentPasswordError(value: string): string | null {
   return null;
 }
 
+export function getCurrentAndNewPasswordError(
+  value1: string,
+  value2: string,
+): string | null {
+  if (value1 === value2) {
+    return i18next.t(`${ns}:password-is-using`);
+  }
+
+  return null;
+}
+
 export function getConfirmPasswordError(
   value1: string,
   value2: string,

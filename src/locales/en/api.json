@@ -7,10 +7,16 @@
     "login-successful": "Logged in succesfully.",
     "login-first": "You have to log in first.",
     "incorrect-login-data": "Email or passport is not correct.",
-    "user-not-found": "Please log in again to continue.",
+    "user-not-found": "Please log in to continue.",
     "not-authenticated": "Not authenticated.",
     "logout-sucessful": "Logged out sucessfully.",
-    "verification-send-failed": "We couldn't send you a verification email. Please log in to try again."
+    "verification-send-failed": "We couldn't send you a verification email. Please log in to try again.",
+    "account-not-verified": "Account is not verified.",
+    "cannot-change-oauth-password": "Password change for OAuth accounts is not supported.",
+    "incorrect-current-password": "Current password is incorrect",
+    "reset-password-token-invalid": "The token for password reset is invalid.",
+    "reset-password-token-expired": "The token for password reset is expired. You can try to request a new one.",
+    "reset-password-unexpected-error": "Unexpected error when resetting password."
   },
   "user": {
     "signup-check-email": "Account created. Please check your email to verify your account.",

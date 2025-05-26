@@ -1,5 +1,6 @@
 .footer {
-  background-color: var(--mantine-color-gray-0);
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
+  border-top: 1px solid var(--mantine-color-default-border);
   padding-left: var(--mantine-spacing-md);
   padding-right: var(--mantine-spacing-md);
 }

@@ -7,7 +7,10 @@ import styles from './UserLayout.module.css';
 import visitorRoutePaths from './visitor/paths';
 
 function shouldShowSidebar(path: string) {
-  const noSidebar = [visitorRoutePaths.welcome];
+  const noSidebar = [
+    visitorRoutePaths.welcome,
+    visitorRoutePaths.resetPassword,
+  ];
   return !noSidebar.includes(path);
 }
 
