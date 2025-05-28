@@ -19,6 +19,10 @@ export default function ListQuestionByTag() {
   const isDark = colorScheme === 'dark';
   const { user } = useUserStore();
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const getThemeStyles = () => ({
     mainContainer: {
       minHeight: '100vh',
@@ -201,7 +205,7 @@ export default function ListQuestionByTag() {
       try {
         const res: ApiResponse = await getQuestionsByTag(id);
         setQuestions(res.content.questions);
-        setTagName(res.content.tagName.replace(/-/g, ' ').toUpperCase());
+        setTagName('#' + res.content.tagName.replace(/-/g, ' '));
       } catch (error) {
         console.error(error);
       } finally {

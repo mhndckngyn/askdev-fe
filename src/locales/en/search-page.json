@@ -1,0 +1,14 @@
+{
+  "all": "All",
+  "question": "Questions",
+  "tag": "Tags",
+  "member": "Members",
+  "answers": "Answers",
+  "by": "by",
+  "point": "Point",
+  "searchResults": "Search Results",
+  "noFound": "No results found",
+  "tryFound": "Try adjusting your search terms or browse different categories.",
+  "resultsFound": "results found",
+  "viewMoreResults": "View more search results"
+}
