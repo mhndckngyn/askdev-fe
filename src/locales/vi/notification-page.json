@@ -1,8 +1,23 @@
 {
-  "QUESTION_VOTE": "{{username}} đã vote câu hỏi \"{{title}}\" của bạn",
-  "ANSWER_VOTE": "{{username}} đã vote câu trả lời của bạn trong câu hỏi \"{{title}}\"",
+  "QUESTION_VOTE": "{{username}} đã vote câu hỏi \"{{title}}\"",
+  "ANSWER_VOTE": "{{username}} đã vote câu trả lời \"{{title}}\"",
+  "COMMENT_VOTE": "{{username}} đã vote câu bình luận \"{{title}}\"",
   "COMMENT": "{{username}} đã bình luận trong câu trả lời \"{{title}}\"",
-  "ANSWER": "{{username}} đã trả lời câu hỏi \"{{title}}\" của bạn",
-  "ANSWER_CHOSEN": "Câu trả lời của bạn trong \"{{title}}\" đã được chọn là hay nhất",
-  "DEFAULT_MESSAGE": "Bạn có một thông báo mới"
+  "ANSWER": "{{username}} đã trả lời câu hỏi \"{{title}}\"",
+  "ANSWER_CHOSEN": "Câu trả lời của bạn đã được chọn là hay nhất trong câu hỏi \"{{title}}\" ",
+  "DEFAULT_MESSAGE": "Bạn có một thông báo mới",
+  "MARK_AS_UNREAD": "Đánh dấu chưa đọc",
+  "MARK_AS_READ": "Đánh dấu đã đọc",
+  "NO_NOTIFICATIONS": "Không có thông báo nào",
+  "NOTIFICATION_GUIDE": "Bạn sẽ nhận được thông báo khi có hoạt động mới",
+  "SEE_MORE": "Xem thêm thông báo ({{count}}) còn lại",
+  "NOTIFICATIONS": "Thông báo",
+  "UNREAD_COUNT": "{{count}} chưa đọc",
+  "DELETE_ALL": "Xóa tất cả",
+  "ALL_TAB": "Tất cả ({{count}})",
+  "UNREAD_TAB": "Chưa đọc ({{count}})",
+  "DELETE_NOTIFICATION": "Xóa thông báo",
+  "MARK_ALL_AS_UNREAD": "Đánh dấu tất cả chưa đọc",
+  "MARK_ALL_AS_READ": "Đánh dấu tất cả đã đọc",
+  "OPTIONS": "Tùy chọn"
 }

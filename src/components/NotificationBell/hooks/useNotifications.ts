@@ -20,45 +20,45 @@ export function useNotification() {
   const { t } = useTranslation('notification');
 
   useEffect(() => {
+    const notificationMessages = {
+      QUESTION_VOTE: (n: Notification) =>
+        t('QUESTION_VOTE', {
+          username: n.actor?.username ?? 'Someone',
+          title: n.contentTitle,
+        }),
+      ANSWER_VOTE: (n: Notification) =>
+        t('ANSWER_VOTE', {
+          username: n.actor?.username ?? 'Someone',
+          title: n.contentTitle,
+        }),
+      COMMENT_VOTE: (n: Notification) =>
+        t('COMMENT_VOTE', {
+          username: n.actor?.username ?? 'Someone',
+          title: n.contentTitle,
+        }),
+      COMMENT: (n: Notification) =>
+        t('COMMENT', {
+          username: n.actor?.username ?? 'Someone',
+          title: n.contentTitle,
+        }),
+      ANSWER: (n: Notification) =>
+        t('ANSWER', {
+          username: n.actor?.username ?? 'Someone',
+          title: n.contentTitle,
+        }),
+      ANSWER_CHOSEN: (n: Notification) =>
+        t('ANSWER_CHOSEN', { title: n.contentTitle }),
+      DEFAULT: () => t('DEFAULT_MESSAGE'),
+    };
+
     getAllNotifications()
       .then((res) => {
         if (res.success && res.content) {
           const withMessages = res.content.map((notification: Notification) => {
-            let message = '';
-            switch (notification.type) {
-              case 'QUESTION_VOTE':
-                message = t('QUESTION_VOTE', {
-                  username: notification.actor.username,
-                  title: notification.contentTitle,
-                });
-                break;
-              case 'ANSWER_VOTE':
-                message = t('ANSWER_VOTE', {
-                  username: notification.actor.username,
-                  title: notification.contentTitle,
-                });
-                break;
-              case 'COMMENT':
-                message = t('COMMENT', {
-                  username: notification.actor.username,
-                  title: notification.contentTitle,
-                });
-                break;
-              case 'ANSWER':
-                message = t('ANSWER', {
-                  username: notification.actor.username,
-                  title: notification.contentTitle,
-                });
-                break;
-              case 'ANSWER_CHOSEN':
-                message = t('ANSWER_CHOSEN', {
-                  title: notification.contentTitle,
-                });
-                break;
-              default:
-                message = t('DEFAULT_MESSAGE');
-            }
-
+            const handler =
+              notificationMessages[notification.type] ??
+              notificationMessages.DEFAULT;
+            const message = handler(notification);
             return {
               ...notification,
               message,
