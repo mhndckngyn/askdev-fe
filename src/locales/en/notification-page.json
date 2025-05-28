@@ -1,8 +1,23 @@
 {
-  "QUESTION_VOTE": "{{username}} voted your question \"{{title}}\"",
-  "ANSWER_VOTE": "{{username}} voted your answer in question \"{{title}}\"",
+  "QUESTION_VOTE": "{{username}} voted on the question \"{{title}}\"",
+  "ANSWER_VOTE": "{{username}} voted on the answer \"{{title}}\"",
+  "COMMENT_VOTE": "{{username}} voted on the comment \"{{title}}\"",
   "COMMENT": "{{username}} commented on the answer \"{{title}}\"",
-  "ANSWER": "{{username}} answered your question \"{{title}}\"",
-  "ANSWER_CHOSEN": "Your answer in \"{{title}}\" was chosen as the best",
-  "DEFAULT_MESSAGE": "You have a new notification"
+  "ANSWER": "{{username}} answered the question \"{{title}}\"",
+  "ANSWER_CHOSEN": "Your answer has been chosen as the best answer for the question \"{{title}}\"",
+  "DEFAULT_MESSAGE": "You have a new notification",
+  "MARK_AS_UNREAD": "Mark as unread",
+  "MARK_AS_READ": "Mark as read",
+  "NO_NOTIFICATIONS": "No notifications",
+  "NOTIFICATION_GUIDE": "You will receive notifications when new activity occurs",
+  "SEE_MORE": "See more notifications ({{count}}) more",
+  "NOTIFICATIONS": "Notifications",
+  "UNREAD_COUNT": "{{count}} unread",
+  "DELETE_ALL": "Delete all",
+  "ALL_TAB": "All ({{count}})",
+  "UNREAD_TAB": "Unread ({{count}})",
+  "DELETE_NOTIFICATION": "Delete notification",
+  "MARK_ALL_AS_UNREAD": "Mark all as unread",
+  "MARK_ALL_AS_READ": "Mark all as read",
+  "OPTIONS": "Options"
 }

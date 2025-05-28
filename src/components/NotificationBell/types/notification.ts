@@ -11,11 +11,13 @@ export interface Notification {
   createdAt: string;
   isRead: boolean;
   message: string;
+  questionId: string;
 }
 
 export type NotificationType =
   | 'QUESTION_VOTE'
   | 'ANSWER_VOTE'
+  | 'COMMENT_VOTE'
   | 'COMMENT'
   | 'ANSWER'
   | 'ANSWER_CHOSEN';

@@ -106,7 +106,7 @@ export default function NavBar() {
         </Center>
 
         <Flex align="center" justify="end" gap="sm">
-          <NotificationBell />
+          {user && <NotificationBell />}
           <ThemeSwitcher />
           <LanguageSelector />
 
