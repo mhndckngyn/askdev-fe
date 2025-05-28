@@ -8,7 +8,7 @@ import {
   getAllNotifications,
 } from './services';
 
-import { useUserStore } from '../../../stores/useUserStore';
+import { useUserStore } from '@/stores/useUserStore';
 import { useTranslation } from 'react-i18next';
 
 import { useState, useMemo, useEffect } from 'react';

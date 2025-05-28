@@ -4,11 +4,16 @@ import QuestionView from './Questionview';
 import InteractionBar from './InteractionBar';
 import CommentView from './CommentView';
 import { useUserStore } from '../../stores/useUserStore';
+import { useEffect } from 'react';
 
 export default function QuestionDetail() {
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
   const { user } = useUserStore();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   const getThemeStyles = () => ({
     container: {
