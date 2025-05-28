@@ -42,8 +42,6 @@ export default function EditProfile() {
   const [isFetching, setFetching] = useState(true);
   const [isSubmitting, setSubmitting] = useState(false);
 
-  const [render, setRender] = useState(0);
-
   const [initialAvatarUrl, setInitialAvatarUrl] = useState('');
   const form = useForm<ProfileFormData>({
     initialValues: {
@@ -76,7 +74,7 @@ export default function EditProfile() {
         return;
       }
 
-      const response = await getProfileById(user?.id);
+      const response = await getProfileById(userId);
       if (response.success) {
         const about = JSON.parse(response.content.bio);
         const github = response.content.github ?? '';
@@ -96,7 +94,7 @@ export default function EditProfile() {
 
     fetchInfo();
     setFetching(false);
-  }, [render]);
+  }, []);
 
   useEffect(() => {
     return () => URL.revokeObjectURL(avatarPreviewUrl);
@@ -121,7 +119,7 @@ export default function EditProfile() {
     if (resBody.success) {
       notifications.show({ message: t('updateSuccess') });
       fetchUser();
-      setRender(render + 1);
+      navigate(publicRoutePaths.profilePage.replace(':id', user?.id!))
     } else {
       setError(t('updateError'));
     }

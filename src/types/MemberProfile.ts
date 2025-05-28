@@ -1,23 +1,30 @@
-export default interface MemberProfile {
-  username: string;
-  avatar: string;
-  bio: string;
-  github: string;
-  showGithub: boolean;
-  featuredQuestions: PostPreview[];
-  featuredAnswers: PostPreview[];
-  questions: number;
-  answers: number;
-  upvotesReceived: number;
+import { Tag } from '@/pages/EditQuestion/services';
+
+export default interface Profile {
+  info: {
+    id: string;
+    username: string;
+    avatar: string;
+    github?: string;
+    bio: string;
+  };
+  stats: {
+    questions: number;
+    answers: number;
+    upvotesReceived: number;
+    joinedOn: string; // ISO date string
+  };
+  questions: PostPreview[];
+  answers: PostPreview[];
   interestTags: InterestTags[];
-  joinedOn: string; // ISO date string
 }
 
 export interface PostPreview {
   id: string;
   questionTitle: string;
   upvotes: number;
-  isSolved: boolean;
+  tags: Tag[];
+  // isSolved: boolean;
   postedOn: string; // ISO date string
 }
 

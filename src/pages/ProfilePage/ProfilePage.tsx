@@ -1,108 +1,55 @@
 import PageLoader from '@/components/PageLoader';
-import { mockMemberProfile } from '@/mocks/';
+import publicRoutePaths from '@/routes/user/public/paths';
 import { useUserStore } from '@/stores/useUserStore';
-import MemberProfile from '@/types/MemberProfile';
-import {
-  Anchor,
-  Avatar,
-  Box,
-  Button,
-  Group,
-  Stack,
-  Title,
-  TypographyStylesProvider,
-} from '@mantine/core';
-import { IconBrandGithub, IconEdit } from '@tabler/icons-react';
+import { MemberProfile } from '@/types';
+import { Stack } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from './ProfilePage.module.css';
-import FeaturedPosts from './partials/FeaturedPosts';
 import Stats from './partials/Stats';
 import TagsOfInterest from './partials/TagsOfInterest';
-import memberRoutePaths from '@/routes/user/member/paths';
+import TopPosts from './partials/TopPosts';
+import UserInfo from './partials/UserInfo';
+import { getProfileById } from './services';
 
 export default function ProfilePage() {
-  const { id } = useParams(); // use param to fetch user
   const { t } = useTranslation('profilePage');
+  const navigate = useNavigate();
+
   const userId = useUserStore((state) => state.user?.id);
   const [profile, setProfile] = useState<MemberProfile | null>(null);
 
-  // TODO: Nếu không có id từ param, thử lấy từ store, nếu không thì navigate
-
   useEffect(() => {
-    // TODO
-    const fetchProfile = async () => {
-      setTimeout(() => {
-        setProfile(mockMemberProfile);
-      }, 1200);
-    };
+    if (!userId) {
+      navigate(publicRoutePaths.notFound);
+      return;
+    }
 
-    fetchProfile();
-  }, [id]);
-
-  const allowEdit = id === userId;
+    (async () => {
+      const response = await getProfileById(userId);
+      if (response.success) {
+        setProfile(response.content);
+      } else {
+      }
+    })();
+  }, [userId]);
 
   if (!profile) return <PageLoader />;
 
   return (
-    <Stack gap="md">
-      <Group>
-        <Avatar src={profile.avatar} size={100} radius="sm" />
-        <Stack gap="xs">
-          <Group>
-            <Title className={styles.name}>{profile.username}</Title>
-            {allowEdit && (
-              <Button
-                component={Link}
-                to={memberRoutePaths.editProfile}
-                leftSection={<IconEdit />}>
-                {t('edit-profile')}
-              </Button>
-            )}
-          </Group>
-          {profile.github && (
-            <div>
-              <Anchor
-                href={`https://github.com/${profile.github}`}
-                className={styles.github}>
-                <IconBrandGithub /> {profile.github}
-              </Anchor>
-            </div>
-          )}
-        </Stack>
-      </Group>
-
-      <Box className={styles.content}>
-        <Stack>
-          <Box className={styles.box}>
-            <Title order={2} className={styles.sectionTitle}>
-              {t('about-me')}
-            </Title>
-            <TypographyStylesProvider>
-              {/* TODO */}
-              <p>Xin chào các bạn, tôi là Thắng Đinh</p>
-              <p>Xin chào các bạn, tôi là Thắng Đinh</p>
-              <p>Xin chào các bạn, tôi là Thắng Đinh</p>
-              <p>Xin chào các bạn, tôi là Thắng Đinh</p>
-              <p>Xin chào các bạn, tôi là Thắng Đinh</p>
-            </TypographyStylesProvider>
-          </Box>
-          <Stats profile={profile} />
-        </Stack>
-
-        <Stack>
-          <TagsOfInterest tags={profile.interestTags} />
-          <FeaturedPosts
-            title={t('featured-questions')}
-            posts={profile.featuredQuestions}
-          />
-          <FeaturedPosts
-            title={t('featured-answers')}
-            posts={profile.featuredAnswers}
-          />
-        </Stack>
-      </Box>
+    <Stack gap="md" align="center" className={styles['profilePage-container']}>
+      <UserInfo info={profile.info} />
+      <Stats stats={profile.stats} />
+      <TagsOfInterest tags={profile.interestTags} />
+      <TopPosts
+        sectionTitle={t('top-questions')}
+        posts={profile.questions}
+      />
+      <TopPosts
+        sectionTitle={t('top-answers')}
+        posts={profile.answers}
+      />
     </Stack>
   );
 }

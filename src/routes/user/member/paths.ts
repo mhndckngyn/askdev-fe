@@ -1,9 +1,9 @@
 const memberRoutePaths = {
   postQueston: '/post-question',
   editQuestion: '/questions/:id/edit',
-  editProfile: '/edit-profile',
+  editProfile: '/profile/edit',
   changePassword: '/change-password',
-  profile: '/profile/:id',
+  profile: '/profile',
 };
 
 export default memberRoutePaths;

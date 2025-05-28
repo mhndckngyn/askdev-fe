@@ -1,11 +1,12 @@
 {
   "edit-profile": "Chỉnh sửa hồ sơ",
-  "about-me": "Về tôi",
-  "featured-questions": "Câu hỏi tiêu biểu",
-  "featured-answers": "Câu trả lời tiêu biểu",
+  "about-me": "Tiểu sử",
+  "featured-questions": "Câu hỏi hàng đầu",
+  "featured-answers": "Câu trả lời hàng đầu",
   "member-since": "Thành viên kể từ",
-  "question-posted": "Câu hỏi đã đăng",
-  "answer-given": "Câu trả lời đã đưa",
-  "upvote-received": "Số upvote nhận được",
-  "tags-of-interest": "Chủ đề quan tâm"
+  "question-posted": "Câu hỏi",
+  "answer-given": "Câu trả lời",
+  "upvote-received": "Upvote đã nhận",
+  "tags-of-interest": "Chủ đề quan tâm",
+  "no-bio": "chưa đăng gì trên tiểu sử của họ."
 }

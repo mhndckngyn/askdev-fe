@@ -6,7 +6,7 @@ import { ProfileFormData } from './EditProfile';
 export function getProfileById(id: string) {
   return fetcher({
     method: 'GET',
-    route: `/user/profile/${id}`,
+    route: `/user/profile/${id}/edit`,
   });
 }
 

@@ -1,12 +1,20 @@
-import MemberProfile from '@/types/MemberProfile';
+import { MemberProfile } from '@/types';
 
 const mockMemberProfile: MemberProfile = {
-  username: 'thangvudinhtrong',
-  avatar: 'https://randomuser.me/api/portraits/men/26.jpg',
-  bio: 'Fullstack Dev. ❤️ JS, TS & mã nguồn mở.',
-  github: 'thangvdtrong',
-  showGithub: true,
-  featuredQuestions: [
+  info: {
+    id: '1',
+    username: 'thangvudinhtrong',
+    avatar: 'https://randomuser.me/api/portraits/men/26.jpg',
+    bio: 'Fullstack Dev. ❤️ JS, TS & mã nguồn mở.',
+    github: 'thangvdtrong',
+  },
+  stats: {
+    questions: 100,
+    answers: 230,
+    upvotesReceived: 1000,
+    joinedOn: '2022-06-01T12:00:00Z',
+  },
+  questions: [
     {
       id: 'q123',
       questionTitle: 'Làm thế nào để tối ưu hiệu suất React?',
@@ -44,7 +52,7 @@ const mockMemberProfile: MemberProfile = {
       postedOn: '2024-02-01T16:45:00Z',
     },
   ],
-  featuredAnswers: [
+  answers: [
     {
       id: 'a567',
       questionTitle: 'Sự khác biệt giữa var, let và const là gì?',
@@ -81,10 +89,6 @@ const mockMemberProfile: MemberProfile = {
       postedOn: '2024-01-10T11:00:00Z',
     },
   ],
-  questions: 100,
-  answers: 230,
-  upvotesReceived: 1000,
-  joinedOn: '2022-06-01T12:00:00Z',
   interestTags: [
     {
       id: 'tag1',

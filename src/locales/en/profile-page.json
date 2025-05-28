@@ -1,11 +1,12 @@
 {
   "edit-profile": "Edit profile",
-  "about-me": "About me",
-  "featured-questions": "Featured Questions",
-  "featured-answers": "Featured Answers",
+  "about-me": "Biography",
+  "top-questions": "Top Questions",
+  "top-answers": "Top Answers",
   "member-since": "Member since",
   "question-posted": "Questions posted",
   "answer-given": "Answers given",
   "upvote-received": "Upvote received",
-  "tags-of-interest": "Tags of Interest"
+  "tags-of-interest": "Tags of Interest",
+  "no-bio": "don't have anything on their bio."
 }

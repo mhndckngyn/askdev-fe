@@ -1,6 +1,7 @@
 import TagHoverCard from '@/components/TagHoverCard';
 import { InterestTags } from '@/types/MemberProfile';
-import { Box, Group, Stack, Text, Title } from '@mantine/core';
+import { Box, Group, SimpleGrid, Text, Title } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import styles from '../ProfilePage.module.css';
 
 type TagsOfInterestProps = {
@@ -8,14 +9,19 @@ type TagsOfInterestProps = {
 };
 
 export default function TagsOfInterest({ tags }: TagsOfInterestProps) {
+  const { t } = useTranslation('profilePage');
+
   return (
-    <Box className={styles.box}>
+    <Box className={styles['profilePage-section']}>
       <Title order={2} className={styles.sectionTitle}>
-        Tags of Interest
+        {t('tags-of-interest')}
       </Title>
-      <Stack>
+      <SimpleGrid cols={2} className={styles['tagsOfInterest-list']}>
         {tags.map((tag) => (
-          <Group key={tag.id} justify="space-between">
+          <Group
+            justify="space-between"
+            className={styles['tagOfInterest-item']}
+            key={tag.id}>
             <TagHoverCard key={tag.id} id={tag.id} name={tag.name} />
             <Group gap="sm">
               <Text>
@@ -28,7 +34,7 @@ export default function TagsOfInterest({ tags }: TagsOfInterestProps) {
             </Group>
           </Group>
         ))}
-      </Stack>
+      </SimpleGrid>
     </Box>
   );
 }

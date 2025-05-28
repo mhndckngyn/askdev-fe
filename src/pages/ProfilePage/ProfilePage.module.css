@@ -7,29 +7,10 @@
   align-self: stretch;
 }
 
-.statLabel {
-  display: inline-flex;
-  gap: 4px;
-  align-items: center;
-  color: var(--mantine-color-dimmed);
-  font-size: var(--mantine-font-size-sm);
-}
-
-.statNumber {
-  font-size: var(--mantine-h4-font-size);
-  font-weight: var(--mantine-h4-font-weight);
-}
-
 .github {
   display: inline-flex;
   text-align: center;
   gap: 6px;
-}
-
-.content {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: var(--mantine-spacing-md);
 }
 
 .sectionTitle {
@@ -38,20 +19,10 @@
   margin-bottom: var(--mantine-spacing-md);
 }
 
-.box {
-  padding: var(--mantine-spacing-md);
-  border: 1px solid var(--mantine-color-default-border);
-  border-radius: var(--mantine-radius-default);
-}
-
 .postContainer {
   padding: var(--mantine-spacing-md);
   border: 1px solid var(--mantine-color-default-border);
   border-radius: var(--mantine-radius-default);
-}
-
-.postItem:not(:last-child) {
-  margin-bottom: var(--mantine-spacing-sm);
 }
 
 .postTitle {
@@ -65,4 +36,143 @@
 .subtext {
   color: var(--mantine-color-dimmed);
   font-size: var(--mantine-font-size-sm);
+}
+
+.profilePage-container {
+  background: light-dark(var(--mantine-color-cyan-2), hsl(240, 29%, 14%));
+}
+
+.profilePage-section {
+  width: clamp(300px, 100%, 800px);
+  border-radius: var(--mantine-radius-xl);
+  padding: var(--mantine-spacing-xl);
+  background: light-dark(var(--mantine-color-cyan-0), hsl(240, 29%, 20%));
+}
+
+.userInfo-container {
+  position: relative;
+  display: flex;
+  gap: var(--mantine-spacing-xl);
+  overflow: hidden;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ff9a8b, #ff6a88, #ff99ac, #ffc371);
+
+    -webkit-background-size: 300% 300%;
+    background-size: 300% 300%;
+    -webkit-animation: gradientShift 6s ease infinite;
+    animation: gradientShift 6s ease infinite;
+  }
+}
+
+.userInfo-content {
+  /* nội dung bên phải */
+  flex: 1;
+
+  .divider {
+    border-top: 1px solid
+      light-dark(hsl(0, 0%, 77%), var(--mantine-color-default-border));
+    margin: var(--mantine-spacing-md) 0;
+  }
+}
+
+.userInfo-socialLinks {
+  display: flex;
+  gap: 6px;
+}
+
+.userInfo-socialIcon {
+  color: var(--mantine-color-text);
+}
+
+.userInfo-editIcon {
+  width: 70%;
+  height: 70%;
+}
+
+.userInfo-emptyBio {
+  font-style: italic;
+  color: var(--mantine-color-dimmed);
+}
+
+.stats-label {
+  align-items: center;
+  color: var(--mantine-color-dimmed);
+  font-size: var(--mantine-font-size-sm);
+}
+
+.stats-number {
+  font-size: var(--mantine-h4-font-size);
+  font-weight: var(--mantine-h4-font-weight);
+}
+
+.stats-icon {
+  width: 48px;
+  height: 48px;
+}
+
+.tagOfInterest-item {
+  padding: var(--mantine-spacing-md);
+  background-color: light-dark(var(--mantine-color-white), hsl(240, 29%, 14%));
+  border-radius: var(--mantine-radius-xl);
+  border: 1px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition:
+    box-shadow 150ms ease,
+    transform 150ms ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  @mixin dark {
+    border-color: var(--mantine-color-default-border);
+
+    &:hover {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+  }
+}
+
+.featuredPosts-item {
+  display: flex;
+  flex-direction: column;
+
+  gap: var(--mantine-spacing-sm);
+  border: 1px solid white;
+  padding: var(--mantine-spacing-md);
+  background-color: light-dark(var(--mantine-color-white), hsl(240, 29%, 14%));
+  border-radius: var(--mantine-radius-lg);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition:
+    box-shadow 150ms ease,
+    transform 150ms ease;
+
+  @mixin dark {
+    border-color: var(--mantine-color-default-border);
+  }
+
+  &:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
