@@ -23,8 +23,10 @@ import userSidebar from './user-sidebar.json';
 import welcome from './welcome.json';
 import home from './home-page.json';
 import question from './question-page.json';
+import notification from './notification-page.json';
 
 export default {
+  notification,
   question,
   home,
   adminAnswerPage,

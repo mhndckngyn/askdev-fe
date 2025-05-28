@@ -27,7 +27,7 @@ export default function LanguageSelector() {
             rightSection={
               i18n.language === code ? <IconCheck size={14} /> : null
             }>
-            {t(label)}
+            {t(label as any)}
           </Menu.Item>
         ))}
       </Menu.Dropdown>

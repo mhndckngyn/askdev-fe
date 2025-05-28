@@ -1,6 +1,6 @@
 import { Box, Typography, Paper } from '@mui/material';
 import { useMantineColorScheme } from '@mantine/core';
-import { Label } from '@mui/icons-material';
+import { Tag } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 type Category = {
@@ -40,7 +40,7 @@ export default function Categoriespage({ categories }: CategoriespageProps) {
         {t('popularCategories')}
       </Typography>
 
-      {categories.map((category, index) => (
+      {categories?.map((category, index) => (
         <Box
           key={index}
           sx={{
@@ -60,7 +60,7 @@ export default function Categoriespage({ categories }: CategoriespageProps) {
             },
           }}>
           <Box sx={{ color: category.color }}>
-            <Label />
+            <Tag />
           </Box>
           <Box sx={{ flex: 1 }}>
             <Typography

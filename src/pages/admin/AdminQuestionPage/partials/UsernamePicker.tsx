@@ -38,7 +38,7 @@ export default function UsernamePicker({
     const handleGetUsers = async () => {
       const response = await getUsernames(query);
       if (response.success) {
-        const users = response.content.users.map((user) => user.username);
+        const users = response.content.users.map((user: any) => user.username);
         setSearchResults(users);
       } else {
         console.error(response);

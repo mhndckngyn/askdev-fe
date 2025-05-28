@@ -29,7 +29,7 @@ export default function Statpage({ stats }: StatpageProps) {
         flexWrap: 'wrap',
         justifyContent: 'space-between',
       }}>
-      {stats.slice(0, 4).map((stat, index) => (
+      {stats?.slice(0, 4).map((stat, index) => (
         <Grid
           key={index}
           sx={{

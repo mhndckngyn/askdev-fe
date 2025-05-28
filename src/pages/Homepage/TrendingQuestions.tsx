@@ -69,7 +69,7 @@ export default function TrendingQuestions({
         {t('titleQuestion')}
       </Typography>
 
-      {trendingQuestions.map((question) => (
+      {trendingQuestions?.map((question) => (
         <Card
           key={question.id}
           sx={{
