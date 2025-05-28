@@ -1,0 +1,39 @@
+.container {
+  background-color: var(--mantine-color-blue-0);
+  border: 1px solid var(--mantine-color-blue-2);
+  border-radius: var(--mantine-radius-lg);
+  padding: var(--mantine-spacing-lg);
+  transition: background-color 0.2s ease;
+
+  @mixin dark {
+    background-color: var(--mantine-color-dark-6);
+    border-color: var(--mantine-color-dark-4);
+  }
+}
+
+.title {
+  font-weight: bold;
+  color: var(--mantine-color-blue-8);
+
+  @mixin dark {
+    color: var(--mantine-color-blue-2);
+  }
+}
+
+.description {
+  font-size: var(--mantine-font-size-sm);
+  color: var(--mantine-color-gray-7);
+  @mixin dark {
+    color: var(--mantine-color-gray-4);
+  }
+}
+
+.buttonIcon {
+  animation: infinite-rotate 3s linear infinite;
+}
+
+@keyframes infinite-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
