@@ -6,6 +6,14 @@
     "question-title-description": "Summarize your problem clearly and briefly.",
     "question-title-placeholder": "Choose a title for your question"
   },
+  "error-submit": "Error encountered when posting question.",
+  "suggestion": {
+    "title": "Smart suggestions",
+    "description": "Enhance your question with AI-guided edits and tips.",
+    "button": "Generate suggestion",
+    "title-required": "You need to type in the question title first!",
+    "error-generate": "Generation failed. Please try again later."
+  },
   "detail": {
     "question-detail": "Question detail",
     "question-detail-description": "Include all the information someone would need to answer your question."

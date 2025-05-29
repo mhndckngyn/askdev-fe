@@ -6,6 +6,14 @@
     "question-title-description": "Tóm tắt vấn đề của bạn một cách rõ ràng và ngắn gọn.",
     "question-title-placeholder": "Chọn tựa đề cho câu hỏi của bạn"
   },
+  "error-submit": "Lỗi khi đăng tải câu hỏi.",
+  "suggestion": {
+    "title": "Gợi ý thông minh",
+    "description": "Cải thiện nội dung câu hỏi với sự hỗ trợ từ AI.",
+    "button": "Tạo gợi ý",
+    "title-required": "Bạn cần nhập tiêu đề câu hỏi trước!",
+    "error-generate": "Tạo không thành công, xin thử lại sau."
+  },
   "detail": {
     "question-detail": "Chi tiết câu hỏi",
     "question-detail-description": "Bao gồm tất cả thông tin cần thiết để người khác có thể trả lời câu hỏi của bạn."

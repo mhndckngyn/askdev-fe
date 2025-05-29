@@ -54,3 +54,13 @@ export function searchTags(query: string): Promise<ApiResponse> {
     },
   });
 }
+
+export function getContentSuggestion(
+  questionTitle: string,
+): Promise<ApiResponse<string>> {
+  return fetcher({
+    method: 'POST',
+    route: 'question/suggest-content',
+    payload: { questionTitle },
+  });
+}

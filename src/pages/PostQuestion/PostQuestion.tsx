@@ -13,6 +13,7 @@ import { getTagsError, getTitleError } from './schemas';
 import { postQuestion } from './services';
 import { useNavigate } from 'react-router-dom';
 import publicRoutePaths from '@/routes/user/public/paths';
+import ContentSuggestion from './partials/ContentSuggestion';
 
 export type TagData = {
   id: string;
@@ -64,8 +65,8 @@ export default function PostQuestion() {
         publicRoutePaths.questionDetail.replace(':id', response.content.id),
       );
       form.reset();
-    } else if (response.message) {
-      setError(response.message);
+    } else {
+      setError(t('error-submit'));
     }
 
     setIsSubmitting(false);
@@ -99,6 +100,7 @@ export default function PostQuestion() {
                 form.setFieldValue('newTags', value)
               }
             />
+            <ContentSuggestion questionTitle={form.values.title} />
             <RichTextEditor
               onContentChange={(value) => form.setFieldValue('content', value)}
               label={t('detail.question-detail')}
