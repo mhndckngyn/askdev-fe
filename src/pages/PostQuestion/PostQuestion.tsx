@@ -65,8 +65,8 @@ export default function PostQuestion() {
         publicRoutePaths.questionDetail.replace(':id', response.content.id),
       );
       form.reset();
-    } else if (response.message) {
-      setError(response.message);
+    } else {
+      setError(t('error-submit'));
     }
 
     setIsSubmitting(false);

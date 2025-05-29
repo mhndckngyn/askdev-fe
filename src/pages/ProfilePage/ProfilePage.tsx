@@ -11,29 +11,29 @@ import Stats from './partials/Stats';
 import TagsOfInterest from './partials/TagsOfInterest';
 import TopPosts from './partials/TopPosts';
 import UserInfo from './partials/UserInfo';
-import { getProfileById } from './services';
+import { getProfile } from './services';
 
 export default function ProfilePage() {
   const { t } = useTranslation('profilePage');
   const navigate = useNavigate();
 
-  const userId = useUserStore((state) => state.user?.id);
+  const username = useUserStore((state) => state.user?.username);
   const [profile, setProfile] = useState<MemberProfile | null>(null);
 
   useEffect(() => {
-    if (!userId) {
+    if (!username) {
       navigate(publicRoutePaths.notFound);
       return;
     }
 
     (async () => {
-      const response = await getProfileById(userId);
+      const response = await getProfile(username);
       if (response.success) {
         setProfile(response.content);
       } else {
       }
     })();
-  }, [userId]);
+  }, [username]);
 
   if (!profile) return <PageLoader />;
 

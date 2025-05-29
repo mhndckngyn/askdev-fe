@@ -6,6 +6,7 @@
     "question-title-description": "Summarize your problem clearly and briefly.",
     "question-title-placeholder": "Choose a title for your question"
   },
+  "error-submit": "Error encountered when posting question.",
   "suggestion": {
     "title": "Smart suggestions",
     "description": "Enhance your question with AI-guided edits and tips.",
