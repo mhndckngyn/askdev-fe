@@ -119,7 +119,7 @@ export default function EditProfile() {
     if (resBody.success) {
       notifications.show({ message: t('updateSuccess') });
       fetchUser();
-      navigate(publicRoutePaths.profilePage.replace(':id', user?.id!))
+      navigate(publicRoutePaths.profileRedirect);
     } else {
       setError(t('updateError'));
     }

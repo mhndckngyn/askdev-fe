@@ -26,10 +26,10 @@ export default function TagsOfInterest({ tags }: TagsOfInterestProps) {
             <Group gap="sm">
               <Text>
                 {tag.contributions}{' '}
-                <span className={styles.subtext}>contributions</span>
+                <span className={styles.subtext}>{t('contribution-count')}</span>
               </Text>
               <Text>
-                {tag.upvotes} <span className={styles.subtext}>upvotes</span>
+                {tag.upvotes} <span className={styles.subtext}>{t('upvote-count')}</span>
               </Text>
             </Group>
           </Group>

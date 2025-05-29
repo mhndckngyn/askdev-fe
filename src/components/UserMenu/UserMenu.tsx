@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './UserMenu.module.css';
 import memberRoutePaths from '@/routes/user/member/paths';
+import publicRoutePaths from '@/routes/user/public/paths';
 
 export default function UserMenu({ bottom = false }: { bottom: boolean }) {
   const { t } = useTranslation('userMenu');
@@ -38,7 +39,7 @@ export default function UserMenu({ bottom = false }: { bottom: boolean }) {
     <>
       <Menu.Item
         component={Link}
-        to={memberRoutePaths.profile}
+        to={publicRoutePaths.profilePage.replace(':username', user.username)}
         leftSection={<IconUser size={16} />}>
         {t('profile')}
       </Menu.Item>

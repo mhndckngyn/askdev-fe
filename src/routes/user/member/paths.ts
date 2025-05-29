@@ -3,7 +3,6 @@ const memberRoutePaths = {
   editQuestion: '/questions/:id/edit',
   editProfile: '/profile/edit',
   changePassword: '/change-password',
-  profile: '/profile',
 };
 
 export default memberRoutePaths;
