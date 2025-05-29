@@ -1,45 +1,30 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import {
-  Paper,
-  Box,
-  Typography,
-  Skeleton,
-  Fade,
-  Chip,
-  Button,
-} from '@mui/material';
+import { Paper, Box, Typography, Skeleton, Fade, Button } from '@mui/material';
 import { ArrowUp, Search } from 'lucide-react';
 import QuestionView from './QuestionTag/Questionview';
 import InteractionBar from './QuestionTag/InteractionBar';
-import { getQuestionsByTag } from './QuestionTag/QuestionServices';
+import { getQuestions } from './QuestionTag/QuestionServices';
 import { ApiResponse } from '@/types';
 import { useUserStore } from '../../stores/useUserStore';
 import { useMantineColorScheme } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { getQuestionTagThemeStyles } from './themeStyles'; // Import the theme styles
+import { getQuestionTagThemeStyles } from './themeStyles';
 
 const QUESTIONS_PER_PAGE = 10;
 
-export default function ListQuestionByTag() {
-  const { id } = useParams<{ id: string }>();
-  const { t, i18n } = useTranslation('question');
+export default function QuestionPage() {
+  const { t } = useTranslation('question');
   const { colorScheme } = useMantineColorScheme();
   const [allQuestions, setAllQuestions] = useState<any[]>([]);
-  const [displayedQuestions, setDisplayedQuestions] = useState<any[]>([]);
-  const [filteredQuestions, setFilteredQuestions] = useState<any[]>([]);
+  const [pagination, setPagination] = useState<any>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  const [descriptionVi, setDescriptionVi] = useState<string>('');
-  const [descriptionEn, setDescriptionEn] = useState<string>('');
-  const [tagName, setTagName] = useState<string>('');
-
   const isDark = colorScheme === 'dark';
   const { user } = useUserStore();
-  const currentLang = i18n.language;
 
   const themeStyles = getQuestionTagThemeStyles(isDark);
 
@@ -61,74 +46,64 @@ export default function ListQuestionByTag() {
   }, []);
 
   useEffect(() => {
-    if (!searchTerm.trim()) {
-      setFilteredQuestions(allQuestions);
-    } else {
-      const filtered = allQuestions.filter(
-        (question) =>
-          question.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          question.content?.toLowerCase().includes(searchTerm.toLowerCase()),
-      );
-      setFilteredQuestions(filtered);
-    }
     setCurrentPage(1);
-  }, [searchTerm, allQuestions]);
+    setAllQuestions([]);
+    fetchQuestions(1, searchTerm, true);
+  }, [searchTerm]);
 
-  useEffect(() => {
-    const startIndex = 0;
-    const endIndex = currentPage * QUESTIONS_PER_PAGE;
-    setDisplayedQuestions(filteredQuestions.slice(startIndex, endIndex));
-  }, [filteredQuestions, currentPage]);
-
-  useEffect(() => {
-    if (!id) return;
-
-    const fetchData = async () => {
+  const fetchQuestions = async (
+    page: number,
+    titleKeyword?: string,
+    resetData = false,
+  ) => {
+    if (page === 1) {
       setLoading(true);
-      try {
-        const res: ApiResponse = await getQuestionsByTag(id);
-        const questions = res.content.questions || [];
+    } else {
+      setLoadingMore(true);
+    }
+
+    try {
+      const params = {
+        page,
+        pageSize: QUESTIONS_PER_PAGE,
+        ...(titleKeyword && { titleKeyword }),
+      };
+
+      const res: ApiResponse = await getQuestions(params);
+      const { questions = [], pagination: paginationData } = res.content;
+      if (resetData || page === 1) {
         setAllQuestions(questions);
-        setTagName('#' + res.content.tagName.replace(/-/g, ' '));
-        setDescriptionVi(res.content.descriptionVi || '');
-        setDescriptionEn(res.content.descriptionEn || '');
-      } catch (error) {
-        console.error('Error fetching questions:', error);
-        setAllQuestions([]);
-      } finally {
-        setLoading(false);
+      } else {
+        setAllQuestions((prev) => [...prev, ...questions]);
       }
-    };
 
-    fetchData();
-  }, [id]);
-
-  const handleLoadMore = () => {
-    setCurrentPage((prev) => prev + 1);
+      setPagination(paginationData);
+    } catch (error) {
+      console.error('Error fetching questions:', error);
+      if (resetData || page === 1) {
+        setAllQuestions([]);
+      }
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
+    }
   };
 
-  const hasMoreQuestions = displayedQuestions.length < filteredQuestions.length;
-  const currentDescription = currentLang?.startsWith('vi')
-    ? descriptionVi
-    : descriptionEn;
+  // Initial load
+  useEffect(() => {
+    fetchQuestions(1);
+  }, []);
+
+  const handleLoadMore = () => {
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    fetchQuestions(nextPage, searchTerm);
+  };
+
+  const hasMoreQuestions = pagination && currentPage < pagination.totalPages;
 
   return (
     <Box sx={themeStyles.mainContainer}>
-      <Box sx={themeStyles.headerSection}>
-        <Typography sx={themeStyles.headerTitle}>
-          {t('questionsByTag')}
-        </Typography>
-        {tagName && (
-          <Chip label={tagName} sx={themeStyles.tagChip} variant="outlined" />
-        )}
-      </Box>
-
-      {currentDescription && (
-        <Box sx={themeStyles.descriptionSection}>
-          <Box sx={themeStyles.description}>{currentDescription}</Box>
-        </Box>
-      )}
-
       <Box sx={themeStyles.searchSection}>
         <Box sx={themeStyles.searchContainer}>
           <Box
@@ -156,16 +131,16 @@ export default function ListQuestionByTag() {
             />
           ))}
         </Box>
-      ) : filteredQuestions.length === 0 ? (
+      ) : allQuestions?.length === 0 ? (
         <Box sx={themeStyles.emptyState}>
           <Typography variant="h6">
-            {searchTerm ? t('noQuestionsFound') : t('noQuestionsForTag')}
+            {searchTerm ? t('noQuestionsFound') : t('noQuestions')}
           </Typography>
         </Box>
       ) : (
         <>
           <Box sx={themeStyles.contentContainer}>
-            {displayedQuestions.map((question, index) => (
+            {allQuestions?.map((question, index) => (
               <Fade
                 in={true}
                 timeout={600}
@@ -183,7 +158,16 @@ export default function ListQuestionByTag() {
             ))}
           </Box>
 
-          {hasMoreQuestions && (
+          {loadingMore && (
+            <Box sx={themeStyles.loadingContainer}>
+              <Skeleton
+                variant="rectangular"
+                sx={themeStyles.loadingSkeleton}
+              />
+            </Box>
+          )}
+
+          {hasMoreQuestions && !loadingMore && (
             <Box sx={themeStyles.loadMoreContainer}>
               <Button
                 onClick={handleLoadMore}
@@ -192,6 +176,17 @@ export default function ListQuestionByTag() {
                 size="large">
                 {t('loadMore')}
               </Button>
+            </Box>
+          )}
+
+          {pagination && (
+            <Box sx={{ textAlign: 'center', mt: 2, mb: 2 }}>
+              <Typography variant="body2" color="text.secondary">
+                {/* {t('showingResults', {
+                  current: allQuestions.length,
+                  total: pagination.total,
+                })} */}
+              </Typography>
             </Box>
           )}
         </>

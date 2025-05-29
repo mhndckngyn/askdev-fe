@@ -6,6 +6,7 @@ const publicRoutePaths = {
   questionByTags: '/questions/tags/:id',
   notFound: '/not-found',
   search: '/search',
+  questionsPage: '/questions',
 };
 
 export default publicRoutePaths;

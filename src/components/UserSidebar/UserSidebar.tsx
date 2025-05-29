@@ -21,9 +21,13 @@ const data: {
   icon: any; // any thay vì TablerIcon để có thể dễ thay thế
 }[] = [
   { link: publicRoutePaths.homepage, label: 'homepage', icon: IconHome2 },
-  { link: '', label: 'questions', icon: IconQuestionMark }, /* TODO */
+  {
+    link: publicRoutePaths.questionsPage,
+    label: 'questions',
+    icon: IconQuestionMark,
+  } /* TODO */,
   { link: publicRoutePaths.tagsPage, label: 'tags', icon: IconTags },
-  { link: '', label: 'members', icon: IconUsers }, /* TODO */
+  { link: '', label: 'members', icon: IconUsers } /* TODO */,
 ];
 
 export default function UserSidebar() {

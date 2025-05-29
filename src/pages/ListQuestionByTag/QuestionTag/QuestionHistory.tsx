@@ -27,6 +27,7 @@ import {
 import { getEditHistory } from './QuestionServices';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useUserStore } from '@/stores/useUserStore';
 
 interface Props {
   open: boolean;
@@ -49,6 +50,8 @@ function QuestionHistory({ open, handleToggle, question }: Props) {
   const [history, setHistory] = useState<History>(question);
   const [prevHistory, setPrevHistory] = useState<any>(null);
   const [nextHistory, setNextHistory] = useState<any>(null);
+
+  const { user } = useUserStore();
 
   const fetchHistory = async (history: any) => {
     if (history) {
@@ -73,7 +76,7 @@ function QuestionHistory({ open, handleToggle, question }: Props) {
   };
 
   useEffect(() => {
-    if (history.createdAt) {
+    if (history.createdAt && user?.id == question?.userId) {
       fetchHistory(history);
     }
   }, [history.createdAt]);

@@ -9,7 +9,6 @@
     "submitting": "Submitting...",
     "submit": "Submit report"
   },
-
   "liked": "Liked",
   "disliked": "Disliked",
   "interaction": "Interaction",
@@ -26,5 +25,9 @@
   "writeFeedback": "Write your feedback...",
   "send": "Send",
   "questionsByTag": "Questions by Tag",
-  "noQuestionsForTag": "No questions found for this tag"
+  "noQuestionsForTag": "No questions found for this tag",
+  "searchQuestions": "Search questions...",
+  "noQuestionsFound": "No matching questions found",
+  "loadMore": "Load more",
+  "noQuestions": "No questions found"
 }

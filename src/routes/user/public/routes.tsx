@@ -1,4 +1,5 @@
 import Homepage from '@/pages/Homepage';
+import QuestionPage from '@/pages/QuestionPage';
 import ProfilePage from '@/pages/ProfilePage';
 import QuestionDetail from '@/pages/QuestionDetail';
 import TagsPage from '@/pages/TagsPage';
@@ -10,6 +11,7 @@ import SearchPage from '@/pages/SearchPage';
 const publicRoutes = (
   <>
     <Route path={publicRoutePaths.homepage} element={<Homepage />} />
+    <Route path={publicRoutePaths.questionsPage} element={<QuestionPage />} />
     <Route path={publicRoutePaths.tagsPage} element={<TagsPage />} />
     <Route
       path={publicRoutePaths.questionDetail}

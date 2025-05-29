@@ -55,8 +55,8 @@ export default function SearchPage() {
       sx={{
         minHeight: '100vh',
         background: isDark
-          ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)'
-          : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          ? 'linear-gradient(135deg, #0c1726 0%, #1a2332 25%, #2c3e50 50%, #34495e 100%)'
+          : 'linear-gradient(135deg, #3498db 0%, #2980b9 25%, #1abc9c 50%, #16a085 100%)',
         position: 'relative',
         '&::before': {
           content: '""',

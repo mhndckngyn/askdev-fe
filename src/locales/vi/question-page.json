@@ -25,5 +25,9 @@
   "writeFeedback": "Viết phản hồi...",
   "send": "Gửi",
   "questionsByTag": "Câu hỏi theo thẻ",
-  "noQuestionsForTag": "Không tìm thấy câu hỏi nào cho thẻ này"
+  "noQuestionsForTag": "Không tìm thấy câu hỏi nào cho thẻ này",
+  "searchQuestions": "Tìm kiếm câu hỏi...",
+  "noQuestionsFound": "Không tìm thấy câu hỏi nào phù hợp",
+  "loadMore": "Xem thêm",
+  "noQuestions": "Không tìm thấy câu hỏi nào"
 }

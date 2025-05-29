@@ -15,6 +15,7 @@ import { useMantineColorScheme } from '@mantine/core';
 import QuestionContent from './QuestionContent';
 import ImageGrid from './ImageGrid';
 import FormatTime from './formatTime';
+import { useUserStore } from '@/stores/useUserStore';
 import {
   X,
   ChevronLeft,
@@ -24,10 +25,9 @@ import {
   User,
   Tag,
 } from 'lucide-react';
-import { getEditHistory } from './Services/QuestionServices';
+import { getEditHistory } from './QuestionServices';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useUserStore } from '@/stores/useUserStore';
 
 interface Props {
   open: boolean;
@@ -46,12 +46,11 @@ function QuestionHistory({ open, handleToggle, question }: Props) {
   const { t } = useTranslation('question');
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
+  const { user } = useUserStore();
 
   const [history, setHistory] = useState<History>(question);
   const [prevHistory, setPrevHistory] = useState<any>(null);
   const [nextHistory, setNextHistory] = useState<any>(null);
-
-  const { user } = useUserStore();
 
   const fetchHistory = async (history: any) => {
     if (history) {
