@@ -142,6 +142,8 @@ const TopUsers = () => {
         }}>
         <Typography
           sx={{
+            fontFamily:
+              '"Inter", "Segoe UI", "Roboto", "Noto Sans", "Helvetica Neue", Arial, sans-serif',
             fontWeight: 800,
             fontSize: '2rem',
             background:

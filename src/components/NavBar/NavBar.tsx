@@ -11,44 +11,16 @@ import {
   Flex,
   Image,
   Popover,
-  Stack,
   Text,
   TextInput,
 } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Fragment } from 'react/jsx-runtime';
 import styles from './Navbar.module.css';
 import visitorRoutePaths from '@/routes/user/visitor/paths';
-
-const descriptions = {
-  tag: 'search-tag',
-  user: 'search-user',
-  answered: 'search-question-status',
-  keyword: 'search-exact-phrase',
-} as const;
-
-type Description = (typeof descriptions)[keyof typeof descriptions];
-
-const searchTips: { label: string; description: Description }[] = [
-  {
-    label: '[tag]',
-    description: 'search-tag',
-  },
-  {
-    label: 'user:abc',
-    description: 'search-user',
-  },
-  {
-    label: 'answered:yes',
-    description: 'search-question-status',
-  },
-  {
-    label: '"keyword"',
-    description: 'search-exact-phrase',
-  },
-];
+import { useState } from 'react';
 
 export default function NavBar() {
   const { t: tCommon } = useTranslation('common');
@@ -56,9 +28,19 @@ export default function NavBar() {
 
   const { user } = useUserStore();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const hideSearchBar = ['/welcome'].includes(location.pathname);
   const hideLogins = ['/welcome'].includes(location.pathname);
+
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleSearch = () => {
+    const trimmed = searchValue.trim();
+    if (trimmed) {
+      navigate('/search', { state: { keyword: searchValue } });
+    }
+  };
 
   return (
     <>
@@ -83,24 +65,15 @@ export default function NavBar() {
                   leftSection={<IconSearch size={16} />}
                   radius="md"
                   className={styles.search}
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.currentTarget.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSearch();
+                    }
+                  }}
                 />
               </Popover.Target>
-
-              <Popover.Dropdown style={{ pointerEvents: 'none' }}>
-                <Stack
-                  align="stretch"
-                  gap="xs"
-                  className={styles.searchPopover}>
-                  {searchTips.map(({ label, description }) => (
-                    <Flex justify="space-between" key={label}>
-                      <Text className={styles.helper}>{label}</Text>
-                      <Text className={styles.helperDescription}>
-                        {t(description)}
-                      </Text>
-                    </Flex>
-                  ))}
-                </Stack>
-              </Popover.Dropdown>
             </Popover>
           )}
         </Center>

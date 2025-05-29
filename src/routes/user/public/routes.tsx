@@ -5,6 +5,7 @@ import TagsPage from '@/pages/TagsPage';
 import { Route } from 'react-router-dom';
 import publicRoutePaths from './paths';
 import ListQuestionByTag from '@/pages/ListQuestionByTag';
+import SearchPage from '@/pages/SearchPage';
 
 const publicRoutes = (
   <>
@@ -19,6 +20,7 @@ const publicRoutes = (
       element={<ListQuestionByTag />}
     />
     <Route path={publicRoutePaths.profilePage} element={<ProfilePage />} />
+    <Route path={publicRoutePaths.search} element={<SearchPage />} />
   </>
 );
 

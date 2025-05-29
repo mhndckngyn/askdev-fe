@@ -24,8 +24,10 @@ import welcome from './welcome.json';
 import home from './home-page.json';
 import question from './question-page.json';
 import notification from './notification-page.json';
+import search from './search-page.json';
 
 export default {
+  search,
   notification,
   question,
   home,
