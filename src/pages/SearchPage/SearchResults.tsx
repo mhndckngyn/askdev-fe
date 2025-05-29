@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Box, Typography, Divider, Button, Chip } from '@mui/material';
 import {
-  Search as SearchIcon,
+  Search,
   ExpandMore,
-  TrendingUp,
+  HelpOutline,
   LocalOffer,
   People,
 } from '@mui/icons-material';
@@ -93,7 +93,6 @@ export default function SearchResults({
   const LoadMoreButton = ({
     onClick,
     hasMore,
-    increment,
   }: {
     onClick: () => void;
     hasMore: boolean;
@@ -152,56 +151,96 @@ export default function SearchResults({
       sx={{
         display: 'flex',
         alignItems: 'center',
-        gap: 2,
-        mb: 3,
-        p: 2.5,
-        borderRadius: 3,
+        gap: 3,
+        mb: 4,
+        p: 3,
+        borderRadius: 4,
         background: isDark
-          ? 'linear-gradient(135deg, rgba(25,25,25,0.8) 0%, rgba(40,40,40,0.9) 100%)'
-          : 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.95) 100%)',
-        backdropFilter: 'blur(10px)',
+          ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(51, 65, 85, 0.8))'
+          : 'linear-gradient(135deg, rgba(248, 250, 252, 0.95), rgba(241, 245, 249, 0.9))',
+        backdropFilter: 'blur(12px)',
         border: isDark
-          ? '1px solid rgba(255,255,255,0.06)'
-          : '1px solid rgba(0,0,0,0.04)',
+          ? '1px solid rgba(255, 255, 255, 0.1)'
+          : '1px solid rgba(0, 0, 0, 0.08)',
+        boxShadow: isDark
+          ? '0 8px 32px rgba(0, 0, 0, 0.3)'
+          : '0 8px 24px rgba(0, 0, 0, 0.08)',
       }}>
+      {/* Icon Container with Background */}
       <Box
         sx={{
-          width: 48,
-          height: 48,
-          borderRadius: 2.5,
+          width: 56,
+          height: 56,
+          borderRadius: 3,
           background: gradient,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
+          position: 'relative',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            inset: 0,
+            borderRadius: 3,
+            background: gradient,
+            opacity: 0.8,
+            filter: 'blur(8px)',
+            zIndex: -1,
+          },
         }}>
         {icon}
       </Box>
+
+      {/* Title with Background */}
       <Box sx={{ flex: 1 }}>
-        <Typography
-          variant="h5"
+        <Box
           sx={{
-            fontWeight: 700,
-            fontSize: '1.3rem',
+            display: 'inline-block',
+            px: 3,
+            py: 1.5,
+            borderRadius: 2.5,
             background: isDark
-              ? 'linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%)'
-              : 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
-            backgroundClip: 'text',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+              ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(147, 197, 253, 0.1))'
+              : 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 197, 253, 0.15))',
+            border: isDark
+              ? '1px solid rgba(59, 130, 246, 0.2)'
+              : '1px solid rgba(59, 130, 246, 0.15)',
           }}>
-          {title}
-        </Typography>
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: 700,
+              fontSize: '1.4rem',
+              background: isDark
+                ? 'linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%)'
+                : 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              margin: 0,
+            }}>
+            {title}
+          </Typography>
+        </Box>
       </Box>
+
+      {/* Result Count Chip */}
       <Chip
-        label={`${count} results`}
+        label={`${count} kết quả`}
         sx={{
           background: gradient,
           color: 'white',
           fontWeight: 600,
-          fontSize: '0.85rem',
-          borderRadius: 2,
-          px: 1,
+          fontSize: '0.9rem',
+          borderRadius: 2.5,
+          px: 2,
+          py: 0.5,
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+          '& .MuiChip-label': {
+            px: 1.5,
+            py: 0.5,
+          },
         }}
       />
     </Box>
@@ -289,7 +328,7 @@ export default function SearchResults({
             ? '2px solid rgba(59, 130, 246, 0.2)'
             : '2px solid rgba(59, 130, 246, 0.15)',
         }}>
-        <SearchIcon
+        <Search
           sx={{
             fontSize: 48,
             color: isDark ? '#60A5FA' : '#3B82F6',
@@ -343,7 +382,7 @@ export default function SearchResults({
                 ),
                 mockResults?.tags.length > 0 || mockResults?.users.length > 0,
                 true,
-                <TrendingUp style={{ color: 'white', fontSize: 24 }} />,
+                <HelpOutline style={{ color: 'white', fontSize: 28 }} />,
                 'linear-gradient(135deg, #3B82F6, #1D4ED8)',
               )}
 
@@ -356,7 +395,7 @@ export default function SearchResults({
                 (tag) => <TagCard key={tag.id} tag={tag} isDark={isDark} />,
                 mockResults?.users.length > 0,
                 false,
-                <LocalOffer style={{ color: 'white', fontSize: 24 }} />,
+                <LocalOffer style={{ color: 'white', fontSize: 28 }} />,
                 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
               )}
 
@@ -371,7 +410,7 @@ export default function SearchResults({
                 ),
                 false,
                 false,
-                <People style={{ color: 'white', fontSize: 24 }} />,
+                <People style={{ color: 'white', fontSize: 28 }} />,
                 'linear-gradient(135deg, #EC4899, #BE185D)',
               )}
           </Box>
