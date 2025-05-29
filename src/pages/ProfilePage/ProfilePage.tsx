@@ -1,11 +1,10 @@
 import PageLoader from '@/components/PageLoader';
 import publicRoutePaths from '@/routes/user/public/paths';
-import { useUserStore } from '@/stores/useUserStore';
 import { MemberProfile } from '@/types';
 import { Stack } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from './ProfilePage.module.css';
 import Stats from './partials/Stats';
 import TagsOfInterest from './partials/TagsOfInterest';
@@ -17,7 +16,7 @@ export default function ProfilePage() {
   const { t } = useTranslation('profilePage');
   const navigate = useNavigate();
 
-  const username = useUserStore((state) => state.user?.username);
+  const { username } = useParams();
   const [profile, setProfile] = useState<MemberProfile | null>(null);
 
   useEffect(() => {
@@ -31,6 +30,8 @@ export default function ProfilePage() {
       if (response.success) {
         setProfile(response.content);
       } else {
+        if (response.statusCode === 404) {
+        }
       }
     })();
   }, [username]);
@@ -42,14 +43,8 @@ export default function ProfilePage() {
       <UserInfo info={profile.info} />
       <Stats stats={profile.stats} />
       <TagsOfInterest tags={profile.interestTags} />
-      <TopPosts
-        sectionTitle={t('top-questions')}
-        posts={profile.questions}
-      />
-      <TopPosts
-        sectionTitle={t('top-answers')}
-        posts={profile.answers}
-      />
+      <TopPosts sectionTitle={t('top-questions')} posts={profile.questions} />
+      <TopPosts sectionTitle={t('top-answers')} posts={profile.answers} />
     </Stack>
   );
 }
