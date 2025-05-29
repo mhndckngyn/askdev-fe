@@ -2,7 +2,7 @@ import { Paper } from '@mui/material';
 import { useMantineColorScheme } from '@mantine/core';
 import QuestionView from './Questionview';
 import InteractionBar from './InteractionBar';
-import CommentView from './CommentView';
+import AnswerView from './AnswerView';
 import { useUserStore } from '../../stores/useUserStore';
 import { useEffect } from 'react';
 
@@ -80,7 +80,7 @@ export default function QuestionDetail() {
       {user && (
         <>
           <InteractionBar />
-          <CommentView />
+          <AnswerView />
         </>
       )}
     </Paper>
