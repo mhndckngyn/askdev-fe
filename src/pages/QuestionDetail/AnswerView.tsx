@@ -246,11 +246,11 @@ export default function AnswerView() {
                   <Group align="center" gap="xs">
                     <IconPhoto size={20} />
                     <Text size="sm" fw={500}>
-                      Thêm hình ảnh
+                      {t('addImage')}
                     </Text>
                   </Group>
                   <FileInput
-                    placeholder="Chọn ảnh"
+                    placeholder={t('chooseImage')}
                     accept="image/*"
                     multiple
                     onChange={handleImageUpload}
@@ -265,16 +265,12 @@ export default function AnswerView() {
                     size="xs"
                     radius="xl"
                     disabled={selectedImages.length >= 5}>
-                    Chọn ảnh
+                    {t('chooseImage')}
                   </Button>
                 </Group>
 
                 {imagePreviewUrls.length > 0 && (
-                  <SimpleGrid
-                    cols={
-                      imagePreviewUrls.length > 2 ? 3 : imagePreviewUrls.length
-                    }
-                    spacing="sm">
+                  <SimpleGrid cols={3} spacing="sm">
                     {imagePreviewUrls.map((url, index) => (
                       <Box key={index} style={{ position: 'relative' }}>
                         <Image
@@ -363,10 +359,10 @@ export default function AnswerView() {
               </ThemeIcon>
               <Stack align="center" gap="xs">
                 <Text size="xl" fw={700} c={isDark ? 'white' : 'dark'}>
-                  Chưa có câu trả lời nào
+                  {t('noAnswers')}
                 </Text>
                 <Text size="md" c="dimmed">
-                  Hãy là người đầu tiên chia sẻ câu trả lời cho câu hỏi này!
+                  {t('beFirstToAnswer')}
                 </Text>
               </Stack>
             </Stack>

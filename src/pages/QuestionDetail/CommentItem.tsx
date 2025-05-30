@@ -93,9 +93,7 @@ export default function CommentItem({
 
     return (
       <Box mt="md">
-        <SimpleGrid
-          cols={images.length === 1 ? 1 : images.length === 2 ? 2 : 3}
-          spacing="sm">
+        <SimpleGrid cols={3} spacing="sm">
           {displayImages.map((image, index) => (
             <Box
               key={index}

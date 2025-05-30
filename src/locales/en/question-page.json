@@ -14,7 +14,7 @@
   "interaction": "Interaction",
   "comment": "Comment",
   "currentContent": "Current content",
-  "newContent": "New content",
+  "Content": "Content",
   "enterNewContent": "Enter new content to replace",
   "updating": "Updating...",
   "updateContent": "Update content",
@@ -29,5 +29,13 @@
   "searchQuestions": "Search questions...",
   "noQuestionsFound": "No matching questions found",
   "loadMore": "Load more",
-  "noQuestions": "No questions found"
+  "noQuestions": "No questions found",
+  "addImage": "Add Image",
+  "chooseImage": "Choose Image",
+  "noAnswers": "There are no answers yet.",
+  "beFirstToAnswer": "Be the first to share your answer to this question!",
+  "currentImage": "Current image",
+  "clickImageToToggle": "Click the image to select/deselect",
+  "addNewImageWithCount": "Add new image ({{currentImageCount}}/{{MAX_IMAGES}})",
+  "enoughImages": "Enough images"
 }

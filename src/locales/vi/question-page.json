@@ -14,7 +14,7 @@
   "interaction": "Tương tác",
   "comment": "Bình luận",
   "currentContent": "Nội dung hiện tại",
-  "newContent": "Nội dung mới",
+  "Content": "Nội dung",
   "enterNewContent": "Nhập nội dung mới để thay thế",
   "updating": "Đang cập nhật...",
   "updateContent": "Cập nhật nội dung",
@@ -29,5 +29,13 @@
   "searchQuestions": "Tìm kiếm câu hỏi...",
   "noQuestionsFound": "Không tìm thấy câu hỏi nào phù hợp",
   "loadMore": "Xem thêm",
-  "noQuestions": "Không tìm thấy câu hỏi nào"
+  "noQuestions": "Không tìm thấy câu hỏi nào",
+  "addImage": "Thêm hình ảnh",
+  "chooseImage": "Chọn ảnh",
+  "noAnswers": "Chưa có câu trả lời nào.",
+  "beFirstToAnswer": "Hãy là người đầu tiên chia sẻ câu trả lời cho câu hỏi này!",
+  "currentImage": "Hình ảnh hiện tại",
+  "clickImageToToggle": "Nhấp vào hình ảnh để chọn/bỏ chọn",
+  "addNewImageWithCount": "Thêm hình ảnh mới ({{currentImageCount}}/{{MAX_IMAGES}})",
+  "enoughImages": "Đủ ảnh"
 }

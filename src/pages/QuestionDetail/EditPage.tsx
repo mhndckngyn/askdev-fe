@@ -38,62 +38,148 @@ function EditPage({
   const [newContent, setNewContent] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
-  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
   const [keepOldImages, setKeepOldImages] = useState<boolean[]>([]);
+  const [newImages, setNewImages] = useState<File[]>([]);
+  const [newImagePreviewUrls, setNewImagePreviewUrls] = useState<string[]>([]);
 
   const { colorScheme } = useMantineColorScheme();
   const isDarkMode = colorScheme === 'dark';
+
+  const MAX_IMAGES = 5;
 
   useEffect(() => {
     if (open) {
       setNewContent(oldContent);
       setError(null);
       setSelectedImages([]);
-      setImagePreviewUrls([]);
+
       setKeepOldImages(oldImages.map(() => true));
+      setNewImages([]);
+      setNewImagePreviewUrls([]);
     }
   }, [open, oldContent, oldImages]);
 
   useEffect(() => {
     return () => {
-      imagePreviewUrls.forEach((url) => URL.revokeObjectURL(url));
+      newImagePreviewUrls.forEach((url) => URL.revokeObjectURL(url));
     };
   }, []);
+
+  const urlToFile = async (url: string, filename: string): Promise<File> => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new File([blob], filename, { type: blob.type });
+  };
+
+  useEffect(() => {
+    const updateSelectedImages = async () => {
+      const allImages: File[] = [];
+
+      for (let i = 0; i < oldImages.length; i++) {
+        if (keepOldImages[i]) {
+          try {
+            const file = await urlToFile(oldImages[i], `old_image_${i}`);
+            allImages.push(file);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      }
+
+      allImages.push(...newImages);
+
+      setSelectedImages(allImages);
+    };
+
+    updateSelectedImages();
+  }, [keepOldImages, newImages, oldImages]);
 
   const handleImageUpload = (files: File[]) => {
     if (files.length === 0) return;
 
-    const newFiles = [...selectedImages, ...files];
-    setSelectedImages(newFiles);
+    const currentKeptOldImages = keepOldImages.filter(Boolean).length;
+    const currentNewImages = newImages.length;
+    const currentTotal = currentKeptOldImages + currentNewImages;
 
-    const newPreviewUrls = newFiles.map((file) => URL.createObjectURL(file));
-    setImagePreviewUrls((prevUrls) => {
+    const remainingSlots = MAX_IMAGES - currentTotal;
+
+    if (remainingSlots <= 0) {
+      setError(`Chỉ được phép tối đa ${MAX_IMAGES} ảnh`);
+      return;
+    }
+
+    const filesToAdd = files.slice(0, remainingSlots);
+
+    if (files.length > remainingSlots) {
+      setError(
+        `Chỉ có thể thêm ${remainingSlots} ảnh nữa (tối đa ${MAX_IMAGES} ảnh)`,
+      );
+    }
+
+    const updatedNewImages = [...newImages, ...filesToAdd];
+    setNewImages(updatedNewImages);
+
+    const newPreviewUrls = updatedNewImages.map((file) =>
+      URL.createObjectURL(file),
+    );
+    setNewImagePreviewUrls((prevUrls) => {
       prevUrls.forEach((url) => URL.revokeObjectURL(url));
       return newPreviewUrls;
     });
   };
 
   const removeNewImage = (index: number) => {
-    const newFiles = selectedImages.filter((_, i) => i !== index);
-    const newUrls = imagePreviewUrls.filter((_, i) => i !== index);
+    const updatedNewImages = newImages.filter((_, i) => i !== index);
+    const updatedNewUrls = newImagePreviewUrls.filter((_, i) => i !== index);
 
-    URL.revokeObjectURL(imagePreviewUrls[index]);
+    URL.revokeObjectURL(newImagePreviewUrls[index]);
 
-    setSelectedImages(newFiles);
-    setImagePreviewUrls(newUrls);
+    setNewImages(updatedNewImages);
+    setNewImagePreviewUrls(updatedNewUrls);
+
+    if (error && error.includes('tối đa')) {
+      setError(null);
+    }
   };
 
   const toggleOldImage = (index: number) => {
     const newKeepOldImages = [...keepOldImages];
-    newKeepOldImages[index] = !newKeepOldImages[index];
+    const willKeep = !newKeepOldImages[index];
+
+    // If trying to keep an image, check if we're at the limit
+    if (willKeep) {
+      const currentKeptOldImages = newKeepOldImages.filter(Boolean).length;
+      const currentNewImages = newImages.length;
+      const currentTotal = currentKeptOldImages + currentNewImages;
+
+      if (currentTotal >= MAX_IMAGES) {
+        setError(`Chỉ được phép tối đa ${MAX_IMAGES} ảnh`);
+        return;
+      }
+    }
+
+    newKeepOldImages[index] = willKeep;
     setKeepOldImages(newKeepOldImages);
+
+    if (error && error.includes('tối đa')) {
+      const totalAfterToggle =
+        newKeepOldImages.filter(Boolean).length + newImages.length;
+      if (totalAfterToggle <= MAX_IMAGES) {
+        setError(null);
+      }
+    }
   };
 
   const handleSubmit = async () => {
     if (newContent.trim() === '') {
-      setError('trống');
+      setError('Nội dung không được để trống');
+      return;
+    }
+
+    const totalImages = keepOldImages.filter(Boolean).length + newImages.length;
+    if (totalImages > MAX_IMAGES) {
+      setError(`Chỉ được phép tối đa ${MAX_IMAGES} ảnh`);
       return;
     }
 
@@ -110,11 +196,16 @@ function EditPage({
         handleToggle();
       }
     } catch (err) {
-      setError('error');
+      setError('Có lỗi xảy ra khi cập nhật');
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  // Calculate current image count for display
+  const currentImageCount =
+    keepOldImages.filter(Boolean).length + newImages.length;
+  const canAddMoreImages = currentImageCount < MAX_IMAGES;
 
   return (
     <Modal open={open} onClose={handleToggle} closeAfterTransition>
@@ -262,7 +353,7 @@ function EditPage({
               )}
 
               <TextField
-                label={t('newContent')}
+                label={t('Content')}
                 fullWidth
                 multiline
                 minRows={4}
@@ -323,7 +414,7 @@ function EditPage({
                       gap: 1,
                     }}>
                     <ImageIcon size={18} />
-                    Hình ảnh hiện tại
+                    {t('currentImage')}
                   </Typography>
 
                   <Box
@@ -411,7 +502,7 @@ function EditPage({
                       marginTop: 1,
                       display: 'block',
                     }}>
-                    Nhấp vào hình ảnh để chọn/bỏ chọn
+                    {t('clickImageToToggle')}
                   </Typography>
                 </Paper>
               )}
@@ -448,7 +539,10 @@ function EditPage({
                         fontWeight: 600,
                         color: isDarkMode ? '#64b5f6' : '#1976d2',
                       }}>
-                      Thêm hình ảnh mới
+                      {t('addNewImageWithCount', {
+                        currentImageCount,
+                        MAX_IMAGES,
+                      })}
                     </Typography>
                   </Box>
 
@@ -469,6 +563,7 @@ function EditPage({
                     htmlFor="image-upload-edit"
                     variant="outlined"
                     startIcon={<Upload size={16} />}
+                    disabled={!canAddMoreImages}
                     sx={{
                       borderColor: isDarkMode ? '#64b5f6' : '#1976d2',
                       color: isDarkMode ? '#64b5f6' : '#1976d2',
@@ -478,19 +573,23 @@ function EditPage({
                           ? 'rgba(100, 181, 246, 0.1)'
                           : 'rgba(25, 118, 210, 0.1)',
                       },
+                      '&:disabled': {
+                        borderColor: isDarkMode ? '#666' : '#ccc',
+                        color: isDarkMode ? '#666' : '#ccc',
+                      },
                     }}>
-                    Chọn ảnh
+                    {canAddMoreImages ? t('chooseImage') : t('enoughImages')}
                   </Button>
                 </Box>
 
-                {imagePreviewUrls.length > 0 && (
+                {newImagePreviewUrls.length > 0 && (
                   <Box
                     sx={{
                       display: 'flex',
                       flexWrap: 'wrap',
                       gap: 2,
                     }}>
-                    {imagePreviewUrls.map((url, index) => (
+                    {newImagePreviewUrls.map((url, index) => (
                       <Box
                         key={index}
                         sx={{

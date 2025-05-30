@@ -186,9 +186,7 @@ export default function AnswerItem({
 
     return (
       <Box mt="md">
-        <SimpleGrid
-          cols={images.length === 1 ? 1 : images.length === 2 ? 2 : 3}
-          spacing="sm">
+        <SimpleGrid cols={3} spacing="sm">
           {displayImages.map((image, index) => (
             <Box
               key={index}
@@ -527,11 +525,11 @@ export default function AnswerItem({
                         <Group align="center" gap="xs">
                           <IconPhoto size={16} />
                           <Text size="sm" fw={500}>
-                            Thêm hình ảnh
+                            {t('addImage')}
                           </Text>
                         </Group>
                         <FileInput
-                          placeholder="Chọn ảnh"
+                          placeholder={t('chooseImage')}
                           accept="image/*"
                           multiple
                           onChange={handleCommentImageUpload}
@@ -546,18 +544,12 @@ export default function AnswerItem({
                           size="xs"
                           radius="xl"
                           disabled={selectedCommentImages.length >= 5}>
-                          Chọn ảnh
+                          {t('chooseImage')}
                         </Button>
                       </Group>
 
                       {commentImagePreviewUrls.length > 0 && (
-                        <SimpleGrid
-                          cols={
-                            commentImagePreviewUrls.length > 2
-                              ? 3
-                              : commentImagePreviewUrls.length
-                          }
-                          spacing="sm">
+                        <SimpleGrid cols={3} spacing="sm">
                           {commentImagePreviewUrls.map((url, index) => (
                             <Box key={index} style={{ position: 'relative' }}>
                               <Image
