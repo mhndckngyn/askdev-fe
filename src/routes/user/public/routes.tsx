@@ -1,5 +1,6 @@
 import Homepage from '@/pages/Homepage';
 import QuestionPage from '@/pages/QuestionPage';
+import HistoryPage from '@/pages/HistoryPage';
 import ProfilePage from '@/pages/ProfilePage';
 import QuestionDetail from '@/pages/QuestionDetail';
 import TagsPage from '@/pages/TagsPage';
@@ -12,6 +13,7 @@ import ProfileRedirect from '@/layouts/ProfileRedirect';
 const publicRoutes = (
   <>
     <Route path={publicRoutePaths.homepage} element={<Homepage />} />
+    <Route path={publicRoutePaths.historyPage} element={<HistoryPage />} />
     <Route path={publicRoutePaths.questionsPage} element={<QuestionPage />} />
     <Route path={publicRoutePaths.tagsPage} element={<TagsPage />} />
     <Route
@@ -23,7 +25,10 @@ const publicRoutes = (
       element={<ListQuestionByTag />}
     />
     <Route path={publicRoutePaths.profilePage} element={<ProfilePage />} />
-    <Route path={publicRoutePaths.profileRedirect} element={<ProfileRedirect />} />
+    <Route
+      path={publicRoutePaths.profileRedirect}
+      element={<ProfileRedirect />}
+    />
     <Route path={publicRoutePaths.search} element={<SearchPage />} />
   </>
 );
