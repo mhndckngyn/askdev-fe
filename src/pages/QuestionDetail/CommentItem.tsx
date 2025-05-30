@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Box,
   Text,
@@ -9,6 +10,9 @@ import {
   Group,
   Stack,
   useMantineColorScheme,
+  Image,
+  SimpleGrid,
+  rem,
 } from '@mantine/core';
 import {
   IconThumbUp,
@@ -17,6 +21,8 @@ import {
   IconTrash,
   IconFlag,
 } from '@tabler/icons-react';
+import Lightbox from 'yet-another-react-lightbox';
+import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 import { voteComment } from './Services/CommentServices';
 import FormatTime from './formatTime';
 
@@ -42,6 +48,10 @@ export default function CommentItem({
 }: CommentItemProps) {
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
+
+  const [imageModalOpen, setImageModalOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [currentImages, setCurrentImages] = useState<string[]>([]);
 
   const handleDelete = () => {
     console.log('Delete comment:', comment.id);
@@ -69,122 +79,161 @@ export default function CommentItem({
     }
   };
 
-  return (
-    <Transition
-      mounted={true}
-      transition="slide-right"
-      duration={300}
-      timingFunction="ease">
-      {(styles) => (
-        <Box
-          p="lg"
-          style={{
-            ...styles,
-            borderTop:
-              commentIndex > 0
-                ? `1px solid ${isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'}`
-                : 'none',
-            transition: 'background-color 0.2s ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = isDark
-              ? 'rgba(255, 255, 255, 0.02)'
-              : 'rgba(0, 0, 0, 0.02)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'transparent';
-          }}>
-          <Group align="flex-start" gap="md">
-            <Avatar
-              src={comment.user.profilePicture}
-              size={40}
-              radius="xl"
+  const handleImageClick = (images: string[], index: number) => {
+    setCurrentImages(images);
+    setSelectedImageIndex(index);
+    setImageModalOpen(true);
+  };
+
+  const renderCommentImages = (images: string[]) => {
+    if (!images || images.length === 0) return null;
+
+    const displayImages = images.slice(0, 3);
+    const remainingCount = images.length - 3;
+
+    return (
+      <Box mt="md">
+        <SimpleGrid
+          cols={images.length === 1 ? 1 : images.length === 2 ? 2 : 3}
+          spacing="sm">
+          {displayImages.map((image, index) => (
+            <Box
+              key={index}
               style={{
-                background: 'linear-gradient(45deg, #74b9ff, #0984e3)',
-              }}>
-              {!comment.user.profilePicture &&
-                comment.user.username[0].toUpperCase()}
-            </Avatar>
-
-            <Stack gap="xs" style={{ flex: 1 }}>
-              <Group gap="sm" align="center">
-                <Text size="sm" fw={600} c={isDark ? 'white' : 'dark'}>
-                  {comment.user.username}
-                </Text>
-                <Badge variant="light" color="cyan" radius="xl" size="sm">
-                  <FormatTime createdAt={comment.createdAt} />
-                </Badge>
-              </Group>
-
-              <Text
-                size="md"
-                c={isDark ? 'gray.3' : 'gray.7'}
+                position: 'relative',
+                cursor: 'pointer',
+                borderRadius: rem(12),
+                overflow: 'hidden',
+              }}
+              onClick={() => handleImageClick(images, index)}>
+              <Image
+                src={image}
+                alt={`Comment image ${index + 1}`}
+                radius="md"
                 style={{
-                  lineHeight: 1.5,
-                  wordBreak: 'break-word',
-                  whiteSpace: 'pre-wrap',
-                  maxWidth: '100%',
-                  overflowWrap: 'break-word',
+                  height: '100%',
+                  width: '100%',
+                  objectFit: 'cover',
+                  transition: 'transform 0.2s ease',
+                  maxHeight: '150px',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.02)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
+              />
+              {index === 2 && remainingCount > 0 && (
+                <Box
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: rem(12),
+                  }}>
+                  <Text
+                    size="xl"
+                    fw={700}
+                    c="white"
+                    style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+                    +{remainingCount}
+                  </Text>
+                </Box>
+              )}
+            </Box>
+          ))}
+        </SimpleGrid>
+      </Box>
+    );
+  };
+
+  return (
+    <>
+      <Transition
+        mounted={true}
+        transition="slide-right"
+        duration={300}
+        timingFunction="ease">
+        {(styles) => (
+          <Box
+            p="lg"
+            style={{
+              ...styles,
+              borderTop:
+                commentIndex > 0
+                  ? `1px solid ${isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'}`
+                  : 'none',
+              transition: 'background-color 0.2s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = isDark
+                ? 'rgba(255, 255, 255, 0.02)'
+                : 'rgba(0, 0, 0, 0.02)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }}>
+            <Group align="flex-start" gap="md">
+              <Avatar
+                src={comment.user.profilePicture}
+                size={40}
+                radius="xl"
+                style={{
+                  background: 'linear-gradient(45deg, #74b9ff, #0984e3)',
+                  flexShrink: 0,
                 }}>
-                {comment.content}
-              </Text>
+                {!comment.user.profilePicture &&
+                  comment.user.username[0].toUpperCase()}
+              </Avatar>
 
-              <Group gap="lg" align="center">
-                <Group gap="xs" align="center">
-                  <ActionIcon
-                    onClick={() => handleLikeComment(comment.id)}
-                    variant={comment.voteStatus === 'like' ? 'filled' : 'light'}
-                    color="green"
-                    size="lg"
-                    radius="xl"
-                    style={{ transition: 'all 0.2s ease' }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'scale(1.1)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'scale(1)';
-                    }}>
-                    <IconThumbUp size={18} />
-                  </ActionIcon>
-                  <Text size="md" c="dimmed">
-                    {comment.upvotes || 0}
+              <Stack gap="xs" style={{ flex: 1, minWidth: 0 }}>
+                <Group gap="sm" align="center">
+                  <Text size="sm" fw={600} c={isDark ? 'white' : 'dark'}>
+                    {comment.user.username}
                   </Text>
+                  <Badge
+                    variant="light"
+                    color="cyan"
+                    radius="xl"
+                    size="lg"
+                    style={{ textTransform: 'none' }}>
+                    <FormatTime createdAt={comment.createdAt} />
+                  </Badge>
                 </Group>
 
-                <Group gap="xs" align="center">
-                  <ActionIcon
-                    onClick={() => handleDislikeComment(comment.id)}
-                    variant={
-                      comment.voteStatus === 'dislike' ? 'filled' : 'light'
-                    }
-                    color="red"
-                    size="lg"
-                    radius="xl"
-                    style={{ transition: 'all 0.2s ease' }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'scale(1.1)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'scale(1)';
-                    }}>
-                    <IconThumbDown size={18} />
-                  </ActionIcon>
-                  <Text size="md" c="dimmed">
-                    {comment.downvotes || 0}
-                  </Text>
-                </Group>
-              </Group>
-            </Stack>
+                <Text
+                  size="md"
+                  c={isDark ? 'gray.3' : 'gray.7'}
+                  style={{
+                    lineHeight: 1.5,
+                    wordBreak: 'break-word',
+                    whiteSpace: 'pre-wrap',
+                    maxWidth: '100%',
+                    overflowWrap: 'break-word',
+                  }}>
+                  {comment.content}
+                </Text>
 
-            {/* Comment Actions */}
-            <Group gap="xs">
-              {user?.id == comment.userId ? (
-                <>
-                  <Tooltip label={t('edit')} position="top">
+                {/* Comment Images */}
+                <Box style={{ maxWidth: '100%', overflow: 'hidden' }}>
+                  {renderCommentImages(comment.images)}
+                </Box>
+
+                <Group gap="lg" align="center">
+                  <Group gap="xs" align="center">
                     <ActionIcon
-                      onClick={() => onEdit(comment, 'COMMENT')}
-                      variant="light"
-                      color="blue"
+                      onClick={() => handleLikeComment(comment.id)}
+                      variant={
+                        comment.voteStatus === 'like' ? 'filled' : 'light'
+                      }
+                      color="green"
                       size="lg"
                       radius="xl"
                       style={{ transition: 'all 0.2s ease' }}
@@ -194,13 +243,19 @@ export default function CommentItem({
                       onMouseLeave={(e) => {
                         e.currentTarget.style.transform = 'scale(1)';
                       }}>
-                      <IconEdit size={20} />
+                      <IconThumbUp size={18} />
                     </ActionIcon>
-                  </Tooltip>
-                  <Tooltip label={t('delete')} position="top">
+                    <Text size="md" c="dimmed">
+                      {comment.upvotes || 0}
+                    </Text>
+                  </Group>
+
+                  <Group gap="xs" align="center">
                     <ActionIcon
-                      onClick={handleDelete}
-                      variant="light"
+                      onClick={() => handleDislikeComment(comment.id)}
+                      variant={
+                        comment.voteStatus === 'dislike' ? 'filled' : 'light'
+                      }
                       color="red"
                       size="lg"
                       radius="xl"
@@ -211,33 +266,94 @@ export default function CommentItem({
                       onMouseLeave={(e) => {
                         e.currentTarget.style.transform = 'scale(1)';
                       }}>
-                      <IconTrash size={20} />
+                      <IconThumbDown size={18} />
+                    </ActionIcon>
+                    <Text size="md" c="dimmed">
+                      {comment.downvotes || 0}
+                    </Text>
+                  </Group>
+                </Group>
+              </Stack>
+
+              {/* Comment Actions */}
+              <Group gap="xs" style={{ flexShrink: 0 }}>
+                {user?.id == comment.userId ? (
+                  <>
+                    <Tooltip label={t('edit')} position="top">
+                      <ActionIcon
+                        onClick={() => onEdit(comment, 'COMMENT')}
+                        variant="light"
+                        color="blue"
+                        size="lg"
+                        radius="xl"
+                        style={{ transition: 'all 0.2s ease' }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'scale(1.1)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'scale(1)';
+                        }}>
+                        <IconEdit size={20} />
+                      </ActionIcon>
+                    </Tooltip>
+                    <Tooltip label={t('delete')} position="top">
+                      <ActionIcon
+                        onClick={handleDelete}
+                        variant="light"
+                        color="red"
+                        size="lg"
+                        radius="xl"
+                        style={{ transition: 'all 0.2s ease' }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'scale(1.1)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'scale(1)';
+                        }}>
+                        <IconTrash size={20} />
+                      </ActionIcon>
+                    </Tooltip>
+                  </>
+                ) : (
+                  <Tooltip label={t('report')} position="top">
+                    <ActionIcon
+                      onClick={() => onReport(comment, 'COMMENT')}
+                      variant="light"
+                      color="yellow"
+                      size="lg"
+                      radius="xl"
+                      style={{ transition: 'all 0.2s ease' }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.1)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                      }}>
+                      <IconFlag size={20} />
                     </ActionIcon>
                   </Tooltip>
-                </>
-              ) : (
-                <Tooltip label={t('report')} position="top">
-                  <ActionIcon
-                    onClick={() => onReport(comment, 'COMMENT')}
-                    variant="light"
-                    color="yellow"
-                    size="lg"
-                    radius="xl"
-                    style={{ transition: 'all 0.2s ease' }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'scale(1.1)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'scale(1)';
-                    }}>
-                    <IconFlag size={20} />
-                  </ActionIcon>
-                </Tooltip>
-              )}
+                )}
+              </Group>
             </Group>
-          </Group>
-        </Box>
-      )}
-    </Transition>
+          </Box>
+        )}
+      </Transition>
+
+      <Lightbox
+        open={imageModalOpen}
+        close={() => setImageModalOpen(false)}
+        slides={currentImages.map((src) => ({ src }))}
+        plugins={[Zoom]}
+        zoom={{
+          maxZoomPixelRatio: 4,
+          zoomInMultiplier: 1.5,
+          doubleTapDelay: 300,
+          doubleClickDelay: 300,
+          wheelZoomDistanceFactor: 100,
+          pinchZoomDistanceFactor: 100,
+        }}
+        index={selectedImageIndex}
+      />
+    </>
   );
 }

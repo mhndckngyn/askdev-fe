@@ -4,27 +4,36 @@ import fetcher from '@/utils/fetcher';
 export async function createAnswer(
   questionId: string,
   content: string,
+  images: File[],
 ): Promise<ApiResponse> {
-  const payload = {
-    questionId,
-    content,
-  };
+  const formData = new FormData();
+  formData.append('questionId', questionId);
+  formData.append('content', content);
+  images.forEach((img) => {
+    formData.append('images', img);
+  });
+
   return fetcher({
     method: 'POST',
     route: 'answer',
-    payload,
+    payload: formData,
   });
 }
 
 export async function updateAnswer(
   id: string,
   content: string,
+  images: File[],
 ): Promise<ApiResponse> {
-  const payload = { content };
+  const formData = new FormData();
+  formData.append('content', content);
+  images.forEach((img) => {
+    formData.append('images', img);
+  });
   return fetcher({
     method: 'PUT',
     route: `answer/${id}`,
-    payload,
+    payload: formData,
   });
 }
 

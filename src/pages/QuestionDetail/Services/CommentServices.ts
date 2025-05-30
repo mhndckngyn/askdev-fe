@@ -4,27 +4,35 @@ import fetcher from '@/utils/fetcher';
 export async function createComment(
   answerId: string,
   content: string,
+  images: File[],
 ): Promise<ApiResponse> {
-  const payload = {
-    answerId,
-    content,
-  };
+  const formData = new FormData();
+  formData.append('answerId', answerId);
+  formData.append('content', content);
+  images.forEach((img) => {
+    formData.append('images', img);
+  });
   return fetcher({
     method: 'POST',
     route: 'comment',
-    payload,
+    payload: formData,
   });
 }
 
 export async function updateComment(
   id: string,
   content: string,
+  images: File[],
 ): Promise<ApiResponse> {
-  const payload = { content };
+  const formData = new FormData();
+  formData.append('content', content);
+  images.forEach((img) => {
+    formData.append('images', img);
+  });
   return fetcher({
     method: 'PUT',
     route: `comment/${id}`,
-    payload,
+    payload: formData,
   });
 }
 
