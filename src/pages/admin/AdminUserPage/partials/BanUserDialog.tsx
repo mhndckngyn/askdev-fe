@@ -57,7 +57,7 @@ export default function BanUserDialog({
         styles={{ label: { marginBottom: 6 } }}
       />
       <Group mt="md" gap="sm" justify="flex-end">
-        <Button variant="subtle" color="black" onClick={handleClose}>
+        <Button variant="subtle" color="dark" onClick={handleClose}>
           {t('banUserDialog.cancel')}
         </Button>
         <Button

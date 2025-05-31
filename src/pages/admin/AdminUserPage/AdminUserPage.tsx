@@ -130,7 +130,7 @@ export default function AdminUserPage() {
           records={records}
           pagination={pagination}
           isLoading={isLoading}
-          setRender={() => setRender((cur) => cur + 1)}
+          setRender={setRender}
         />
       </div>
     </div>

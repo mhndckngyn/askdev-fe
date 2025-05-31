@@ -28,7 +28,7 @@
 }
 
 .bannedUser {
-  background-color: alpha(var(--mantine-color-red-2), 0.2);
+  background-color: alpha(var(--mantine-color-red-8), 0.02);
 }
 
 .table-AdminBadge {
