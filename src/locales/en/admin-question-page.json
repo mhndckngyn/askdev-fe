@@ -17,7 +17,7 @@
   "copySuccess": "Copied quesion ID: {{id}}",
   "notAvailable": "N/A",
 
-  "searchTitle": "Search question by title",
+  "searchPlaceholder": "Search question by title or ID",
   "filters": "Advanced Filters",
   "tagDescription": "Has one of the following tags",
   "typeToSearch": "Type to start searching",

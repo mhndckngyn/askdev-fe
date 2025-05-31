@@ -25,7 +25,7 @@ export type AnswerFilter = Omit<
 };
 
 const SEARCH_DELAY_MS = 300;
-const PAGE_SIZE = 15;
+const PAGE_SIZE = 10;
 
 export default function AdminAnswerPage() {
   const { t } = useTranslation('adminAnswerPage');
