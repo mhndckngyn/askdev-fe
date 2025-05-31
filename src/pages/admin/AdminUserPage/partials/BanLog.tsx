@@ -1,11 +1,11 @@
+import formatDate from '@/utils/formatDate';
 import { Badge, Button, Loader, Modal, Table, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconLogs } from '@tabler/icons-react';
-import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getBanRecords } from '../services';
 import styles from '../AdminUserPage.module.css';
+import { getBanRecords } from '../services';
 
 export interface BanLog {
   id: string;
@@ -15,10 +15,6 @@ export interface BanLog {
   action: 'BAN' | 'UNBAN';
   reason: string;
 }
-
-const formatDate = (day: string) => {
-  return dayjs(day).format('HH:mm, DD/MM/YYYY');
-};
 
 export default function BanLog() {
   const { t } = useTranslation('adminUserPage');

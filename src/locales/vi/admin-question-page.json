@@ -15,6 +15,7 @@
   "viewAnswers": "Xem câu trả lời",
   "toggleVisibility": "Ẩn/Hiển thị",
   "copySuccess": "Đã sao chép ID câu hỏi: {{id}}",
+  "notAvailable": "Không khả dụng",
 
   "searchTitle": "Tìm kiếm câu hỏi theo tiêu đề",
   "filters": "Bộ lọc nâng cao",

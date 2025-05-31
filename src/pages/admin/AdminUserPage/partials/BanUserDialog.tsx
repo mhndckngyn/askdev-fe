@@ -42,7 +42,10 @@ export default function BanUserDialog({
       onClose={handleClose}
       title={
         <Text fw="bold" size="lg">
-          {target.action === 'ban' ? t('ban-user') : t('unban-user')}
+          {target.action === 'ban'
+            ? t('banUserDialog.title-ban')
+            : t('banUserDialog.title-unban')}
+          {` ${target.username}`}
         </Text>
       }
       centered>

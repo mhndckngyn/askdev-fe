@@ -29,12 +29,16 @@
   "asc": "Ascending",
   "desc": "Descending",
   "banUserDialog": {
-    "title-ban": "Ban user",
-    "title-unban": "Unban user",
+    "title-ban": "Ban",
+    "title-unban": "Unban",
     "reasonLabel": "Reason (optional)",
     "cancel": "Cancel",
     "ok": "OK"
   },
+  "ban-successful": "Ban user successfully.",
+  "unban-successful": "Unban user successfully.",
+  "ban-failed": "Ban user failed. Please try again.",
+  "unban-failed": "Unban user failed. Please try again.",
   "ban-log": "Ban logs",
   "ban-log-error-fetching": "Error encountered while fetching ban log.",
   "ban-log-number": "Number",

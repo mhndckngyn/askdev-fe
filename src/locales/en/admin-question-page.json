@@ -15,6 +15,7 @@
   "viewAnswers": "View Answers",
   "toggleVisibility": "Toggle question visibility",
   "copySuccess": "Copied quesion ID: {{id}}",
+  "notAvailable": "N/A",
 
   "searchTitle": "Search question by title",
   "filters": "Advanced Filters",

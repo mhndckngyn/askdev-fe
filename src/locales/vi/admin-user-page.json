@@ -33,8 +33,12 @@
     "title-unban": "Bỏ cấm người dùng",
     "reasonLabel": "Lý do (không bắt buộc)",
     "cancel": "Hủy",
-    "ok": "OK"
+    "ok": "Đồng ý"
   },
+  "ban-successful": "Cấm người dùng thành công.",
+  "unban-successful": "Bỏ cấm người dùng thành công.",
+  "ban-failed": "Cấm người dùng thất bại. Vui lòng thử lại.",
+  "unban-failed": "Bỏ cấm người dùng thất bại. Vui lòng thử lại.",
   "ban-log": "Nhật ký cấm",
   "ban-log-error-fetching": "Gặp lỗi khi lấy nhật ký cấm.",
   "ban-log-number": "STT",

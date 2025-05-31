@@ -1,5 +1,6 @@
 import publicRoutePaths from '@/routes/user/public/paths';
 import { UserAdminView } from '@/types/UserAdminView';
+import formatDate from '@/utils/formatDate';
 import {
   ActionIcon,
   Avatar,
@@ -13,6 +14,7 @@ import {
   Tooltip,
 } from '@mantine/core';
 import { useClipboard, useDisclosure } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 import {
   IconAlertTriangle,
   IconCheck,
@@ -25,9 +27,8 @@ import {
   IconUserOff,
   IconX,
 } from '@tabler/icons-react';
-import dayjs from 'dayjs';
 import { DataTable } from 'mantine-datatable';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import styles from '../AdminUserPage.module.css';
@@ -67,12 +68,14 @@ function UserTableComponent({
     clipboard.copy(value);
   };
 
-  const formatDate = (day: string) => {
-    return dayjs(day).format('HH:mm, DD/MM/YYYY');
-  };
-
   const [banTarget, setBanTarget] = useState<BanTarget | null>(null);
   const [opened, { open, close }] = useDisclosure();
+
+  useEffect(() => {
+    if (banTarget) {
+      open();
+    }
+  }, [banTarget]);
 
   const handleCloseBanDialog = () => {
     close();
@@ -84,14 +87,17 @@ function UserTableComponent({
       return;
     }
 
-    const fn = banTarget.action === 'ban' ? banUser : unbanUser;
-    const response = await fn(banTarget.userId, reason);
+    const [action, message, error] =
+      banTarget.action === 'ban'
+        ? [banUser, t('ban-successful'), t('ban-failed')]
+        : [unbanUser, t('unban-successful'), t('unban-failed')];
+    const response = await action(banTarget.userId, reason);
 
     if (response.success) {
       setRender();
-      // notification
+      notifications.show({ message });
     } else {
-      // error
+      notifications.show({ message: error, color: 'red', icon: <IconX /> });
     }
   };
 
@@ -213,7 +219,7 @@ function UserTableComponent({
     );
   };
 
-  const renderRecordActions = (user: UserAdminView) => (
+  const renderActionCell = (user: UserAdminView) => (
     <Group gap={4} justify="center" wrap="nowrap">
       <Tooltip label={user.isBanned ? t('unban-user') : t('ban-user')}>
         <ActionIcon
@@ -223,7 +229,6 @@ function UserTableComponent({
               username: user.username,
               ...(user.isBanned ? { action: 'unban' } : { action: 'ban' }),
             });
-            open();
           }}
           size="sm"
           variant="light">
@@ -310,7 +315,7 @@ function UserTableComponent({
             accessor: 'actions',
             title: t('actions'),
             textAlign: 'center',
-            render: renderRecordActions,
+            render: renderActionCell,
           },
         ]}
         /* set style */

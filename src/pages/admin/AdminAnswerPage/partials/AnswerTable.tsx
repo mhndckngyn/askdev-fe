@@ -1,5 +1,6 @@
 import publicRoutePaths from '@/routes/user/public/paths';
 import { AnswerAdminView } from '@/types/AnswerAdminView';
+import formatDate from '@/utils/formatDate';
 import { ActionIcon, Box, Group, Text, Tooltip } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
 import {
@@ -9,7 +10,6 @@ import {
   IconMessageShare,
   IconMoodSad,
 } from '@tabler/icons-react';
-import dayjs from 'dayjs';
 import { DataTable } from 'mantine-datatable';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -61,10 +61,6 @@ function AnswerTableComponent({
 
   const copy = (value: string) => {
     clipboard.copy(value);
-  };
-
-  const formatDate = (day: string) => {
-    return dayjs(day).format('HH:mm, DD/MM/YYYY');
   };
 
   const renderQuestionIdCell = (answer: AnswerAdminView) => (

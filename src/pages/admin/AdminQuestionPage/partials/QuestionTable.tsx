@@ -1,6 +1,7 @@
 import adminRoutePaths from '@/routes/admin/paths';
 import publicRoutePaths from '@/routes/user/public/paths';
 import { QuestionAdminView } from '@/types';
+import formatDate from '@/utils/formatDate';
 import {
   ActionIcon,
   Anchor,
@@ -22,7 +23,6 @@ import {
   IconMoodSad,
   IconX,
 } from '@tabler/icons-react';
-import dayjs from 'dayjs';
 import { DataTable } from 'mantine-datatable';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -57,10 +57,6 @@ function QuestionTableComponent({
 }: QuestionTableProps) {
   const { t } = useTranslation('adminQuestionPage');
   const clipboard = useClipboard();
-
-  const formatDate = (day: string) => {
-    return dayjs(day).format('HH:mm, DD/MM/YYYY');
-  };
 
   const renderRecordActions = (question: QuestionAdminView) => (
     <Group gap={4} justify="center" wrap="nowrap">
@@ -195,9 +191,8 @@ function QuestionTableComponent({
           title: t('lastEdited'),
           width: 120,
           render: (row) => (
-            /* hiển thị ngày edit chỉ khi khác ngày tạo */
             <Text size="sm">
-              {row.updatedAt === '' ? '-' : formatDate(row.updatedAt)}
+              {row.updatedAt === '' ? t('notAvailable') : formatDate(row.updatedAt)}
             </Text>
           ),
         },
