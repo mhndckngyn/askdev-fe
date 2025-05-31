@@ -23,7 +23,7 @@ type AdminSidebarKey =
   | 'questions'
   | 'answers'
   | 'tags'
-  | 'members'
+  | 'users'
   | 'reports';
 
 const data: {
@@ -43,7 +43,7 @@ const data: {
   },
   { link: adminRoutePaths.answers, label: 'answers', icon: IconMessage },
   { link: adminRoutePaths.tags, label: 'tags', icon: IconTags },
-  { link: adminRoutePaths.dashboard, label: 'members', icon: IconUsers },
+  { link: adminRoutePaths.users, label: 'users', icon: IconUsers },
   { link: adminRoutePaths.reports, label: 'reports', icon: IconFlag },
 ];
 

@@ -9,6 +9,7 @@ import { Route } from 'react-router-dom';
 import AdminGuard from './AdminGuard';
 import AdminLayout from './AdminLayout';
 import adminRoutePaths from './paths';
+import AdminUserPage from '@/pages/admin/AdminUserPage';
 
 const adminRoutes = (
   <Route
@@ -21,6 +22,7 @@ const adminRoutes = (
     <Route path={adminRoutePaths.questions} element={<AdminQuestionPage />} />
     <Route path={adminRoutePaths.answers} element={<AdminAnswerPage />} />
     <Route path={adminRoutePaths.tags} element={<AdminTagPage />} />
+    <Route path={adminRoutePaths.users} element={<AdminUserPage />} />
     <Route path={adminRoutePaths.reports} element={<AdminReportPage />} />
     <Route path={adminRoutePaths.qandaDashboard} element={<DashboardQA />} />
     <Route

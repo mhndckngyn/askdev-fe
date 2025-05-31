@@ -3,6 +3,6 @@
   "questions": "Manage questions",
   "answers": "Manage answers",
   "tags": "Manage tags",
-  "members": "Manage members",
+  "users": "Manage users",
   "reports": "Manage reports"
 }

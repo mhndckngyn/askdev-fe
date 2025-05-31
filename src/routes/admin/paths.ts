@@ -4,6 +4,7 @@ const adminRoutePaths = {
   answers: '/admin/answers',
   tags: '/admin/tags',
   reports: '/admin/reports',
+  users: '/admin/users',
   qandaDashboard: '/admin/dashboard/Q&A',
   reportDashboard: '/admin/dashboard/report',
 };
