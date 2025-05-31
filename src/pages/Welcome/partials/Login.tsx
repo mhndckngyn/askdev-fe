@@ -23,6 +23,7 @@ import { getEmailLoginError } from '../schemas';
 import { submitLoginForm } from '../services';
 import { LoginFormValues } from '../types';
 import ForgotPasswordModal from './ForgotPasswordModal';
+import visitorRoutePaths from '@/routes/user/visitor/paths';
 
 export default function Login() {
   const { t: tCommon } = useTranslation('common');
@@ -60,6 +61,9 @@ export default function Login() {
     } else {
       const message = response.message;
       switch (message) {
+        case 'auth.account-banned':
+          navigate(visitorRoutePaths.accountSuspended);
+          break;
         case 'auth.incorrect-login-data':
           setError(tApi(message));
           break;
