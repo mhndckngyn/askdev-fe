@@ -16,6 +16,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './UserMenu.module.css';
 import memberRoutePaths from '@/routes/user/member/paths';
 import publicRoutePaths from '@/routes/user/public/paths';
+import adminRoutePaths from '@/routes/admin/paths';
 
 export default function UserMenu({ bottom = false }: { bottom: boolean }) {
   const { t } = useTranslation('userMenu');
@@ -60,7 +61,10 @@ export default function UserMenu({ bottom = false }: { bottom: boolean }) {
 
   const adminLinks = (
     <>
-      <Menu.Item leftSection={<LayoutDashboard size={16} />}>
+      <Menu.Item
+        component={Link}
+        to={adminRoutePaths.dashboard}
+        leftSection={<LayoutDashboard size={16} />}>
         {t('manage')}
       </Menu.Item>
       <Menu.Divider />
@@ -98,7 +102,7 @@ export default function UserMenu({ bottom = false }: { bottom: boolean }) {
 
         <Menu.Divider />
 
-        {user.role === 'admin' && adminLinks}
+        {user.role === 'ADMIN' && adminLinks}
 
         <Menu.Item
           color="red"

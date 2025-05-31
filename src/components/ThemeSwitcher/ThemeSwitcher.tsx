@@ -9,7 +9,7 @@ export default function ThemeSwitcher() {
   }
 
   return (
-    <ActionIcon onClick={change} variant="outline" size="input-sm">
+    <ActionIcon onClick={change} variant="outline" size="input-sm" radius='md'>
       {colorScheme === 'dark' ? <IconSun size={18} /> : <IconMoon size={18} />}
     </ActionIcon>
   );
