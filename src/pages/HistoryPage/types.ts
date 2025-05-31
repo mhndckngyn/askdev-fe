@@ -1,9 +1,7 @@
-// types.ts - Định nghĩa các kiểu dữ liệu cho hệ thống hoạt động
-
-export enum ActivityType {
-  QUESTION = 'QUESTION',
-  ANSWER = 'ANSWER',
-  COMMENT = 'COMMENT',
+export enum HistoryType {
+  QUESTION_CREATE = 'QUESTION_CREATE',
+  ANSWER_CREATE = 'ANSWER_CREATE',
+  COMMENT_CREATE = 'COMMENT_CREATE',
   QUESTION_EDIT = 'QUESTION_EDIT',
   ANSWER_EDIT = 'ANSWER_EDIT',
   COMMENT_EDIT = 'COMMENT_EDIT',
@@ -14,111 +12,86 @@ export enum ActivityType {
   ANSWER_DOWNVOTE = 'ANSWER_DOWNVOTE',
   COMMENT_DOWNVOTE = 'COMMENT_DOWNVOTE',
   ANSWER_CHOSEN = 'ANSWER_CHOSEN',
-  REPORT = 'REPORT',
+  REPORT_CREATE = 'REPORT_CREATE',
   QUESTION_DELETE = 'QUESTION_DELETE',
   ANSWER_DELETE = 'ANSWER_DELETE',
   COMMENT_DELETE = 'COMMENT_DELETE',
 }
 
-export enum ReportStatus {
-  PENDING = 'PENDING',
-  REVIEWED = 'REVIEWED',
-  REJECTED = 'REJECTED',
-}
-
-export enum ContentType {
-  QUESTION = 'QUESTION',
-  ANSWER = 'ANSWER',
-  COMMENT = 'COMMENT',
-}
-
-export interface ActivityData {
+export interface HistoryItem {
   id: string;
-  type: ActivityType;
+  type: HistoryType;
   userId: string;
-  createdAt: string;
-
-  // Dữ liệu chung
-  title?: string;
-  content?: string;
-  questionTitle?: string;
-  answerContent?: string;
-
-  // Dữ liệu số liệu
-  upvotes?: number;
-  downvotes?: number;
-  views?: number;
-  answers?: number;
-
-  // Trạng thái
-  isSolved?: boolean;
-  isChosen?: boolean;
-  isHidden?: boolean;
-
-  // Tags
-  tags?: string[];
-
-  // Vote
-  voteType?: 1 | -1; // 1 cho upvote, -1 cho downvote
-
-  // Edit
-  previousTitle?: string;
-  previousContent?: string;
-
-  // Report
-  reason?: string;
-  status?: ReportStatus;
-  reportedContentType?: ContentType;
-
-  // Deleted content info
-  deletedContentTitle?: string;
-  deletedContentType?: ContentType;
+  contentTitle: string;
+  questionId?: string;
+  createdAt: Date;
+  user: {
+    id: string;
+    username: string;
+    profilePicture: string;
+  };
 }
 
-export interface ActivityFilter {
-  types?: ActivityType[];
-  dateFrom?: Date;
-  dateTo?: Date;
-  searchQuery?: string;
+export interface DateRange {
+  start: Date | null;
+  end: Date | null;
 }
 
-export interface ActivityStats {
-  totalQuestions: number;
-  totalAnswers: number;
-  totalComments: number;
-  totalVotes: number;
-  totalReports: number;
+export interface HistoryFilters {
+  dateRange: DateRange;
+  types: HistoryType[];
+  searchQuery: string;
 }
 
-// Mapping tiếng Việt cho các loại hoạt động
-export const ActivityTypeLabels: Record<ActivityType, string> = {
-  [ActivityType.QUESTION]: 'Tạo câu hỏi',
-  [ActivityType.ANSWER]: 'Tạo câu trả lời',
-  [ActivityType.COMMENT]: 'Tạo bình luận',
-  [ActivityType.QUESTION_EDIT]: 'Sửa câu hỏi',
-  [ActivityType.ANSWER_EDIT]: 'Sửa câu trả lời',
-  [ActivityType.COMMENT_EDIT]: 'Sửa bình luận',
-  [ActivityType.QUESTION_VOTE]: 'Thích câu hỏi',
-  [ActivityType.ANSWER_VOTE]: 'Thích câu trả lời',
-  [ActivityType.COMMENT_VOTE]: 'Thích bình luận',
-  [ActivityType.QUESTION_DOWNVOTE]: 'Không thích câu hỏi',
-  [ActivityType.ANSWER_DOWNVOTE]: 'Không thích câu trả lời',
-  [ActivityType.COMMENT_DOWNVOTE]: 'Không thích bình luận',
-  [ActivityType.ANSWER_CHOSEN]: 'Câu trả lời được chọn',
-  [ActivityType.REPORT]: 'Tạo báo cáo',
-  [ActivityType.QUESTION_DELETE]: 'Xóa câu hỏi',
-  [ActivityType.ANSWER_DELETE]: 'Xóa câu trả lời',
-  [ActivityType.COMMENT_DELETE]: 'Xóa bình luận',
+export interface UseHistoryReturn {
+  historyItems: HistoryItem[];
+  filteredItems: HistoryItem[];
+  filters: HistoryFilters;
+  loading: boolean;
+  selectedIds: string[];
+  setFilters: (filters: Partial<HistoryFilters>) => void;
+  setSelectedIds: React.Dispatch<React.SetStateAction<string[]>>;
+  deleteHistoryItems: (ids: string[]) => Promise<void>;
+  deleteAllHistory: () => Promise<void>;
+  clearFilters: () => void;
+}
+
+export const HISTORY_TYPE_LABELS: Record<HistoryType, string> = {
+  [HistoryType.QUESTION_CREATE]: 'Tạo câu hỏi',
+  [HistoryType.ANSWER_CREATE]: 'Tạo câu trả lời',
+  [HistoryType.COMMENT_CREATE]: 'Tạo bình luận',
+  [HistoryType.QUESTION_EDIT]: 'Chỉnh sửa câu hỏi',
+  [HistoryType.ANSWER_EDIT]: 'Chỉnh sửa câu trả lời',
+  [HistoryType.COMMENT_EDIT]: 'Chỉnh sửa bình luận',
+  [HistoryType.QUESTION_VOTE]: 'Upvote câu hỏi',
+  [HistoryType.ANSWER_VOTE]: 'Upvote câu trả lời',
+  [HistoryType.COMMENT_VOTE]: 'Upvote bình luận',
+  [HistoryType.QUESTION_DOWNVOTE]: 'Downvote câu hỏi',
+  [HistoryType.ANSWER_DOWNVOTE]: 'Downvote câu trả lời',
+  [HistoryType.COMMENT_DOWNVOTE]: 'Downvote bình luận',
+  [HistoryType.ANSWER_CHOSEN]: 'Chọn câu trả lời tốt nhất',
+  [HistoryType.REPORT_CREATE]: 'Báo cáo nội dung',
+  [HistoryType.QUESTION_DELETE]: 'Xóa câu hỏi',
+  [HistoryType.ANSWER_DELETE]: 'Xóa câu trả lời',
+  [HistoryType.COMMENT_DELETE]: 'Xóa bình luận',
 };
 
-export const ReportStatusLabels: Record<ReportStatus, string> = {
-  [ReportStatus.PENDING]: 'Đang chờ',
-  [ReportStatus.REVIEWED]: 'Đã xem xét',
-  [ReportStatus.REJECTED]: 'Bị từ chối',
-};
-
-export const ContentTypeLabels: Record<ContentType, string> = {
-  [ContentType.QUESTION]: 'câu hỏi',
-  [ContentType.ANSWER]: 'câu trả lời',
-  [ContentType.COMMENT]: 'bình luận',
+export const HISTORY_TYPE_COLORS: Record<HistoryType, string> = {
+  [HistoryType.QUESTION_CREATE]: '#4CAF50',
+  [HistoryType.ANSWER_CREATE]: '#2196F3',
+  [HistoryType.COMMENT_CREATE]: '#FF9800',
+  [HistoryType.QUESTION_EDIT]: '#9C27B0',
+  [HistoryType.ANSWER_EDIT]: '#9C27B0',
+  [HistoryType.COMMENT_EDIT]: '#9C27B0',
+  [HistoryType.QUESTION_VOTE]: '#4CAF50',
+  [HistoryType.ANSWER_VOTE]: '#4CAF50',
+  [HistoryType.COMMENT_VOTE]: '#4CAF50',
+  [HistoryType.QUESTION_DOWNVOTE]: '#F44336',
+  [HistoryType.ANSWER_DOWNVOTE]: '#F44336',
+  [HistoryType.COMMENT_DOWNVOTE]: '#F44336',
+  [HistoryType.ANSWER_CHOSEN]: '#FFD700',
+  [HistoryType.REPORT_CREATE]: '#FF5722',
+  [HistoryType.QUESTION_DELETE]: '#F44336',
+  [HistoryType.ANSWER_DELETE]: '#F44336',
+  [HistoryType.COMMENT_DELETE]: '#F44336',
 };
