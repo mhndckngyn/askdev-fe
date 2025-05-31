@@ -13,8 +13,19 @@ import {
   Flex,
   rem,
   Group,
+  FileInput,
+  Image,
+  SimpleGrid,
+  ActionIcon,
+  Paper,
 } from '@mantine/core';
-import { IconMessageCircle, IconSend } from '@tabler/icons-react';
+import {
+  IconMessageCircle,
+  IconSend,
+  IconPhoto,
+  IconX,
+  IconUpload,
+} from '@tabler/icons-react';
 import { useParams } from 'react-router-dom';
 import {
   createAnswer,
@@ -37,15 +48,19 @@ export default function AnswerView() {
   const { id } = useParams<{ id: string }>();
   const [answers, setAnswers] = useState<any[]>([]);
   const [newanswer, setNewanswer] = useState('');
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
 
   const [editingId, setEditingId] = useState('');
   const [editingContent, setEditingContent] = useState('');
+  const [editingImages, setEditingImages] = useState([]);
   const [editingType, setEditingType] = useState('');
   const [openEditingModal, setOpenEditingModal] = useState(false);
 
   const handleEdit = (item: any, type: 'ANSWER' | 'COMMENT') => {
     setEditingType(type);
     setEditingContent(item.content);
+    setEditingImages(item.images);
     setEditingId(item.id);
     setOpenEditingModal(true);
   };
@@ -71,13 +86,41 @@ export default function AnswerView() {
     setOpenReportModal(false);
   };
 
+  const handleImageUpload = (files: File[]) => {
+    if (files.length === 0) return;
+
+    const newFiles = [...selectedImages, ...files].slice(0, 5);
+    setSelectedImages(newFiles);
+
+    const newPreviewUrls = newFiles.map((file) => URL.createObjectURL(file));
+    setImagePreviewUrls((prevUrls) => {
+      prevUrls.forEach((url) => URL.revokeObjectURL(url));
+      return newPreviewUrls;
+    });
+  };
+
+  const removeImage = (index: number) => {
+    const newFiles = selectedImages.filter((_, i) => i !== index);
+    const newUrls = imagePreviewUrls.filter((_, i) => i !== index);
+
+    URL.revokeObjectURL(imagePreviewUrls[index]);
+
+    setSelectedImages(newFiles);
+    setImagePreviewUrls(newUrls);
+  };
+
   const handleAddanswer = async () => {
-    if (!newanswer.trim()) return;
+    if (!newanswer.trim() && selectedImages.length === 0) return;
     if (!id) return;
+
     try {
-      const response = await createAnswer(id, newanswer);
+      const response = await createAnswer(id, newanswer, selectedImages);
       if (response.success) {
         setNewanswer('');
+        setSelectedImages([]);
+
+        imagePreviewUrls.forEach((url) => URL.revokeObjectURL(url));
+        setImagePreviewUrls([]);
         fetchAnswers();
       } else {
         console.error(response.message);
@@ -113,6 +156,10 @@ export default function AnswerView() {
 
   useEffect(() => {
     fetchAnswers();
+
+    return () => {
+      imagePreviewUrls.forEach((url) => URL.revokeObjectURL(url));
+    };
   }, [id]);
 
   const gradientBg = isDark
@@ -134,7 +181,6 @@ export default function AnswerView() {
           padding: rem(32),
           marginBottom: rem(24),
         }}>
-        {/* Answer Input Section */}
         <Card
           shadow="xl"
           radius="xl"
@@ -186,10 +232,77 @@ export default function AnswerView() {
                   },
                 }}
               />
+
+              <Paper
+                p="md"
+                radius="xl"
+                style={{
+                  backgroundColor: isDark
+                    ? 'rgba(255, 255, 255, 0.03)'
+                    : 'rgba(255, 255, 255, 0.6)',
+                  border: `1px dashed ${isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'}`,
+                }}>
+                <Group justify="space-between" align="center" mb="md">
+                  <Group align="center" gap="xs">
+                    <IconPhoto size={20} />
+                    <Text size="sm" fw={500}>
+                      {t('addImage')}
+                    </Text>
+                  </Group>
+                  <FileInput
+                    placeholder={t('chooseImage')}
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageUpload}
+                    style={{ display: 'none' }}
+                    id="image-upload"
+                  />
+                  <Button
+                    component="label"
+                    htmlFor="image-upload"
+                    leftSection={<IconUpload size={16} />}
+                    variant="light"
+                    size="xs"
+                    radius="xl"
+                    disabled={selectedImages.length >= 5}>
+                    {t('chooseImage')}
+                  </Button>
+                </Group>
+
+                {imagePreviewUrls.length > 0 && (
+                  <SimpleGrid cols={3} spacing="sm">
+                    {imagePreviewUrls.map((url, index) => (
+                      <Box key={index} style={{ position: 'relative' }}>
+                        <Image
+                          src={url}
+                          alt={`Preview ${index + 1}`}
+                          radius="md"
+                          style={{ maxHeight: 120, objectFit: 'cover' }}
+                        />
+                        <ActionIcon
+                          onClick={() => removeImage(index)}
+                          style={{
+                            position: 'absolute',
+                            top: 4,
+                            right: 4,
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                          }}
+                          size="sm"
+                          radius="xl"
+                          color="red"
+                          variant="filled">
+                          <IconX size={12} color="black" />
+                        </ActionIcon>
+                      </Box>
+                    ))}
+                  </SimpleGrid>
+                )}
+              </Paper>
+
               <Flex justify="flex-end">
                 <Button
                   onClick={handleAddanswer}
-                  disabled={!newanswer.trim()}
+                  disabled={!newanswer.trim() && selectedImages.length === 0}
                   rightSection={<IconSend size={18} />}
                   variant="gradient"
                   gradient={{ from: 'violet', to: 'indigo', deg: 45 }}
@@ -197,7 +310,10 @@ export default function AnswerView() {
                   size="lg"
                   style={{
                     boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
-                    transform: newanswer.trim() ? 'translateY(-2px)' : 'none',
+                    transform:
+                      newanswer.trim() || selectedImages.length > 0
+                        ? 'translateY(-2px)'
+                        : 'none',
                     transition: 'all 0.3s ease',
                   }}>
                   {t('sendAnswer')}
@@ -243,10 +359,10 @@ export default function AnswerView() {
               </ThemeIcon>
               <Stack align="center" gap="xs">
                 <Text size="xl" fw={700} c={isDark ? 'white' : 'dark'}>
-                  Chưa có câu trả lời nào
+                  {t('noAnswers')}
                 </Text>
                 <Text size="md" c="dimmed">
-                  Hãy là người đầu tiên chia sẻ câu trả lời cho câu hỏi này!
+                  {t('beFirstToAnswer')}
                 </Text>
               </Stack>
             </Stack>
@@ -268,6 +384,7 @@ export default function AnswerView() {
         id={editingId}
         type={editingType}
         oldContent={editingContent}
+        oldImages={editingImages}
       />
     </Container>
   );

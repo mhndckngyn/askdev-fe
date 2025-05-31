@@ -8,6 +8,7 @@ const publicRoutePaths = {
   notFound: '/not-found',
   search: '/search',
   questionsPage: '/questions',
+  historyPage:'/history'
 };
 
 export default publicRoutePaths;

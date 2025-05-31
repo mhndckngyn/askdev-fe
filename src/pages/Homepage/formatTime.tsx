@@ -12,11 +12,12 @@ const FormatTime: React.FC<FormatTimeProps> = ({ createdAt }) => {
 
   const locale = i18n.language.startsWith('vi') ? vi : enUS;
 
-  const timeAgo = formatDistanceToNow(new Date(createdAt), {
+  let timeAgo = formatDistanceToNow(new Date(createdAt), {
     locale,
     addSuffix: true,
   });
 
+  timeAgo = timeAgo.charAt(0).toUpperCase() + timeAgo.slice(1);
   return <span>{timeAgo}</span>;
 };
 
