@@ -11,6 +11,7 @@ export interface QuestionAdminView {
   user: {
     id: string;
     username: string;
+    profilePicture: string;
   };
   isHidden: boolean;
   isAnswered: boolean;

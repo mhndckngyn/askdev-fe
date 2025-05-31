@@ -15,6 +15,7 @@
   "reset": "Reset filters",
 
   "questionId": "Question ID",
+  "copyQuestionId": "Copy question ID",
   "openQuestionPage": "Open question page",
   "content": "Content",
   "poster": "Poster",

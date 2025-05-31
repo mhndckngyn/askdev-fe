@@ -28,6 +28,5 @@
 }
 
 .hiddenAnswer {
-  filter: grayscale(100%);
-  opacity: 0.8;
+  background-color: alpha(var(--mantine-color-red-2), 0.02);
 }

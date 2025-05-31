@@ -57,28 +57,28 @@ export const renderContributionCell = ({ contribution }: UserAdminView) => {
       <Stack gap="xs">
         <Badge
           color="blue"
-          size="md"
+          size="lg"
           variant="light"
           leftSection={<IconQuestionMark size={14} />}>
           {contribution.questions}
         </Badge>
         <Badge
           color="green"
-          size="md"
+          size="lg"
           variant="light"
           leftSection={<IconMessage2Code size={14} />}>
           {contribution.answers}
         </Badge>
         <Badge
           color="gray"
-          size="md"
+          size="lg"
           variant="light"
           leftSection={<IconMessageCircle size={14} />}>
           {contribution.comments}
         </Badge>
         <Badge
           color="red"
-          size="md"
+          size="lg"
           variant="light"
           leftSection={<IconAlertTriangle size={14} />}>
           {contribution.reports}
@@ -103,21 +103,21 @@ export const renderReputationCell = ({ reputation }: UserAdminView) => {
       <Stack gap="xs">
         <Badge
           color="blue"
-          size="md"
+          size="lg"
           variant="light"
           leftSection={<IconQuestionMark size={14} />}>
           {reputation.questions}
         </Badge>
         <Badge
           color="green"
-          size="md"
+          size="lg"
           variant="light"
           leftSection={<IconMessage2Code size={14} />}>
           {reputation.answers}
         </Badge>
         <Badge
           color="gray"
-          size="md"
+          size="lg"
           variant="light"
           leftSection={<IconMessageCircle size={14} />}>
           {reputation.comments}

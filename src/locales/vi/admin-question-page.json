@@ -17,7 +17,7 @@
   "copySuccess": "Đã sao chép ID câu hỏi: {{id}}",
   "notAvailable": "Không khả dụng",
 
-  "searchTitle": "Tìm kiếm câu hỏi theo tiêu đề",
+  "searchPlaceholder": "Tìm kiếm câu hỏi theo tiêu đề hoặc ID",
   "filters": "Bộ lọc nâng cao",
   "tagDescription": "Chứa một trong các thẻ sau",
   "typeToSearch": "Nhập để bắt đầu tìm kiếm",
