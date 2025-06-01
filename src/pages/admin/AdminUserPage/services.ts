@@ -1,8 +1,8 @@
 import { ApiResponse } from '@/types';
 import { UserAdminView } from '@/types/UserAdminView';
 import fetcher from '@/utils/fetcher';
+import mapParams from '@/utils/mapParams';
 import { UserFilter } from './AdminUserPage';
-import dayjs from 'dayjs';
 import { BanLog } from './partials/BanLog';
 
 type GetUserResults = {
@@ -23,22 +23,7 @@ type GetUserParams = UserFilter & {
 export async function getUsers(
   params: GetUserParams,
 ): Promise<ApiResponse<GetUserResults>> {
-  const mappedParams: Record<string, any> = {};
-
-  // filter undefined, sanitize field
-  Object.entries(params).forEach(([key, value]) => {
-    if (value === undefined || value === null) return; // skip empty
-
-    if (value instanceof Date) {
-      mappedParams[key] = dayjs(value).format('YYYY-MM-DD');
-    } else if (Array.isArray(value)) {
-      if (value.length > 0) {
-        mappedParams[key] = value.join(','); // Array => CSV string
-      }
-    } else {
-      mappedParams[key] = value; // primitives (string, number, boolean)
-    }
-  });
+  const mappedParams = mapParams(params);
 
   return fetcher({
     method: 'GET',
