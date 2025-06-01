@@ -1,31 +1,27 @@
+import formatDate from '@/utils/formatDate';
 import {
   ActionIcon,
+  Badge,
   Box,
+  Flex,
   Group,
   Text,
   Tooltip,
-  Badge,
-  Flex,
 } from '@mantine/core';
-import { IconClock, IconCheck, IconX } from '@tabler/icons-react';
 import { useClipboard } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import {
-  IconCopy,
+  IconCheck, IconClipboard, IconClock, IconCopy,
   IconEye,
-  IconEyeOff,
-  IconClipboard,
-  IconMoodSad,
+  IconEyeOff, IconMoodSad, IconX
 } from '@tabler/icons-react';
-import dayjs from 'dayjs';
 import { DataTable } from 'mantine-datatable';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
 import styles from '../AdminReportPage.module.css';
-import ReportDetailPage from './ReportDetailPage';
 import { getReportedContentDetails } from '../services';
 import ContentTypePage from './ContentTypePage';
+import ReportDetailPage from './ReportDetailPage';
 
 export interface ReportAdminView {
   id: string;
@@ -75,10 +71,6 @@ function ReportTableComponent({
   const handleReportDetailPage = (selectedReport: ReportAdminView) => {
     setReport(selectedReport);
     setOpen(true);
-  };
-
-  const formatDate = (day: string) => {
-    return dayjs(day).format('HH:mm, DD/MM/YYYY');
   };
 
   const [dataContent, setDataContent] = useState<any | null>(null);

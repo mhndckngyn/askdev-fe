@@ -144,7 +144,7 @@ export default function AdminQuestionPage() {
 
       <Group gap="xs">
         <TextInput
-          placeholder={t('searchTitle')}
+          placeholder={t('searchPlaceholder')}
           className={styles.searchInput}
           onChange={(e) => {
             const value = e.target.value;

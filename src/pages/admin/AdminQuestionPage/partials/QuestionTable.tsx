@@ -1,11 +1,14 @@
 import adminRoutePaths from '@/routes/admin/paths';
 import publicRoutePaths from '@/routes/user/public/paths';
 import { QuestionAdminView } from '@/types';
+import formatDate from '@/utils/formatDate';
 import {
   ActionIcon,
   Anchor,
+  Avatar,
   Badge,
   Box,
+  Button,
   Group,
   Text,
   ThemeIcon,
@@ -14,15 +17,17 @@ import {
 import { useClipboard } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import {
+  IconArrowDown,
+  IconArrowUp,
   IconCheck,
   IconClipboard,
   IconEye,
   IconEyeOff,
+  IconMessage2Code,
   IconMessageShare,
   IconMoodSad,
   IconX,
 } from '@tabler/icons-react';
-import dayjs from 'dayjs';
 import { DataTable } from 'mantine-datatable';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -58,12 +63,76 @@ function QuestionTableComponent({
   const { t } = useTranslation('adminQuestionPage');
   const clipboard = useClipboard();
 
-  const formatDate = (day: string) => {
-    return dayjs(day).format('HH:mm, DD/MM/YYYY');
+  const renderTagCell = ({ tags }: QuestionAdminView) => {
+    return (
+      <Group gap="xs">
+        {tags.map((tag) => (
+          <Badge key={tag.id} size="md" color="pink" variant="light">
+            {tag.name}
+          </Badge>
+        ))}
+      </Group>
+    );
+  };
+
+  const renderUserCell = ({ user }: QuestionAdminView) => (
+    <Button
+      component={Link}
+      to={publicRoutePaths.profilePage.replace(':username', user.username)}
+      size="lg"
+      variant="subtle"
+      w="100%">
+      <Group gap="sm" justify="center" wrap="nowrap">
+        <Avatar src={user.profilePicture} />
+        <Text>{user.username}</Text>
+      </Group>
+    </Button>
+  );
+
+  const renderStatCell = ({ views, votes, answers }: QuestionAdminView) => {
+    return (
+      <Group gap="xs">
+        <Tooltip label="Views" withArrow>
+          <Badge
+            variant="light"
+            size="lg"
+            color="grape"
+            leftSection={<IconEye size={14} />}>
+            {views}
+          </Badge>
+        </Tooltip>
+
+        <Tooltip label="Votes" withArrow>
+          <Badge
+            variant="light"
+            size="lg"
+            color={votes > 10 ? 'green' : votes > 0 ? 'yellow' : 'red'}
+            leftSection={
+              votes >= 0 ? (
+                <IconArrowUp size={14} />
+              ) : (
+                <IconArrowDown size={14} />
+              )
+            }>
+            {votes}
+          </Badge>
+        </Tooltip>
+
+        <Tooltip label="Answers" withArrow>
+          <Badge
+            variant="light"
+            size="lg"
+            color={answers > 5 ? 'blue' : answers > 0 ? 'cyan' : 'gray'}
+            leftSection={<IconMessage2Code size={14} />}>
+            {answers}
+          </Badge>
+        </Tooltip>
+      </Group>
+    );
   };
 
   const renderRecordActions = (question: QuestionAdminView) => (
-    <Group gap={4} justify="center" wrap="nowrap">
+    <Group gap={4} justify="center">
       <Tooltip label={t('toggleVisibility')}>
         <ActionIcon
           size="sm"
@@ -141,45 +210,32 @@ function QuestionTableComponent({
         {
           accessor: 'tags',
           title: t('tags'),
-          width: 120,
-          render: (row) => (
-            <Tooltip.Floating
-              label={row.tags.map((tag) => tag.name).join(', ')}>
-              <Badge size="lg" color="green">
-                +{row.tags.length} tags
-              </Badge>
-            </Tooltip.Floating>
-          ),
+          width: 200,
+          render: renderTagCell,
         },
         {
           accessor: 'user.username',
-          width: 160,
+          width: 250,
+          textAlign: 'center',
           title: t('poster'),
+          render: renderUserCell,
         },
         {
-          accessor: 'views',
-          width: 100,
-          title: t('views'),
-          textAlign: 'right',
-        },
-        {
-          accessor: 'votes',
-          width: 100,
-          title: t('votes'),
-          textAlign: 'right',
-        },
-        {
-          accessor: 'answers',
-          width: 120,
-          title: t('answers'),
-          textAlign: 'right',
+          accessor: 'stats',
+          width: 225,
+          title: t('stats'),
+          textAlign: 'center',
+          render: renderStatCell,
         },
         {
           accessor: 'isAnswered',
           title: t('answered'),
           textAlign: 'center',
           render: (row) => (
-            <ThemeIcon color={row.isAnswered ? 'blue' : 'red'}>
+            <ThemeIcon
+              color={row.isAnswered ? 'red' : 'green'}
+              size="lg"
+              radius="xl">
               {row.isAnswered ? <IconCheck size={16} /> : <IconX size={16} />}
             </ThemeIcon>
           ),
@@ -187,27 +243,35 @@ function QuestionTableComponent({
         {
           accessor: 'createdAt',
           title: t('postedOn'),
-          width: 120,
+          width: 160,
           render: (row) => <Text size="sm">{formatDate(row.createdAt)}</Text>,
         },
         {
           accessor: 'editedAt',
           title: t('lastEdited'),
-          width: 120,
+          width: 160,
           render: (row) => (
-            /* hiển thị ngày edit chỉ khi khác ngày tạo */
             <Text size="sm">
-              {row.updatedAt === '' ? '-' : formatDate(row.updatedAt)}
+              {row.updatedAt ? (
+                formatDate(row.updatedAt)
+              ) : (
+                <Text size="sm" c="dimmed">
+                  {t('notAvailable')}
+                </Text>
+              )}
             </Text>
           ),
         },
         {
           accessor: 'actions',
           title: t('actions'),
+          width: 100,
+          textAlign: 'center',
           render: renderRecordActions,
         },
       ]}
       /* set style */
+      verticalSpacing="md"
       withTableBorder
       withColumnBorders
       noRecordsIcon={

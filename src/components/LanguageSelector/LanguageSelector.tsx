@@ -15,7 +15,7 @@ export default function LanguageSelector() {
   return (
     <Menu>
       <Menu.Target>
-        <ActionIcon variant="outline" size="input-sm">
+        <ActionIcon variant="outline" size="input-sm" radius='md'>
           <IconLanguage size={18} />
         </ActionIcon>
       </Menu.Target>

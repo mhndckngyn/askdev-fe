@@ -164,6 +164,7 @@ function TagTableComponent({
           },
         ]}
         withTableBorder
+        verticalSpacing='sm'
         withColumnBorders
         noRecordsIcon={
           <Box>

@@ -14,7 +14,8 @@
   "apply": "Apply",
   "reset": "Reset filters",
 
-  "questionId": "Question ID",
+  "question": "Question",
+  "copyQuestionId": "Copy question ID",
   "openQuestionPage": "Open question page",
   "content": "Content",
   "poster": "Poster",
@@ -24,7 +25,8 @@
   "lastEdited": "Last edited",
   "actions": "Actions",
   "copyAnswerId": "Copy Answer ID",
-
+  "notAvailable": "Not available",
+  
   "toggleVisibility": "Toggle visibility",
   "toggleVisibilitySuccess": "Update answer state successfully",
   "toggleVisibilityError": "Error encountered while updating question.",

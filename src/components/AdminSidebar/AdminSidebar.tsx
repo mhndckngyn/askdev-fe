@@ -2,28 +2,30 @@ import { logo } from '@/assets/images';
 import LanguageSelector from '@/components/LanguageSelector';
 import ThemeSwitcher from '@/components/ThemeSwitcher';
 import UserMenu from '@/components/UserMenu';
+import adminRoutePaths from '@/routes/admin/paths';
 import { Image, Text } from '@mantine/core';
 import {
   IconFlag,
   IconLayoutDashboard,
-  IconMessage,
+  IconMessages,
   IconQuestionMark,
+  IconShare3,
   IconTags,
-  IconUsers,
+  IconUsers
 } from '@tabler/icons-react';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './AdminSidebar.module.css';
-import adminRoutePaths from '@/routes/admin/paths';
 
 type AdminSidebarKey =
   | 'dashboard'
   | 'questions'
   | 'answers'
+  | 'comments'
   | 'tags'
-  | 'members'
+  | 'users'
   | 'reports';
 
 const data: {
@@ -41,9 +43,10 @@ const data: {
     label: 'questions',
     icon: IconQuestionMark,
   },
-  { link: adminRoutePaths.answers, label: 'answers', icon: IconMessage },
+  { link: adminRoutePaths.answers, label: 'answers', icon: IconShare3 },
+  { link: adminRoutePaths.comments, label: 'comments', icon: IconMessages},
   { link: adminRoutePaths.tags, label: 'tags', icon: IconTags },
-  { link: adminRoutePaths.dashboard, label: 'members', icon: IconUsers },
+  { link: adminRoutePaths.users, label: 'users', icon: IconUsers },
   { link: adminRoutePaths.reports, label: 'reports', icon: IconFlag },
 ];
 

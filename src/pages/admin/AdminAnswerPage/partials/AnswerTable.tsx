@@ -1,15 +1,26 @@
 import publicRoutePaths from '@/routes/user/public/paths';
 import { AnswerAdminView } from '@/types/AnswerAdminView';
-import { ActionIcon, Box, Group, Text, Tooltip } from '@mantine/core';
+import formatDate from '@/utils/formatDate';
+import {
+  ActionIcon,
+  Avatar,
+  Badge,
+  Box,
+  Button,
+  Group,
+  Text,
+  Tooltip,
+} from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
 import {
+  IconArrowDown,
+  IconArrowUp,
   IconClipboard,
   IconEye,
   IconEyeOff,
-  IconMessageShare,
+  IconMessageCircle,
   IconMoodSad,
 } from '@tabler/icons-react';
-import dayjs from 'dayjs';
 import { DataTable } from 'mantine-datatable';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -63,34 +74,68 @@ function AnswerTableComponent({
     clipboard.copy(value);
   };
 
-  const formatDate = (day: string) => {
-    return dayjs(day).format('HH:mm, DD/MM/YYYY');
-  };
-
   const renderQuestionIdCell = (answer: AnswerAdminView) => (
     <Group gap={8}>
-      <Text size="sm" lineClamp={1} className={styles.questionIdText}>
-        {answer.questionId}
-      </Text>
+      <Link
+        to={publicRoutePaths.questionDetail.replace(':id', answer.question.id)}
+        className={styles.questionIdText}>
+        {answer.question.title}
+      </Link>
 
-      <ActionIcon
-        size="sm"
-        variant="light"
-        onClick={() => copy(answer.questionId)}>
-        <IconClipboard className={styles.tableIcon} />
-      </ActionIcon>
-
-      <Tooltip label={t('openQuestionPage')}>
+      <Tooltip label={t('copyQuestionId')}>
         <ActionIcon
-          component={Link}
-          to={publicRoutePaths.questionDetail.replace(':id', answer.questionId)}
           size="sm"
-          variant="light">
-          <IconMessageShare className={styles.tableIcon} />
+          variant="light"
+          onClick={() => copy(answer.question.id)}>
+          <IconClipboard className={styles.tableIcon} />
         </ActionIcon>
       </Tooltip>
     </Group>
   );
+
+  const renderUserCell = (answer: AnswerAdminView) => (
+    <Button
+      component={Link}
+      to={publicRoutePaths.profilePage.replace(':username', answer.user.username)}
+      size="lg"
+      variant="subtle"
+      w="100%">
+      <Group gap="sm" justify="center" wrap="nowrap">
+        <Avatar src={answer.user.profilePicture} />
+        <Text>{answer.user.username}</Text>
+      </Group>
+    </Button>
+  );
+
+  const renderVoteCell = ({ votes }: AnswerAdminView) => {
+    return (
+      <Tooltip label="Total votes" withArrow>
+        <Badge
+          size="lg"
+          color={votes > 10 ? 'green' : votes > 0 ? 'yellow' : 'red'}
+          leftSection={
+            votes >= 0 ? <IconArrowUp size={14} /> : <IconArrowDown size={14} />
+          }
+          variant="light">
+          {votes}
+        </Badge>
+      </Tooltip>
+    );
+  };
+
+  const renderCommentCell = ({ comments }: AnswerAdminView) => {
+    return (
+      <Tooltip label="Total comments" withArrow>
+        <Badge
+          size="lg"
+          color={comments > 5 ? 'blue' : comments > 0 ? 'gray' : 'red'}
+          leftSection={<IconMessageCircle size={14} />}
+          variant="light">
+          {comments}
+        </Badge>
+      </Tooltip>
+    );
+  };
 
   const renderRecordActions = (answer: AnswerAdminView) => (
     <Group gap={4} justify="center" wrap="nowrap">
@@ -135,44 +180,64 @@ function AnswerTableComponent({
       columns={[
         {
           accessor: 'questionId',
-          title: t('questionId'),
-          width: 250,
+          title: t('question'),
+          width: 350,
           render: renderQuestionIdCell /* TODO: Link to question */,
         },
         {
           accessor: 'content',
           title: t('content'),
           width: 400,
-          render: (row) => <Text lineClamp={2}>{row.content}</Text>,
+          render: (row) => (
+            <Text lineClamp={2} size="sm">
+              {row.content}
+            </Text>
+          ),
         },
         {
           accessor: 'user.username',
           title: t('poster'),
-          width: 160,
+          textAlign: 'center',
+          width: 250,
+          render: renderUserCell,
         },
         {
           accessor: 'votes',
           title: t('votes'),
-          textAlign: 'right',
+          textAlign: 'center',
           width: 100,
+          render: renderVoteCell,
         },
         {
           accessor: 'comments',
           title: t('comments'),
-          textAlign: 'right',
+          textAlign: 'center',
           width: 100,
+          render: renderCommentCell,
         },
         {
           accessor: 'createdAt',
           title: t('postedOn'),
-          width: '10%',
+          textAlign: 'center',
+          width: 150,
           render: (row) => formatDate(row.createdAt),
         },
         {
           accessor: 'updatedAt',
           title: t('lastEdited'),
-          width: '10%',
-          render: (row) => formatDate(row.updatedAt),
+          textAlign: 'center',
+          width: 150,
+          render: (row) => (
+            <Text size="sm">
+              {row.updatedAt ? (
+                formatDate(row.updatedAt)
+              ) : (
+                <Text size="sm" c="dimmed">
+                  {t('notAvailable')}
+                </Text>
+              )}
+            </Text>
+          ),
         },
         {
           accessor: 'actions',
@@ -182,6 +247,7 @@ function AnswerTableComponent({
       ]}
       /* set style */
       fetching={isLoading}
+      verticalSpacing="md"
       withTableBorder
       withColumnBorders
       noRecordsIcon={

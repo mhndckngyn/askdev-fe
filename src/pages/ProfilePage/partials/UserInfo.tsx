@@ -7,7 +7,7 @@ import {
   Group,
   Stack,
   Text,
-  Title
+  Title,
 } from '@mantine/core';
 import { IconBrandGithubFilled, IconUserEdit } from '@tabler/icons-react';
 import clsx from 'clsx';
@@ -16,9 +16,9 @@ import { Link } from 'react-router-dom';
 import styles from '../ProfilePage.module.css';
 import AboutMe from './AboutMe';
 
-type Props = Pick<MemberProfile, 'info'>;
+type Props = Pick<MemberProfile, 'info'> & { allowEdit: boolean };
 
-export default function UserInfo({ info }: Props) {
+export default function UserInfo({ info, allowEdit }: Props) {
   const { t } = useTranslation('profilePage');
 
   return (
@@ -45,13 +45,15 @@ export default function UserInfo({ info }: Props) {
       <div className={styles['userInfo-content']}>
         <Group justify="space-between">
           <Title className={styles.name}>{info.username}</Title>
-          <ActionIcon
-            component={Link}
-            to={memberRoutePaths.editProfile}
-            radius="xl"
-            size="lg">
-            <IconUserEdit className={styles['userInfo-editIcon']} />
-          </ActionIcon>
+          {allowEdit && (
+            <ActionIcon
+              component={Link}
+              to={memberRoutePaths.editProfile}
+              radius="xl"
+              size="lg">
+              <IconUserEdit className={styles['userInfo-editIcon']} />
+            </ActionIcon>
+          )}
         </Group>
         <div className={clsx(styles.divider, styles.border)} />
         {info.bio ? (

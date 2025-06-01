@@ -1,9 +1,11 @@
 import adminAnswerPage from './admin-answer-page.json';
+import adminCommentPage from './admin-comment-page.json';
 import adminQuestionPage from './admin-question-page.json';
 import adminTagPage from './admin-tag-page.json';
 import adminDashboardPage from './admin-dashboard-page.json';
 import adminReportPage from './admin-report-page.json';
 import adminSidebar from './admin-sidebar.json';
+import adminUserPage from './admin-user-page.json';
 import api from './api.json';
 import changePassword from './change-password.json';
 import common from './common.json';
@@ -34,11 +36,13 @@ export default {
   question,
   home,
   adminAnswerPage,
+  adminCommentPage,
   adminQuestionPage,
   adminDashboardPage,
   adminTagPage,
   adminReportPage,
   adminSidebar,
+  adminUserPage,
   api,
   changePassword,
   common,

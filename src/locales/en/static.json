@@ -1,7 +1,7 @@
 {
   "suspended": {
     "banned-title": "Account suspended",
-    "banned-description-1": "Your account has been suspended due to violation of our community standards.",
+    "banned-description-1": "Your account has been suspended due to violation of AskDev's community standards.",
     "banned-description-2": "Contact us for more information."
   },
   "not-found": {

@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import styles from './UserSidebar.module.css';
 import publicRoutePaths from '@/routes/user/public/paths';
+import { useUserStore } from '@/stores/useUserStore';
 
 type UserSidebarKey = 'homepage' | 'questions' | 'tags' | 'members';
 
@@ -32,6 +33,7 @@ const data: {
 
 export default function UserSidebar() {
   const { t } = useTranslation('userSidebar');
+  const user = useUserStore((state) => state.user);
   const [active, setActive] = useState<UserSidebarKey>('homepage');
 
   const navItems = data.map((item) => (
@@ -50,17 +52,20 @@ export default function UserSidebar() {
   return (
     <nav className={styles.navbar}>
       <div className={styles.navMain}>
-        <Button
-          component={Link}
-          to="/post-question"
-          leftSection={<IconPlus />}
-          variant="gradient"
-          gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
-          size="md"
-          className={styles.actionButton}
-          fullWidth>
-          {t('postQuestion')}
-        </Button>
+        {user && (
+          <Button
+            component={Link}
+            to="/post-question"
+            leftSection={<IconPlus />}
+            variant="gradient"
+            gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+            size="md"
+            radius="xl"
+            className={styles.actionButton}
+            fullWidth>
+            {t('postQuestion')}
+          </Button>
+        )}
 
         {navItems}
       </div>
