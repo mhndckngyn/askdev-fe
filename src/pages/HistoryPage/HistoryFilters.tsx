@@ -199,10 +199,17 @@ export const HistoryFilters: React.FC<HistoryFiltersProps> = ({
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <DatePicker
               label={t('history.filters.fromDate')}
-              value={filters.dateRange.start}
+              value={
+                filters.dateRange.start
+                  ? new Date(filters.dateRange.start)
+                  : null
+              }
               onChange={(date) =>
                 onFiltersChange({
-                  dateRange: { ...filters.dateRange, start: date },
+                  dateRange: {
+                    ...filters.dateRange,
+                    start: date ? date.toISOString() : null,
+                  },
                 })
               }
               slotProps={{
@@ -255,10 +262,15 @@ export const HistoryFilters: React.FC<HistoryFiltersProps> = ({
             />
             <DatePicker
               label={t('history.filters.toDate')}
-              value={filters.dateRange.end}
+              value={
+                filters.dateRange.end ? new Date(filters.dateRange.end) : null
+              }
               onChange={(date) =>
                 onFiltersChange({
-                  dateRange: { ...filters.dateRange, end: date },
+                  dateRange: {
+                    ...filters.dateRange,
+                    end: date ? date.toISOString() : null,
+                  },
                 })
               }
               slotProps={{

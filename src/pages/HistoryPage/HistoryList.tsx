@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMantineColorScheme } from '@mantine/core';
+import FormatTime from './formatTime';
 import {
   Box,
   Typography,
@@ -49,18 +50,6 @@ export const HistoryList: React.FC<HistoryListProps> = ({
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
-  // Format date for display
-  const formatDate = useCallback((date: Date) => {
-    return new Intl.DateTimeFormat('vi-VN', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    }).format(date);
-  }, []);
-
-  // Setup intersection observer for infinite scroll
   useEffect(() => {
     if (observerRef.current) {
       observerRef.current.disconnect();
@@ -132,6 +121,8 @@ export const HistoryList: React.FC<HistoryListProps> = ({
         boxShadow: '0 8px 40px rgba(0,0,0,0.12)',
         overflow: 'hidden',
         background: paperBg,
+        width: '100%',
+        maxWidth: '100%',
       }}>
       <List sx={{ p: 0 }}>
         {items.map((item, index) => (
@@ -139,6 +130,9 @@ export const HistoryList: React.FC<HistoryListProps> = ({
             <ListItem
               disablePadding
               sx={{
+                width: '100%',
+                maxWidth: '100%',
+                overflow: 'hidden',
                 '&:hover': {
                   bgcolor: alpha(
                     HistoryTypeColor(item.type),
@@ -168,8 +162,15 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                   py: 2,
                   px: 3,
                   borderRadius: 0,
+                  width: '100%',
+                  maxWidth: '100%',
+                  overflow: 'hidden',
                 }}>
-                <ListItemAvatar>
+                <ListItemAvatar
+                  sx={{
+                    minWidth: 'auto',
+                    mr: 2,
+                  }}>
                   <Avatar
                     sx={{
                       width: 50,
@@ -183,12 +184,22 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
+                  sx={{
+                    flex: 1,
+                    minWidth: 0,
+                    overflow: 'hidden',
+                  }}
                   primary={
                     <Stack
                       direction="row"
-                      spacing={2}
+                      spacing={1}
                       alignItems="center"
-                      sx={{ mb: 1 }}>
+                      sx={{
+                        ml: 0,
+
+                        flexWrap: 'wrap',
+                        gap: 1,
+                      }}>
                       <Chip
                         label={t(HISTORY_TYPE_LABELS[item.type] as any)}
                         size="small"
@@ -198,6 +209,13 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                           fontWeight: 700,
                           fontSize: '0.75rem',
                           boxShadow: `0 2px 8px ${alpha(HistoryTypeColor(item.type), 0.3)}`,
+
+                          maxWidth: '150px',
+                          '& .MuiChip-label': {
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          },
                         }}
                       />
                       <Typography
@@ -209,20 +227,33 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                           px: 1.5,
                           py: 0.5,
                           borderRadius: 2,
+
+                          whiteSpace: 'nowrap',
                         }}>
-                        {formatDate(item.createdAt)}
+                        {<FormatTime createdAt={item.createdAt} />}
                       </Typography>
                     </Stack>
                   }
                   secondary={
-                    <Box>
+                    <Box
+                      sx={{
+                        minWidth: 0,
+                        overflow: 'hidden',
+                      }}>
                       <Typography
                         variant="h6"
                         sx={{
+                          ml: 0,
                           fontWeight: 600,
                           color: textColor,
-                          mb: 0.5,
                           lineHeight: 1.3,
+
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          wordBreak: 'break-word',
                         }}>
                         {item.contentTitle}
                       </Typography>
@@ -243,7 +274,6 @@ export const HistoryList: React.FC<HistoryListProps> = ({
         ))}
       </List>
 
-      {/* Infinite Scroll Trigger */}
       {pagination.hasMore && (
         <Box
           ref={loadMoreRef}
@@ -268,7 +298,6 @@ export const HistoryList: React.FC<HistoryListProps> = ({
         </Box>
       )}
 
-      {/* End of list indicator */}
       {!pagination.hasMore && items.length > 0 && (
         <Box
           sx={{
