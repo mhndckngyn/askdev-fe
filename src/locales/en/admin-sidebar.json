@@ -2,6 +2,7 @@
   "dashboard": "Dashboard",
   "questions": "Manage questions",
   "answers": "Manage answers",
+  "comments": "Manage comments",
   "tags": "Manage tags",
   "users": "Manage users",
   "reports": "Manage reports"

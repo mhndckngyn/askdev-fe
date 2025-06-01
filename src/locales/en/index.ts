@@ -1,4 +1,5 @@
 import adminAnswerPage from './admin-answer-page.json';
+import adminCommentPage from './admin-comment-page.json';
 import adminQuestionPage from './admin-question-page.json';
 import adminTagPage from './admin-tag-page.json';
 import adminDashboardPage from './admin-dashboard-page.json';
@@ -33,6 +34,7 @@ export default {
   question,
   home,
   adminAnswerPage,
+  adminCommentPage,
   adminQuestionPage,
   adminDashboardPage,
   adminTagPage,
