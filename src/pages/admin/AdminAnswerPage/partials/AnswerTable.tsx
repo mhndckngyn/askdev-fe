@@ -13,12 +13,13 @@ import {
 } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
 import {
+  IconArrowDown,
   IconArrowUp,
   IconClipboard,
   IconEye,
   IconEyeOff,
   IconMessageCircle,
-  IconMoodSad
+  IconMoodSad,
 } from '@tabler/icons-react';
 import { DataTable } from 'mantine-datatable';
 import React from 'react';
@@ -112,7 +113,9 @@ function AnswerTableComponent({
         <Badge
           size="lg"
           color={votes > 10 ? 'green' : votes > 0 ? 'yellow' : 'red'}
-          leftSection={<IconArrowUp size={14} />}
+          leftSection={
+            votes >= 0 ? <IconArrowUp size={14} /> : <IconArrowDown size={14} />
+          }
           variant="light">
           {votes}
         </Badge>
@@ -177,7 +180,7 @@ function AnswerTableComponent({
       columns={[
         {
           accessor: 'questionId',
-          title: t('questionId'),
+          title: t('question'),
           width: 350,
           render: renderQuestionIdCell /* TODO: Link to question */,
         },
@@ -224,7 +227,17 @@ function AnswerTableComponent({
           title: t('lastEdited'),
           textAlign: 'center',
           width: 150,
-          render: (row) => formatDate(row.updatedAt),
+          render: (row) => (
+            <Text size="sm">
+              {row.updatedAt ? (
+                formatDate(row.updatedAt)
+              ) : (
+                <Text size="sm" c="dimmed">
+                  {t('notAvailable')}
+                </Text>
+              )}
+            </Text>
+          ),
         },
         {
           accessor: 'actions',

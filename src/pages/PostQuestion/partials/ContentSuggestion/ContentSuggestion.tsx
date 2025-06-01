@@ -1,10 +1,10 @@
-import { Button, Group, List, Skeleton, Stack, Text } from '@mantine/core';
-import { IconBrandOpenai } from '@tabler/icons-react';
-import styles from './ContentSuggestion.module.css';
-import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
-import { getContentSuggestion } from '../../services';
 import { useErrorStore } from '@/stores/useErrorStore';
+import { Button, Group, List, Skeleton, Stack, Text } from '@mantine/core';
+import { IconFlareFilled } from '@tabler/icons-react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { getContentSuggestion } from '../../services';
+import styles from './ContentSuggestion.module.css';
 
 type Props = {
   questionTitle: string;
@@ -62,7 +62,7 @@ export default function ContentSuggestion({ questionTitle }: Props) {
       <Button
         onClick={handleSubmit}
         loading={isLoading}
-        rightSection={<IconBrandOpenai className={styles.buttonIcon} />}>
+        rightSection={<IconFlareFilled className={styles.buttonIcon} />}>
         {t('suggestion.button')}
       </Button>
       {result.length > 0 && !isLoading && (

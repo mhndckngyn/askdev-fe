@@ -14,7 +14,7 @@
   "apply": "Áp dụng",
   "reset": "Đặt lại bộ lọc",
 
-  "questionId": "ID câu hỏi",
+  "question": "Câu hỏi",
   "copyQuestionId": "Copy ID câu hỏi",
   "openQuestionPage": "Mở trang câu hỏi",
   "content": "Nội dung",
@@ -25,6 +25,7 @@
   "lastEdited": "Chỉnh sửa lần cuối",
   "actions": "Thao tác",
   "copyAnswerId": "Sao chép ID câu trả lời",
+  "notAvailable": "Không khả dụng",
 
   "toggleVisibility": "Chuyển đổi trạng thái hiển thị",
   "toggleVisibilitySuccess": "Cập nhật trạng thái câu trả lời thành công",

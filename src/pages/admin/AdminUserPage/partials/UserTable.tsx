@@ -53,8 +53,6 @@ function UserTableComponent({
   const { t } = useTranslation('adminUserPage');
   const clipboard = useClipboard();
 
-  console.log('rerender')
-
   const copy = (value: string) => {
     clipboard.copy(value);
   };

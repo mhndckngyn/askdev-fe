@@ -17,6 +17,7 @@ import {
 import { useClipboard } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import {
+  IconArrowDown,
   IconArrowUp,
   IconCheck,
   IconClipboard,
@@ -66,7 +67,7 @@ function QuestionTableComponent({
     return (
       <Group gap="xs">
         {tags.map((tag) => (
-          <Badge key={tag.id} size="md" color="violet" variant="light">
+          <Badge key={tag.id} size="md" color="pink" variant="light">
             {tag.name}
           </Badge>
         ))}
@@ -106,7 +107,13 @@ function QuestionTableComponent({
             variant="light"
             size="lg"
             color={votes > 10 ? 'green' : votes > 0 ? 'yellow' : 'red'}
-            leftSection={<IconArrowUp size={14} />}>
+            leftSection={
+              votes >= 0 ? (
+                <IconArrowUp size={14} />
+              ) : (
+                <IconArrowDown size={14} />
+              )
+            }>
             {votes}
           </Badge>
         </Tooltip>
@@ -209,13 +216,14 @@ function QuestionTableComponent({
         {
           accessor: 'user.username',
           width: 250,
+          textAlign: 'center',
           title: t('poster'),
           render: renderUserCell,
         },
         {
           accessor: 'stats',
           width: 225,
-          title: t('views'),
+          title: t('stats'),
           textAlign: 'center',
           render: renderStatCell,
         },
