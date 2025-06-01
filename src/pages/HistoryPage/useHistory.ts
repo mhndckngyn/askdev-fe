@@ -1,132 +1,200 @@
-import { useState, useEffect, useMemo } from 'react';
-import { HistoryItem, HistoryFilters, UseHistoryReturn } from './types';
-import { mockHistoryData } from './data';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import {
+  HistoryItem,
+  HistoryFilters,
+  HistoryType,
+  PaginationState,
+  ITEMS_PER_PAGE,
+} from './types';
+
+import * as historyService from './services';
 
 const initialFilters: HistoryFilters = {
-  dateRange: { start: null, end: null },
-  types: [],
   searchQuery: '',
+  types: [],
+  dateRange: {
+    start: null,
+    end: null,
+  },
 };
 
-export const useHistory = (): UseHistoryReturn => {
-  const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
-  const [filters, setFiltersState] = useState<HistoryFilters>(initialFilters);
-  const [loading, setLoading] = useState(false);
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+const initialPagination: PaginationState = {
+  page: 1,
+  hasMore: true,
+  loading: false,
+};
 
-  // Simulate API call to fetch history data
-  useEffect(() => {
-    const fetchHistory = async () => {
-      setLoading(true);
+export const useHistory = () => {
+  const [allItems, setAllItems] = useState<HistoryItem[]>([]);
+  const [filters, setFilters] = useState<HistoryFilters>(initialFilters);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [pagination, setPagination] =
+    useState<PaginationState>(initialPagination);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [totalCount, setTotalCount] = useState(0);
+
+  const fetchHistoryItems = useCallback(
+    async (page: number = 1, resetItems: boolean = false) => {
       try {
-        // Simulate API delay
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        setHistoryItems(mockHistoryData);
-      } catch (error) {
-        console.error('Error fetching history:', error);
+        setLoading(true);
+        setError(null);
+
+        const response = await historyService.getHistory(
+          page,
+          ITEMS_PER_PAGE,
+          filters,
+        );
+
+        if (response.success) {
+          const { items, pagination: paginationInfo } = response.content;
+
+          if (resetItems) {
+            setAllItems(items);
+          } else {
+            setAllItems((prev) => [...prev, ...items]);
+          }
+
+          setTotalCount(paginationInfo.total);
+          setPagination((prev) => ({
+            ...prev,
+            page: paginationInfo.page,
+            hasMore: paginationInfo.hasMore,
+            loading: false,
+          }));
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+        console.error( err);
       } finally {
         setLoading(false);
       }
-    };
+    },
+    [filters],
+  );
 
-    fetchHistory();
+  useEffect(() => {
+    fetchHistoryItems(1, true);
+    setPagination((prev) => ({ ...prev, page: 1 }));
+    setSelectedIds([]);
+  }, [fetchHistoryItems]);
+
+  const loadMore = useCallback(() => {
+    if (pagination.hasMore && !pagination.loading && !loading) {
+      const nextPage = pagination.page + 1;
+      setPagination((prev) => ({ ...prev, loading: true }));
+      fetchHistoryItems(nextPage, false);
+    }
+  }, [
+    pagination.hasMore,
+    pagination.loading,
+    pagination.page,
+    loading,
+    fetchHistoryItems,
+  ]);
+
+  const updateFilters = useCallback((newFilters: Partial<HistoryFilters>) => {
+    setFilters((prev) => ({ ...prev, ...newFilters }));
   }, []);
 
-  // Filter history items based on current filters
-  const filteredItems = useMemo(() => {
-    let filtered = [...historyItems];
+  const clearFilters = useCallback(() => {
+    setFilters(initialFilters);
+  }, []);
 
-    // Filter by date range
-    if (filters.dateRange.start || filters.dateRange.end) {
-      filtered = filtered.filter((item) => {
-        const itemDate = new Date(item.createdAt);
-        const startDate = filters.dateRange.start;
-        const endDate = filters.dateRange.end;
+  const deleteHistoryItem = useCallback(async (id: string) => {
+    try {
+      setLoading(true);
+      await historyService.deleteHistoryItem(id);
 
-        if (startDate && endDate) {
-          return itemDate >= startDate && itemDate <= endDate;
-        } else if (startDate) {
-          return itemDate >= startDate;
-        } else if (endDate) {
-          return itemDate <= endDate;
-        }
-        return true;
-      });
+      setAllItems((prev) => prev.filter((item) => item.id !== id));
+      setSelectedIds((prev) => prev.filter((selectedId) => selectedId !== id));
+      setTotalCount((prev) => prev - 1);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete item');
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
+  }, []);
 
-    // Filter by history types
-    if (filters.types.length > 0) {
-      filtered = filtered.filter((item) => filters.types.includes(item.type));
+  const deleteHistoryItems = useCallback(async (ids: string[]) => {
+    try {
+      setLoading(true);
+      const response = await historyService.deleteMultipleHistoryItems(ids);
+
+      if (response.success) {
+        setAllItems((prev) => prev.filter((item) => !ids.includes(item.id)));
+        setSelectedIds([]);
+        setTotalCount((prev) => prev - response.content.deletedCount);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete items');
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
+  }, []);
 
-    // Filter by search query
-    if (filters.searchQuery.trim()) {
-      const query = filters.searchQuery.toLowerCase().trim();
-      filtered = filtered.filter(
-        (item) =>
-          item.contentTitle.toLowerCase().includes(query) ||
-          item.user.username.toLowerCase().includes(query),
+  const deleteAllHistory = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await historyService.deleteAllHistory();
+
+      if (response.success) {
+        setAllItems([]);
+        setSelectedIds([]);
+        setTotalCount(0);
+        setPagination(initialPagination);
+      }
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'Failed to delete all history',
       );
-    }
-
-    // Sort by date (newest first)
-    return filtered.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    );
-  }, [historyItems, filters]);
-
-  const setFilters = (newFilters: Partial<HistoryFilters>) => {
-    setFiltersState((prev) => ({ ...prev, ...newFilters }));
-  };
-
-  const clearFilters = () => {
-    setFiltersState(initialFilters);
-    setSelectedIds([]);
-  };
-
-  const deleteHistoryItems = async (ids: string[]) => {
-    setLoading(true);
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      setHistoryItems((prev) => prev.filter((item) => !ids.includes(item.id)));
-      setSelectedIds([]);
-    } catch (error) {
-      console.error('Error deleting history items:', error);
-      throw error;
+      console.error( err);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const deleteAllHistory = async () => {
-    setLoading(true);
+  const getHistoryTypes = useCallback(async () => {
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      setHistoryItems([]);
-      setSelectedIds([]);
-    } catch (error) {
-      console.error('Error deleting all history:', error);
-      throw error;
-    } finally {
-      setLoading(false);
+      const response = await historyService.getHistoryTypes();
+      return response.success ? response.content.types : [];
+    } catch (err) {
+      console.error( err);
+      return Object.values(HistoryType);
     }
-  };
+  }, []);
+
+  const displayedItems = useMemo(() => {
+    return allItems;
+  }, [allItems]);
+
+  const clearError = useCallback(() => {
+    setError(null);
+  }, []);
 
   return {
-    historyItems,
-    filteredItems,
+    displayedItems,
+    filteredItems: displayedItems,
     filters,
-    loading,
     selectedIds,
-    setFilters,
+    pagination,
+    loading,
+    error,
+    totalCount,
+
+    setFilters: updateFilters,
     setSelectedIds,
+    deleteHistoryItem,
     deleteHistoryItems,
     deleteAllHistory,
     clearFilters,
+    loadMore,
+    getHistoryTypes,
+    clearError,
+
+    hasSelectedItems: selectedIds.length > 0,
+    selectedCount: selectedIds.length,
   };
 };

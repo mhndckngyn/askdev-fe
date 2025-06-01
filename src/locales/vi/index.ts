@@ -25,8 +25,10 @@ import home from './home-page.json';
 import question from './question-page.json';
 import notification from './notification-page.json';
 import search from './search-page.json';
+import history from './history-page.json';
 
 export default {
+  history,
   search,
   notification,
   question,

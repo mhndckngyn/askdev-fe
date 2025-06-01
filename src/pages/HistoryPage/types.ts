@@ -18,80 +18,71 @@ export enum HistoryType {
   COMMENT_DELETE = 'COMMENT_DELETE',
 }
 
+export const HISTORY_TYPE_LABELS: Record<HistoryType, string> = {
+  [HistoryType.QUESTION_CREATE]: 'history.labels.questionCreate',
+  [HistoryType.ANSWER_CREATE]: 'history.labels.answerCreate',
+  [HistoryType.COMMENT_CREATE]: 'history.labels.commentCreate',
+  [HistoryType.QUESTION_EDIT]: 'history.labels.questionEdit',
+  [HistoryType.ANSWER_EDIT]: 'history.labels.answerEdit',
+  [HistoryType.COMMENT_EDIT]: 'history.labels.commentEdit',
+  [HistoryType.QUESTION_VOTE]: 'history.labels.questionVote',
+  [HistoryType.ANSWER_VOTE]: 'history.labels.answerVote',
+  [HistoryType.COMMENT_VOTE]: 'history.labels.commentVote',
+  [HistoryType.QUESTION_DOWNVOTE]: 'history.labels.questionDownvote',
+  [HistoryType.ANSWER_DOWNVOTE]: 'history.labels.answerDownvote',
+  [HistoryType.COMMENT_DOWNVOTE]: 'history.labels.commentDownvote',
+  [HistoryType.ANSWER_CHOSEN]: 'history.labels.answerChosen',
+  [HistoryType.REPORT_CREATE]: 'history.labels.reportCreate',
+  [HistoryType.QUESTION_DELETE]: 'history.labels.questionDelete',
+  [HistoryType.ANSWER_DELETE]: 'history.labels.answerDelete',
+  [HistoryType.COMMENT_DELETE]: 'history.labels.commentDelete',
+};
+
+export const HistoryTypeColor = (type: HistoryType): string => {
+  const colorMap: Record<HistoryType, string> = {
+    [HistoryType.QUESTION_CREATE]: '#3498db',
+    [HistoryType.ANSWER_CREATE]: '#2ecc71',
+    [HistoryType.COMMENT_CREATE]: '#f39c12',
+    [HistoryType.QUESTION_EDIT]: '#9b59b6',
+    [HistoryType.ANSWER_EDIT]: '#9b59b6',
+    [HistoryType.COMMENT_EDIT]: '#9b59b6',
+    [HistoryType.QUESTION_VOTE]: '#27ae60',
+    [HistoryType.ANSWER_VOTE]: '#27ae60',
+    [HistoryType.COMMENT_VOTE]: '#27ae60',
+    [HistoryType.QUESTION_DOWNVOTE]: '#e74c3c',
+    [HistoryType.ANSWER_DOWNVOTE]: '#e74c3c',
+    [HistoryType.COMMENT_DOWNVOTE]: '#e74c3c',
+    [HistoryType.ANSWER_CHOSEN]: '#f1c40f',
+    [HistoryType.REPORT_CREATE]: '#e67e22',
+    [HistoryType.QUESTION_DELETE]: '#95a5a6',
+    [HistoryType.ANSWER_DELETE]: '#95a5a6',
+    [HistoryType.COMMENT_DELETE]: '#95a5a6',
+  };
+  return colorMap[type] || '#3498db';
+};
+
 export interface HistoryItem {
   id: string;
   type: HistoryType;
-  userId: string;
   contentTitle: string;
-  questionId?: string;
+  userId: string;
   createdAt: Date;
-  user: {
-    id: string;
-    username: string;
-    profilePicture: string;
-  };
-}
-
-export interface DateRange {
-  start: Date | null;
-  end: Date | null;
+  questionId?: string;
 }
 
 export interface HistoryFilters {
-  dateRange: DateRange;
-  types: HistoryType[];
   searchQuery: string;
+  types: HistoryType[];
+  dateRange: {
+    start: Date | null;
+    end: Date | null;
+  };
 }
 
-export interface UseHistoryReturn {
-  historyItems: HistoryItem[];
-  filteredItems: HistoryItem[];
-  filters: HistoryFilters;
+export interface PaginationState {
+  page: number;
+  hasMore: boolean;
   loading: boolean;
-  selectedIds: string[];
-  setFilters: (filters: Partial<HistoryFilters>) => void;
-  setSelectedIds: React.Dispatch<React.SetStateAction<string[]>>;
-  deleteHistoryItems: (ids: string[]) => Promise<void>;
-  deleteAllHistory: () => Promise<void>;
-  clearFilters: () => void;
 }
 
-export const HISTORY_TYPE_LABELS: Record<HistoryType, string> = {
-  [HistoryType.QUESTION_CREATE]: 'Tạo câu hỏi',
-  [HistoryType.ANSWER_CREATE]: 'Tạo câu trả lời',
-  [HistoryType.COMMENT_CREATE]: 'Tạo bình luận',
-  [HistoryType.QUESTION_EDIT]: 'Chỉnh sửa câu hỏi',
-  [HistoryType.ANSWER_EDIT]: 'Chỉnh sửa câu trả lời',
-  [HistoryType.COMMENT_EDIT]: 'Chỉnh sửa bình luận',
-  [HistoryType.QUESTION_VOTE]: 'Upvote câu hỏi',
-  [HistoryType.ANSWER_VOTE]: 'Upvote câu trả lời',
-  [HistoryType.COMMENT_VOTE]: 'Upvote bình luận',
-  [HistoryType.QUESTION_DOWNVOTE]: 'Downvote câu hỏi',
-  [HistoryType.ANSWER_DOWNVOTE]: 'Downvote câu trả lời',
-  [HistoryType.COMMENT_DOWNVOTE]: 'Downvote bình luận',
-  [HistoryType.ANSWER_CHOSEN]: 'Chọn câu trả lời tốt nhất',
-  [HistoryType.REPORT_CREATE]: 'Báo cáo nội dung',
-  [HistoryType.QUESTION_DELETE]: 'Xóa câu hỏi',
-  [HistoryType.ANSWER_DELETE]: 'Xóa câu trả lời',
-  [HistoryType.COMMENT_DELETE]: 'Xóa bình luận',
-};
-
-export const HISTORY_TYPE_COLORS: Record<HistoryType, string> = {
-  [HistoryType.QUESTION_CREATE]: '#4CAF50',
-  [HistoryType.ANSWER_CREATE]: '#2196F3',
-  [HistoryType.COMMENT_CREATE]: '#FF9800',
-  [HistoryType.QUESTION_EDIT]: '#9C27B0',
-  [HistoryType.ANSWER_EDIT]: '#9C27B0',
-  [HistoryType.COMMENT_EDIT]: '#9C27B0',
-  [HistoryType.QUESTION_VOTE]: '#4CAF50',
-  [HistoryType.ANSWER_VOTE]: '#4CAF50',
-  [HistoryType.COMMENT_VOTE]: '#4CAF50',
-  [HistoryType.QUESTION_DOWNVOTE]: '#F44336',
-  [HistoryType.ANSWER_DOWNVOTE]: '#F44336',
-  [HistoryType.COMMENT_DOWNVOTE]: '#F44336',
-  [HistoryType.ANSWER_CHOSEN]: '#FFD700',
-  [HistoryType.REPORT_CREATE]: '#FF5722',
-  [HistoryType.QUESTION_DELETE]: '#F44336',
-  [HistoryType.ANSWER_DELETE]: '#F44336',
-  [HistoryType.COMMENT_DELETE]: '#F44336',
-};
+export const ITEMS_PER_PAGE = 20;

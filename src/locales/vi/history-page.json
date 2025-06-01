@@ -1,0 +1,74 @@
+{
+  "history": {
+    "title": "Lịch sử hoạt động",
+    "subtitle": "Theo dõi và quản lý tất cả hoạt động của bạn",
+    "activityCount": "{{count}} hoạt động",
+    "loading": "Đang tải dữ liệu...",
+    "loadingMore": "Đang tải thêm...",
+    "endOfList": "Đã hiển thị tất cả hoạt động",
+    "selectItem": "Chọn mục này",
+    "byUser": "bởi {{username}}",
+    "noData": {
+      "title": "Không có lịch sử hoạt động",
+      "description": "Chưa có hoạt động nào được ghi nhận trong khoảng thời gian này"
+    },
+    "filters": {
+      "title": "Bộ lọc tìm kiếm",
+      "searchPlaceholder": "Tìm kiếm theo tiêu đề hoặc tên người dùng...",
+      "activityType": "Loại hoạt động",
+      "fromDate": "Từ ngày",
+      "toDate": "Đến ngày",
+      "clear": "Xóa bộ lọc"
+    },
+    "actions": {
+      "selectAll": "Chọn tất cả",
+      "deselectAll": "Bỏ chọn tất cả",
+      "deleteSelected": "Xóa đã chọn",
+      "deleteAll": "Xóa tất cả"
+    },
+    "labels": {
+      "questionCreate": "Tạo câu hỏi",
+      "answerCreate": "Tạo câu trả lời",
+      "commentCreate": "Tạo bình luận",
+      "questionEdit": "Sửa câu hỏi",
+      "answerEdit": "Sửa câu trả lời",
+      "commentEdit": "Sửa bình luận",
+      "questionVote": "Vote câu hỏi",
+      "answerVote": "Vote câu trả lời",
+      "commentVote": "Vote bình luận",
+      "questionDownvote": "Downvote câu hỏi",
+      "answerDownvote": "Downvote câu trả lời",
+      "commentDownvote": "Downvote bình luận",
+      "answerChosen": "Chọn câu trả lời",
+      "reportCreate": "Tạo báo cáo",
+      "questionDelete": "Xóa câu hỏi",
+      "answerDelete": "Xóa câu trả lời",
+      "commentDelete": "Xóa bình luận"
+    },
+    "dialogs": {
+      "deleteSelected": {
+        "title": "Xác nhận xóa",
+        "message": "Bạn có chắc chắn muốn xóa {{count}} mục lịch sử đã chọn? Hành động này không thể hoàn tác."
+      },
+      "deleteAll": {
+        "title": "Xác nhận xóa tất cả",
+        "message": "Bạn có chắc chắn muốn xóa toàn bộ lịch sử hoạt động? Hành động này không thể hoàn tác."
+      }
+    },
+    "messages": {
+      "deleteSuccess": "Đã xóa lịch sử thành công",
+      "deleteError": "Lỗi khi xóa lịch sử",
+      "deleteAllSuccess": "Đã xóa toàn bộ lịch sử",
+      "deleteAllError": "Lỗi khi xóa lịch sử"
+    }
+  },
+  "common": {
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "deleteAll": "Xóa tất cả",
+    "save": "Lưu",
+    "edit": "Sửa",
+    "close": "Đóng",
+    "confirm": "Xác nhận"
+  }
+}

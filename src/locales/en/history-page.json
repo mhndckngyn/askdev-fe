@@ -1,0 +1,74 @@
+{
+  "history": {
+    "title": "Activity History",
+    "subtitle": "Track and manage all your activities",
+    "activityCount": "{{count}} activities",
+    "loading": "Loading data...",
+    "loadingMore": "Loading more...",
+    "endOfList": "All activities displayed",
+    "selectItem": "Select this item",
+    "byUser": "by {{username}}",
+    "noData": {
+      "title": "No activity history",
+      "description": "No activities have been recorded during this time period"
+    },
+    "filters": {
+      "title": "Search Filters",
+      "searchPlaceholder": "Search by title or username...",
+      "activityType": "Activity Type",
+      "fromDate": "From Date",
+      "toDate": "To Date",
+      "clear": "Clear Filters"
+    },
+    "actions": {
+      "selectAll": "Select All",
+      "deselectAll": "Deselect All",
+      "deleteSelected": "Delete Selected",
+      "deleteAll": "Delete All"
+    },
+    "labels": {
+      "questionCreate": "Create Question",
+      "answerCreate": "Create Answer",
+      "commentCreate": "Create Comment",
+      "questionEdit": "Edit Question",
+      "answerEdit": "Edit Answer",
+      "commentEdit": "Edit Comment",
+      "questionVote": "Vote Question",
+      "answerVote": "Vote Answer",
+      "commentVote": "Vote Comment",
+      "questionDownvote": "Downvote Question",
+      "answerDownvote": "Downvote Answer",
+      "commentDownvote": "Downvote Comment",
+      "answerChosen": "Choose Answer",
+      "reportCreate": "Create Report",
+      "questionDelete": "Delete Question",
+      "answerDelete": "Delete Answer",
+      "commentDelete": "Delete Comment"
+    },
+    "dialogs": {
+      "deleteSelected": {
+        "title": "Confirm Delete",
+        "message": "Are you sure you want to delete {{count}} selected history items? This action cannot be undone."
+      },
+      "deleteAll": {
+        "title": "Confirm Delete All",
+        "message": "Are you sure you want to delete all activity history? This action cannot be undone."
+      }
+    },
+    "messages": {
+      "deleteSuccess": "History deleted successfully",
+      "deleteError": "Error deleting history",
+      "deleteAllSuccess": "All history deleted successfully",
+      "deleteAllError": "Error deleting history"
+    }
+  },
+  "common": {
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleteAll": "Delete All",
+    "save": "Save",
+    "edit": "Edit",
+    "close": "Close",
+    "confirm": "Confirm"
+  }
+}
