@@ -81,6 +81,11 @@ function AnswerTableComponent({
         className={styles.questionIdText}>
         {answer.question.title}
       </Link>
+      <Link
+        to={publicRoutePaths.questionDetail.replace(':id', answer.question.id)}
+        className={styles.questionIdText}>
+        {answer.question.title}
+      </Link>
 
       <Tooltip label={t('copyQuestionId')}>
         <ActionIcon
