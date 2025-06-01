@@ -21,6 +21,7 @@ export default interface Profile {
 
 export interface PostPreview {
   id: string;
+  questionId?: string;
   questionTitle: string;
   upvotes: number;
   tags: Tag[];

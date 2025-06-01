@@ -90,7 +90,7 @@ function CommentTableComponent({
   const renderUserCell = ({ user }: CommentAdminView) => (
     <Button
       component={Link}
-      to={publicRoutePaths.profilePage.replace(':username', user.id)}
+      to={publicRoutePaths.profilePage.replace(':username', user.username)}
       size="lg"
       variant="subtle"
       w="100%">

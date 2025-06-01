@@ -81,11 +81,6 @@ function AnswerTableComponent({
         className={styles.questionIdText}>
         {answer.question.title}
       </Link>
-      <Link
-        to={publicRoutePaths.questionDetail.replace(':id', answer.question.id)}
-        className={styles.questionIdText}>
-        {answer.question.title}
-      </Link>
 
       <Tooltip label={t('copyQuestionId')}>
         <ActionIcon
@@ -101,7 +96,7 @@ function AnswerTableComponent({
   const renderUserCell = (answer: AnswerAdminView) => (
     <Button
       component={Link}
-      to={publicRoutePaths.profilePage.replace(':username', answer.user.id)}
+      to={publicRoutePaths.profilePage.replace(':username', answer.user.username)}
       size="lg"
       variant="subtle"
       w="100%">
