@@ -69,6 +69,7 @@
     "save": "Save",
     "edit": "Edit",
     "close": "Close",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "viewDetails": "View Details"
   }
 }

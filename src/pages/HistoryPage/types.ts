@@ -66,7 +66,7 @@ export interface HistoryItem {
   type: HistoryType;
   contentTitle: string;
   userId: string;
-  createdAt: string;
+  createdAt: Date;
   questionId?: string;
 }
 
@@ -74,8 +74,8 @@ export interface HistoryFilters {
   searchQuery: string;
   types: HistoryType[];
   dateRange: {
-    start: string | null;
-    end: string | null;
+    start: Date | null;
+    end: Date | null;
   };
 }
 

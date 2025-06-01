@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMantineColorScheme } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
 import FormatTime from './formatTime';
 import {
   Box,
@@ -18,11 +19,16 @@ import {
   CircularProgress,
   Stack,
   Tooltip,
+  IconButton,
   alpha,
 } from '@mui/material';
-import { History as HistoryIcon } from '@mui/icons-material';
+import {
+  History as HistoryIcon,
+  Visibility as VisibilityIcon,
+} from '@mui/icons-material';
 import {
   HistoryItem,
+  HistoryType,
   HISTORY_TYPE_LABELS,
   HistoryTypeColor,
   PaginationState,
@@ -46,9 +52,26 @@ export const HistoryList: React.FC<HistoryListProps> = ({
 }) => {
   const { t } = useTranslation('history');
   const { colorScheme } = useMantineColorScheme();
+  const navigate = useNavigate();
   const isDark = colorScheme === 'dark';
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  const canViewDetails = (item: HistoryItem): boolean => {
+    const deleteTypes = [
+      HistoryType.QUESTION_DELETE,
+      HistoryType.ANSWER_DELETE,
+      HistoryType.COMMENT_DELETE,
+    ];
+    return !deleteTypes.includes(item.type) && item.questionId != null;
+  };
+
+  const handleViewDetails = (item: HistoryItem, event: React.MouseEvent) => {
+    event.stopPropagation();
+    if (canViewDetails(item) && item.questionId) {
+      navigate(`/questions/${item.questionId}`);
+    }
+  };
 
   useEffect(() => {
     if (observerRef.current) {
@@ -143,18 +166,37 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                 },
               }}
               secondaryAction={
-                <Tooltip title={t('history.selectItem')}>
-                  <Checkbox
-                    checked={selectedIds.includes(item.id)}
-                    onChange={() => onItemSelect(item.id)}
-                    sx={{
-                      color: HistoryTypeColor(item.type),
-                      '&.Mui-checked': {
+                <Stack direction="row" spacing={1} alignItems="center">
+                  {canViewDetails(item) && (
+                    <Tooltip title={t('common.viewDetails')}>
+                      <IconButton
+                        onClick={(event) => handleViewDetails(item, event)}
+                        sx={{
+                          color: HistoryTypeColor(item.type),
+                          '&:hover': {
+                            bgcolor: alpha(HistoryTypeColor(item.type), 0.1),
+                            transform: 'scale(1.1)',
+                          },
+                          transition: 'all 0.2s ease',
+                        }}
+                        size="small">
+                        <VisibilityIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                  <Tooltip title={t('history.selectItem')}>
+                    <Checkbox
+                      checked={selectedIds.includes(item.id)}
+                      onChange={() => onItemSelect(item.id)}
+                      sx={{
                         color: HistoryTypeColor(item.type),
-                      },
-                    }}
-                  />
-                </Tooltip>
+                        '&.Mui-checked': {
+                          color: HistoryTypeColor(item.type),
+                        },
+                      }}
+                    />
+                  </Tooltip>
+                </Stack>
               }>
               <ListItemButton
                 onClick={() => onItemSelect(item.id)}
@@ -196,7 +238,6 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                       alignItems="center"
                       sx={{
                         ml: 0,
-
                         flexWrap: 'wrap',
                         gap: 1,
                       }}>
@@ -209,7 +250,6 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                           fontWeight: 700,
                           fontSize: '0.75rem',
                           boxShadow: `0 2px 8px ${alpha(HistoryTypeColor(item.type), 0.3)}`,
-
                           maxWidth: '150px',
                           '& .MuiChip-label': {
                             overflow: 'hidden',
@@ -227,10 +267,9 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                           px: 1.5,
                           py: 0.5,
                           borderRadius: 2,
-
                           whiteSpace: 'nowrap',
                         }}>
-                        {<FormatTime createdAt={item.createdAt} />}
+                        <FormatTime createdAt={item.createdAt.toString()} />
                       </Typography>
                     </Stack>
                   }
@@ -247,7 +286,6 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                           fontWeight: 600,
                           color: textColor,
                           lineHeight: 1.3,
-
                           display: '-webkit-box',
                           WebkitLineClamp: 2,
                           WebkitBoxOrient: 'vertical',
