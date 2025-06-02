@@ -1,5 +1,7 @@
 import { Card, CardContent, Box, Typography, Avatar } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import QuestionContent from '../QuestionContent';
 
 interface User {
   id: string;
@@ -19,9 +21,22 @@ interface UserCardProps {
 export default function UserCard({ user, isDark }: UserCardProps) {
   const { t } = useTranslation('search');
 
+  const navigate = useNavigate();
+  const handleClick = () => {
+    if (user.id) {
+      navigate(`/profile/${user.username}`);
+    }
+  };
+
   return (
     <Card
+      onClick={() => {
+        handleClick();
+      }}
       sx={{
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
         position: 'relative',
         overflow: 'hidden',
         borderRadius: 3,
@@ -90,7 +105,6 @@ export default function UserCard({ user, isDark }: UserCardProps) {
             />
           </Box>
 
-          {/* Content Section */}
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <Typography
               variant="h6"
@@ -98,7 +112,7 @@ export default function UserCard({ user, isDark }: UserCardProps) {
               sx={{
                 fontWeight: 700,
                 fontSize: '1.1rem',
-                mb: 1,
+
                 background: isDark
                   ? 'linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%)'
                   : 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
@@ -112,7 +126,6 @@ export default function UserCard({ user, isDark }: UserCardProps) {
             <Typography
               variant="body2"
               sx={{
-                mb: 2,
                 lineHeight: 1.6,
                 color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)',
                 display: '-webkit-box',
@@ -120,10 +133,9 @@ export default function UserCard({ user, isDark }: UserCardProps) {
                 WebkitBoxOrient: 'vertical',
                 overflow: 'hidden',
               }}>
-              {user?.bio}
+              {user.bio && <QuestionContent content={user.bio} />}
             </Typography>
 
-            {/* Stats Section */}
             <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Box

@@ -1,0 +1,32 @@
+{
+  "ranking": {
+    "title": "Bảng Xếp Hạng",
+    "subtitle": "Top thành viên xuất sắc nhất cộng đồng",
+    "memberCount": "{{count}} thành viên",
+    "memberCount_one": "{{count}} thành viên",
+    "memberCount_other": "{{count}} thành viên",
+    "refresh": "Làm mới dữ liệu"
+  },
+  "tabs": {
+    "reputation": "Danh tiếng",
+    "upvotes": "Lượt thích",
+    "chosen": "Được chọn",
+    "answers": "Trả lời"
+  },
+  "search": {
+    "placeholder": "Tìm kiếm thành viên...",
+    "noResults": "Không tìm thấy thành viên nào",
+    "tryOtherKeywords": "Thử tìm kiếm với từ khóa khác"
+  },
+  "member": {
+    "github": "GitHub: {{github}}",
+    "topLabel": "TOP",
+    "joinDate": "Tham gia",
+    "totalViews": "{{count}} lượt xem",
+    "questions": "Câu hỏi",
+    "upvotes": "Lượt thích",
+    "reputation": "Danh tiếng",
+    "answers": "Trả lời",
+    "chosen": "Được chọn"
+  }
+}

@@ -28,8 +28,11 @@ import question from './question-page.json';
 import notification from './notification-page.json';
 import search from './search-page.json';
 import history from './history-page.json';
+import member from './member-page.json';
+
 
 export default {
+  member,
   history,
   search,
   notification,

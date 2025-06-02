@@ -1,0 +1,32 @@
+{
+  "ranking": {
+    "title": "Ranking Board",
+    "subtitle": "Top outstanding community members",
+    "memberCount": "{{count}} member",
+    "memberCount_one": "{{count}} member",
+    "memberCount_other": "{{count}} members",
+    "refresh": "Refresh data"
+  },
+  "tabs": {
+    "reputation": "Reputation",
+    "upvotes": "Upvotes",
+    "chosen": "Chosen",
+    "answers": "Answers"
+  },
+  "search": {
+    "placeholder": "Search members...",
+    "noResults": "No members found",
+    "tryOtherKeywords": "Try searching with different keywords"
+  },
+  "member": {
+    "github": "GitHub: {{github}}",
+    "topLabel": "TOP",
+    "joinDate": "Joined",
+    "totalViews": "{{count}} views",
+    "questions": "Questions",
+    "upvotes": "Upvotes",
+    "reputation": "Reputation",
+    "answers": "Answers",
+    "chosen": "Chosen"
+  }
+}

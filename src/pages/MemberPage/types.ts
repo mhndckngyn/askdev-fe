@@ -11,6 +11,7 @@ export interface MemberStats {
 
 export interface Member {
   id: string;
+  rank: number;
   username: string;
   bio: string;
   profilePicture: string;
@@ -27,11 +28,4 @@ export interface RankingTabConfig {
   value: RankingType;
   color: string;
   gradient: string;
-}
-
-export interface TotalStats {
-  totalQuestions: number;
-  totalAnswers: number;
-  totalUpvotes: number;
-  chosenAnswers: number;
 }

@@ -120,19 +120,21 @@ export default function QuestionCard({ question, isDark }: QuestionCardProps) {
             </Box>
 
             {/* Content Section */}
-            <Typography
-              variant="body2"
-              sx={{
-                mb: 3,
-                lineHeight: 1.6,
-                color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)',
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-              }}>
-              <QuestionContent content={question?.content} />
-            </Typography>
+            {question?.content && (
+              <Typography
+                variant="body2"
+                sx={{
+                  mb: 3,
+                  lineHeight: 1.6,
+                  color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                }}>
+                <QuestionContent content={question?.content} />
+              </Typography>
+            )}
 
             {/* Tags Section */}
             <Stack

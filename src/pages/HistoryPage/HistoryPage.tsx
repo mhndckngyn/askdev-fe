@@ -104,14 +104,6 @@ const History: React.FC = () => {
     setDeleteAllDialogOpen(false);
   };
 
-  const backgroundGradient = isDark
-    ? `linear-gradient(135deg, ${alpha('#2c3e50', 0.1)} 0%, ${alpha('#34495e', 0.1)} 100%)`
-    : `linear-gradient(135deg, ${alpha('#667eea', 0.1)} 0%, ${alpha('#764ba2', 0.1)} 100%)`;
-
-  const headerGradient = isDark
-    ? 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)'
-    : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-
   return (
     <>
       <Notifications zIndex={9999} />
@@ -122,7 +114,9 @@ const History: React.FC = () => {
             p: 3,
             width: '100%',
             mx: 'auto',
-            background: backgroundGradient,
+            background: isDark
+              ? 'linear-gradient(135deg, #0c1726 0%, #1a2332 25%, #2c3e50 50%, #34495e 100%)'
+              : 'linear-gradient(135deg, #3498db 0%, #2980b9 25%, #1abc9c 50%, #16a085 100%)',
             minHeight: '100vh',
           }}>
           <Box
@@ -131,7 +125,7 @@ const History: React.FC = () => {
               alignItems: 'center',
               mb: 4,
               p: 3,
-              background: headerGradient,
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               borderRadius: 4,
               color: 'white',
               boxShadow: isDark

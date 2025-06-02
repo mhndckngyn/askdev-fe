@@ -1,90 +1,98 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Member, RankingType } from './types';
-import { mockMembers } from './data';
+import { getMembers } from './services';
 
-export const useMember = () => {
+export const useMember = (
+  options: { page?: number; limit?: number; autoLoad?: boolean } = {},
+) => {
+  const { page = 1, limit = 20 } = options;
+
   const [members, setMembers] = useState<Member[]>([]);
+
+  const [rankingTypes, setRankingTypes] = useState<RankingType[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedTab, setSelectedTab] = useState<RankingType>('reputation');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(page);
+  const [pagination, setPagination] = useState({
+    total: 0,
+    totalPages: 0,
+    hasMore: false,
+  });
+
+  const loadMembers = useCallback(
+    async (
+      pageNum: number = currentPage,
+      ranking: RankingType = selectedTab,
+      searchQuery?: string,
+    ) => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await getMembers(pageNum, limit, ranking, searchQuery);
+
+        if (response.success) {
+          setMembers(response.content.items);
+          setPagination({
+            total: response.content.pagination.total,
+            totalPages: response.content.pagination.totalPages,
+            hasMore: response.content.pagination.hasMore,
+          });
+
+          if (response.content.availableRankingTypes) {
+            setRankingTypes(response.content.availableRankingTypes);
+          }
+        } else {
+          throw new Error('Failed to load members');
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+        setMembers([]);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [currentPage, selectedTab, limit],
+  );
 
   useEffect(() => {
-    const loadMembers = async () => {
-      setLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 1200));
-      setMembers(mockMembers);
-      setLoading(false);
-    };
+    const delayedSearch = setTimeout(() => {
+      loadMembers(1, selectedTab, searchQuery);
+      setCurrentPage(1);
+    }, 500);
 
-    loadMembers();
+    return () => clearTimeout(delayedSearch);
+  }, [searchQuery, selectedTab, loadMembers]);
+
+  const handleTabChange = useCallback((newTab: RankingType) => {
+    setSelectedTab(newTab);
+    setCurrentPage(1);
   }, []);
 
-  const sortMembersByType = (type: RankingType): Member[] => {
-    return [...members].sort((a, b) => {
-      switch (type) {
-        case 'reputation':
-          return b.stats.reputation - a.stats.reputation;
-        case 'upvotes':
-          return b.stats.totalUpvotes - a.stats.totalUpvotes;
-        case 'chosen':
-          return b.stats.chosenAnswers - a.stats.chosenAnswers;
-        case 'answers':
-          return b.stats.totalAnswers - a.stats.totalAnswers;
-        default:
-          return 0;
-      }
-    });
-  };
-
-  const getStatValue = (member: Member, type: RankingType): number => {
-    switch (type) {
-      case 'reputation':
-        return member.stats.reputation;
-      case 'upvotes':
-        return member.stats.totalUpvotes;
-      case 'chosen':
-        return member.stats.chosenAnswers;
-      case 'answers':
-        return member.stats.totalAnswers;
-      default:
-        return 0;
-    }
-  };
-
-  const getTotalStats = () => {
-    return members.reduce(
-      (acc, member) => ({
-        totalQuestions: acc.totalQuestions + member.stats.totalQuestions,
-        totalAnswers: acc.totalAnswers + member.stats.totalAnswers,
-        totalUpvotes: acc.totalUpvotes + member.stats.totalUpvotes,
-        chosenAnswers: acc.chosenAnswers + member.stats.chosenAnswers,
-        totalViews: acc.totalViews + member.stats.totalViews,
-      }),
-      {
-        totalQuestions: 0,
-        totalAnswers: 0,
-        totalUpvotes: 0,
-        chosenAnswers: 0,
-        totalViews: 0,
-      },
-    );
-  };
-
-  const refreshData = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setMembers([...mockMembers]);
-      setLoading(false);
-    }, 800);
-  };
+  const handlePageChange = useCallback(
+    (newPage: number) => {
+      setCurrentPage(newPage);
+      loadMembers(newPage, selectedTab, searchQuery);
+    },
+    [searchQuery, selectedTab, loadMembers],
+  );
 
   return {
     members,
-    loading,
+    rankingTypes,
+
+    error,
     selectedTab,
-    setSelectedTab,
-    sortMembersByType,
-    getStatValue,
-    getTotalStats,
-    refreshData,
+    searchQuery,
+    currentPage,
+    pagination,
+    setSelectedTab: handleTabChange,
+    setSearchQuery,
+    setCurrentPage: handlePageChange,
+    loadMembers,
+    hasMembers: members.length > 0,
+    isEmpty: !loading && members.length === 0 && !error,
   };
 };
