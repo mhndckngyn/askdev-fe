@@ -28,7 +28,11 @@ const data: {
     icon: IconQuestionMark,
   } /* TODO */,
   { link: publicRoutePaths.tagsPage, label: 'tags', icon: IconTags },
-  { link: '', label: 'members', icon: IconUsers } /* TODO */,
+  {
+    link: publicRoutePaths.memberPage,
+    label: 'members',
+    icon: IconUsers,
+  } /* TODO */,
 ];
 
 export default function UserSidebar() {

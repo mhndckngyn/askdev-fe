@@ -78,7 +78,7 @@ function QuestionHistory({ open, handleToggle, question }: Props) {
     if (history.createdAt && user?.id == question?.userId) {
       fetchHistory(history);
     }
-  }, [history.createdAt]);
+  }, [history.createdAt, user]);
 
   const handlePrev = () => {
     if (prevHistory) {

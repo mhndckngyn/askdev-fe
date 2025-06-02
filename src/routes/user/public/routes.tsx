@@ -9,11 +9,13 @@ import publicRoutePaths from './paths';
 import ListQuestionByTag from '@/pages/ListQuestionByTag';
 import SearchPage from '@/pages/SearchPage';
 import ProfileRedirect from '@/layouts/ProfileRedirect';
+import MemberPage from '@/pages/MemberPage';
 
 const publicRoutes = (
   <>
     <Route path={publicRoutePaths.homepage} element={<Homepage />} />
     <Route path={publicRoutePaths.historyPage} element={<HistoryPage />} />
+    <Route path={publicRoutePaths.memberPage} element={<MemberPage />} />
     <Route path={publicRoutePaths.questionsPage} element={<QuestionPage />} />
     <Route path={publicRoutePaths.tagsPage} element={<TagsPage />} />
     <Route
