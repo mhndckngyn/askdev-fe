@@ -37,5 +37,24 @@
   "currentImage": "Hình ảnh hiện tại",
   "clickImageToToggle": "Nhấp vào hình ảnh để chọn/bỏ chọn",
   "addNewImageWithCount": "Thêm hình ảnh mới ({{currentImageCount}}/{{MAX_IMAGES}})",
-  "enoughImages": "Đủ ảnh"
+  "enoughImages": "Đủ ảnh",
+  "unchooseAnswer": "Hủy chọn câu trả lời",
+  "chooseAnswer": "Chọn câu trả lời",
+  "chosenAnswer": "Câu trả lời đã được chọn",
+
+  "checkingContent": "Đang kiểm tra...",
+  "toxicityWarningTitle": "Cảnh báo nội dung độc hại",
+  "toxicityWarningBody": "Nội dung của bạn có điểm độc hại cao. Chúng tôi khuyến nghị bạn chỉnh sửa lại để tạo ra một môi trường thảo luận tích cực và xây dựng.",
+  "editAgain": "Chỉnh sửa lại",
+  "submitAnyway": "Vẫn gửi",
+  "toxicityReviewPrompt": "Nội dung của bạn có thể chứa một số yếu tố tiêu cực. Bạn có muốn xem xét lại trước khi gửi không?",
+  "review": "Xem lại",
+  "continueSending": "Tiếp tục gửi",
+  "contentCheckNotification": "Thông báo kiểm tra nội dung",
+  "toxicityScoreTitle": "Điểm độc hại: {{toxicity_score}}/10",
+
+  "deleteTitle": "Xác nhận xóa",
+  "deleteAnswerMessage": "Bạn có chắc chắn muốn xóa câu trả lời này? Hành động này không thể hoàn tác.",
+  "deleteCommentMessage": "Bạn có chắc chắn muốn xóa phản hồi này? Hành động này không thể hoàn tác.",
+  "cancel": "Hủy"
 }

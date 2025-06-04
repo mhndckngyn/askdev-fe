@@ -13,7 +13,16 @@ import {
   Image,
   SimpleGrid,
   rem,
+  Button,
 } from '@mantine/core';
+import { IconTrash as DeleteIcon } from '@tabler/icons-react';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from '@mui/material';
 import {
   IconThumbUp,
   IconThumbDown,
@@ -23,7 +32,7 @@ import {
 } from '@tabler/icons-react';
 import Lightbox from 'yet-another-react-lightbox';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
-import { voteComment } from './Services/CommentServices';
+import { voteComment, toggleHiddenComment } from './Services/CommentServices';
 import FormatTime from './formatTime';
 
 interface CommentItemProps {
@@ -31,7 +40,8 @@ interface CommentItemProps {
   commentIndex: number;
   answerId: string;
   user: any;
-  onEdit: (item: any, type: 'ANSWER' | 'COMMENT') => void;
+  answer: any;
+  onEdit: (item: any, type: 'ANSWER' | 'COMMENT', title: string) => void;
   onReport: (item: any, type: string) => void;
   onRefreshComments: () => void;
   t: (key: string) => string;
@@ -41,6 +51,7 @@ export default function CommentItem({
   comment,
   commentIndex,
   user,
+  answer,
   onEdit,
   onReport,
   onRefreshComments,
@@ -53,8 +64,22 @@ export default function CommentItem({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [currentImages, setCurrentImages] = useState<string[]>([]);
 
-  const handleDelete = () => {
-    console.log('Delete comment:', comment.id);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  const handleDelete = async () => {
+    if (toggleHiddenComment) {
+      try {
+        await toggleHiddenComment(comment.id);
+        setDeleteDialogOpen(false);
+        onRefreshComments();
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const openDeleteDialog = () => {
+    setDeleteDialogOpen(true);
   };
 
   const handleLikeComment = async (commentId: string) => {
@@ -279,7 +304,9 @@ export default function CommentItem({
                   <>
                     <Tooltip label={t('edit')} position="top">
                       <ActionIcon
-                        onClick={() => onEdit(comment, 'COMMENT')}
+                        onClick={() =>
+                          onEdit(comment, 'COMMENT', answer.content)
+                        }
                         variant="light"
                         color="blue"
                         size="lg"
@@ -296,7 +323,7 @@ export default function CommentItem({
                     </Tooltip>
                     <Tooltip label={t('delete')} position="top">
                       <ActionIcon
-                        onClick={handleDelete}
+                        onClick={() => openDeleteDialog()}
                         variant="light"
                         color="red"
                         size="lg"
@@ -352,6 +379,60 @@ export default function CommentItem({
         }}
         index={selectedImageIndex}
       />
+
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            boxShadow: '0 8px 40px rgba(0,0,0,0.2)',
+            bgcolor: isDark ? '#2c3e50' : 'white',
+          },
+        }}>
+        <DialogTitle
+          sx={{
+            bgcolor: '#ff7675',
+            color: 'white',
+            fontWeight: 700,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+          }}>
+          <DeleteIcon />
+          {t('deleteTitle')}
+        </DialogTitle>
+        <DialogContent sx={{ p: 3, mt: 2 }}>
+          <DialogContentText
+            sx={{
+              fontSize: '1rem',
+              color: isDark ? '#ecf0f1' : '#2c3e50',
+            }}>
+            {t('deleteCommentMessage')}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ p: 3, gap: 1 }}>
+          <Button
+            onClick={() => setDeleteDialogOpen(false)}
+            style={{
+              backgroundColor: 'transparent',
+              borderRadius: 10,
+              color: isDark ? ' #bdc3c7' : ' #2c3e50',
+            }}>
+            {t('cancel')}
+          </Button>
+          <Button
+            onClick={handleDelete}
+            color="error"
+            variant="contained"
+            style={{
+              borderRadius: 10,
+              background: 'linear-gradient(135deg, #ff7675 0%, #d63031 100%)',
+            }}>
+            {t('delete')}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

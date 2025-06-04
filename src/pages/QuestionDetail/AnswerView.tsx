@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Button,
   Text,
   Stack,
   Textarea,
-  Container,
   ThemeIcon,
   Card,
   useMantineColorScheme,
@@ -18,6 +17,9 @@ import {
   SimpleGrid,
   ActionIcon,
   Paper,
+  Modal,
+  Alert,
+  Loader,
 } from '@mantine/core';
 import {
   IconMessageCircle,
@@ -25,18 +27,26 @@ import {
   IconPhoto,
   IconX,
   IconUpload,
+  IconAlertTriangle,
+  IconShieldCheck,
 } from '@tabler/icons-react';
 import { useParams } from 'react-router-dom';
 import {
   createAnswer,
   getAnswersByQuestionId,
   getVoteStatus,
+  getToxicityGrading,
 } from './Services/AnswersServices';
 import ReportPage from './ReportPage';
 import EditPage from './EditPage';
 import { useUserStore } from '../../stores/useUserStore';
 import { useTranslation } from 'react-i18next';
 import AnswerItem from './AnswerItem';
+
+interface ToxicityResult {
+  toxicity_score: number;
+  justification: string;
+}
 
 export default function AnswerView() {
   const { t } = useTranslation('question');
@@ -50,19 +60,28 @@ export default function AnswerView() {
   const [newanswer, setNewanswer] = useState('');
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
+  const [questionTitle, setQuestionTitle] = useState('');
+
+  const [isCheckingToxicity, setIsCheckingToxicity] = useState(false);
+  const [toxicityModalOpen, setToxicityModalOpen] = useState(false);
+  const [toxicityResult, setToxicityResult] = useState<ToxicityResult | null>(
+    null,
+  );
 
   const [editingId, setEditingId] = useState('');
   const [editingContent, setEditingContent] = useState('');
   const [editingImages, setEditingImages] = useState([]);
   const [editingType, setEditingType] = useState('');
   const [openEditingModal, setOpenEditingModal] = useState(false);
+  const [titleContent, setTitleContent] = useState('');
 
-  const handleEdit = (item: any, type: 'ANSWER' | 'COMMENT') => {
+  const handleEdit = (item: any, type: 'ANSWER' | 'COMMENT', title: string) => {
     setEditingType(type);
     setEditingContent(item.content);
     setEditingImages(item.images);
     setEditingId(item.id);
     setOpenEditingModal(true);
+    setTitleContent(title);
   };
 
   const handleCloseEditingModal = () => {
@@ -85,6 +104,13 @@ export default function AnswerView() {
   const handleCloseReportModal = () => {
     setOpenReportModal(false);
   };
+
+  const handleAnswerChange = useCallback(
+    (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setNewanswer(event.currentTarget.value);
+    },
+    [],
+  );
 
   const handleImageUpload = (files: File[]) => {
     if (files.length === 0) return;
@@ -109,8 +135,45 @@ export default function AnswerView() {
     setImagePreviewUrls(newUrls);
   };
 
+  const checkToxicity = async (
+    content: string,
+    title: string,
+  ): Promise<ToxicityResult | null> => {
+    try {
+      setIsCheckingToxicity(true);
+      const response = await getToxicityGrading(title, content);
+
+      if (response.success) {
+        return response.content;
+      } else {
+        console.error(response.message);
+        return null;
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    } finally {
+      setIsCheckingToxicity(false);
+    }
+  };
+
   const handleAddanswer = async () => {
-    if (!newanswer.trim() && selectedImages.length === 0) return;
+    const content = newanswer;
+    if (!content.trim() && selectedImages.length === 0) return;
+    if (!id) return;
+
+    const toxicityResult = await checkToxicity(content, questionTitle);
+
+    if (toxicityResult) {
+      setToxicityResult(toxicityResult);
+      setToxicityModalOpen(true);
+      return;
+    }
+
+    await submitAnswer();
+  };
+
+  const submitAnswer = async () => {
     if (!id) return;
 
     try {
@@ -122,12 +185,24 @@ export default function AnswerView() {
         imagePreviewUrls.forEach((url) => URL.revokeObjectURL(url));
         setImagePreviewUrls([]);
         fetchAnswers();
+
+        setToxicityResult(null);
       } else {
         console.error(response.message);
       }
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleProceedWithSubmission = async () => {
+    setToxicityModalOpen(false);
+    await submitAnswer();
+  };
+
+  const handleCancelSubmission = () => {
+    setToxicityModalOpen(false);
+    setToxicityResult(null);
   };
 
   const fetchAnswers = async () => {
@@ -137,7 +212,7 @@ export default function AnswerView() {
       const response = await getAnswersByQuestionId(id);
       if (response.success) {
         const answersWithVoteStatus = await Promise.all(
-          response.content.map(async (answer: any) => {
+          response.content.answers.map(async (answer: any) => {
             const voteStatusResponse = await getVoteStatus(answer.id);
             if (voteStatusResponse.success) {
               answer.voteStatus = voteStatusResponse.content.status;
@@ -146,6 +221,8 @@ export default function AnswerView() {
           }),
         );
         setAnswers(answersWithVoteStatus);
+
+        setQuestionTitle(response?.content?.title || '');
       } else {
         console.error(response.message);
       }
@@ -156,7 +233,6 @@ export default function AnswerView() {
 
   useEffect(() => {
     fetchAnswers();
-
     return () => {
       imagePreviewUrls.forEach((url) => URL.revokeObjectURL(url));
     };
@@ -170,8 +246,21 @@ export default function AnswerView() {
     ? 'linear-gradient(145deg, rgba(45, 48, 68, 0.95) 0%, rgba(35, 38, 54, 0.98) 100%)'
     : 'linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)';
 
+  const getToxicityColor = (score: number) => {
+    if (score <= 2) return 'green';
+    if (score <= 4) return 'blue';
+    if (score <= 6) return 'yellow';
+    if (score <= 8) return 'orange';
+    return 'red';
+  };
+
+  const getToxicityIcon = (score: number) => {
+    if (score <= 6) return <IconShieldCheck size={20} />;
+    return <IconAlertTriangle size={20} />;
+  };
+
   return (
-    <Container size="lg" px="md">
+    <>
       <Box
         style={{
           background: gradientBg,
@@ -212,11 +301,12 @@ export default function AnswerView() {
 
             <Stack gap="md">
               <Textarea
+                autosize
                 placeholder={t('writeDetailedAnswer')}
-                value={newanswer}
-                onChange={(e) => setNewanswer(e.currentTarget.value)}
-                minRows={4}
-                maxRows={8}
+                value={newanswer} // Fixed: Added value prop back
+                onChange={handleAnswerChange} // Fixed: Use optimized handler
+                minRows={5}
+                maxRows={5}
                 radius="xl"
                 size="lg"
                 styles={{
@@ -302,8 +392,17 @@ export default function AnswerView() {
               <Flex justify="flex-end">
                 <Button
                   onClick={handleAddanswer}
-                  disabled={!newanswer.trim() && selectedImages.length === 0}
-                  rightSection={<IconSend size={18} />}
+                  disabled={
+                    (!newanswer.trim() && selectedImages.length === 0) ||
+                    isCheckingToxicity
+                  }
+                  rightSection={
+                    isCheckingToxicity ? (
+                      <Loader size={18} />
+                    ) : (
+                      <IconSend size={18} />
+                    )
+                  }
                   variant="gradient"
                   gradient={{ from: 'violet', to: 'indigo', deg: 45 }}
                   radius="xl"
@@ -316,7 +415,7 @@ export default function AnswerView() {
                         : 'none',
                     transition: 'all 0.3s ease',
                   }}>
-                  {t('sendAnswer')}
+                  {isCheckingToxicity ? t('checkingContent') : t('sendAnswer')}
                 </Button>
               </Flex>
             </Stack>
@@ -330,6 +429,7 @@ export default function AnswerView() {
               answer={answer}
               user={user}
               onEdit={handleEdit}
+              questionTitle={questionTitle}
               onReport={handleReport}
               onRefresh={fetchAnswers}
               t={t as unknown as (key: string) => string}
@@ -370,6 +470,85 @@ export default function AnswerView() {
         )}
       </Box>
 
+      <Modal
+        opened={toxicityModalOpen}
+        onClose={handleCancelSubmission}
+        title={
+          <Group align="center" gap="xs">
+            {toxicityResult && getToxicityIcon(toxicityResult.toxicity_score)}
+            <Text fw={700} size="xl">
+              {toxicityResult && toxicityResult.toxicity_score >= 7
+                ? t('toxicityWarningTitle')
+                : t('contentCheckNotification')}
+            </Text>
+          </Group>
+        }
+        centered
+        radius="md"
+        size="xl">
+        {toxicityResult && (
+          <Stack gap="md">
+            <Alert
+              color={getToxicityColor(toxicityResult.toxicity_score)}
+              icon={getToxicityIcon(toxicityResult.toxicity_score)}
+              title={t('toxicityScoreTitle', {
+                toxicity_score: toxicityResult.toxicity_score,
+              })}
+              radius="md">
+              <Text size="md">{toxicityResult.justification}</Text>
+            </Alert>
+
+            {toxicityResult.toxicity_score >= 7 ? (
+              <Stack gap="md">
+                <Text size="md" c="dimmed">
+                  {t('toxicityWarningBody')}
+                </Text>
+                <Group justify="flex-end" gap="xs">
+                  <Button
+                    variant="light"
+                    color="gray"
+                    onClick={handleCancelSubmission}
+                    radius="md"
+                    size="md">
+                    {t('editAgain')}
+                  </Button>
+                  <Button
+                    color="red"
+                    onClick={handleProceedWithSubmission}
+                    radius="md"
+                    size="md">
+                    {t('submitAnyway')}
+                  </Button>
+                </Group>
+              </Stack>
+            ) : (
+              <Stack gap="md">
+                <Text size="md" c="dimmed">
+                  {t('toxicityReviewPrompt')}
+                </Text>
+                <Group justify="flex-end" gap="xs">
+                  <Button
+                    variant="light"
+                    color="gray"
+                    onClick={handleCancelSubmission}
+                    radius="md"
+                    size="md">
+                    {t('review')}
+                  </Button>
+                  <Button
+                    color="blue"
+                    onClick={handleProceedWithSubmission}
+                    radius="md"
+                    size="md">
+                    {t('continueSending')}
+                  </Button>
+                </Group>
+              </Stack>
+            )}
+          </Stack>
+        )}
+      </Modal>
+
       <ReportPage
         open={openReportModal}
         handleToggle={handleCloseReportModal}
@@ -385,7 +564,8 @@ export default function AnswerView() {
         type={editingType}
         oldContent={editingContent}
         oldImages={editingImages}
+        titleContent={titleContent}
       />
-    </Container>
+    </>
   );
 }

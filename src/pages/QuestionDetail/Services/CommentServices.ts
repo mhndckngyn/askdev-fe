@@ -61,3 +61,24 @@ export async function getVoteStatusComment(id: string): Promise<ApiResponse> {
     route: `comment/${id}/vote-status`,
   });
 }
+
+export async function getToxicityGrading(
+  comment: string,
+  answer: string,
+): Promise<ApiResponse> {
+  return fetcher({
+    method: 'POST',
+    route: 'comment/grade-toxicity',
+    payload: {
+      comment,
+      answer,
+    },
+  });
+}
+
+export async function toggleHiddenComment(id: string): Promise<ApiResponse> {
+  return fetcher({
+    method: 'PATCH',
+    route: `comment/${id}/toggle-hidden`,
+  });
+}

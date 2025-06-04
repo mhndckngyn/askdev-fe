@@ -37,5 +37,24 @@
   "currentImage": "Current image",
   "clickImageToToggle": "Click the image to select/deselect",
   "addNewImageWithCount": "Add new image ({{currentImageCount}}/{{MAX_IMAGES}})",
-  "enoughImages": "Enough images"
+  "enoughImages": "Enough images",
+  "unchooseAnswer": "Unmark as chosen answer",
+  "chooseAnswer": "Mark as chosen answer",
+  "chosenAnswer": "Chosen answer",
+
+  "checkingContent": "Checking content...",
+  "toxicityWarningTitle": "Toxic Content Warning",
+  "toxicityWarningBody": "Your content has a high toxicity score. We recommend editing it to help foster a more positive and constructive discussion environment.",
+  "editAgain": "Edit Again",
+  "submitAnyway": "Submit Anyway",
+  "toxicityReviewPrompt": "Your content may contain some negative elements. Would you like to review it before submitting?",
+  "review": "Review",
+  "continueSending": "Continue Sending",
+  "contentCheckNotification": "Content Check Notification",
+  "toxicityScoreTitle": "Toxicity Score: {{toxicity_score}}/10",
+
+  "deleteTitle": "Confirm Deletion",
+  "deleteAnswerMessage": "Are you sure you want to delete this answer? This action cannot be undone.",
+  "deleteCommentMessage": "Are you sure you want to delete this comment? This action cannot be undone.",
+  "cancel": "Cancel"
 }

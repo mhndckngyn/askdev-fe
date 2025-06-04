@@ -62,3 +62,31 @@ export async function getVoteStatus(id: string): Promise<ApiResponse> {
     route: `answer/${id}/vote-status`,
   });
 }
+
+export async function markAnswerAsChosen(id: string): Promise<ApiResponse> {
+  return fetcher({
+    method: 'POST',
+    route: `answer/${id}/mark-chosen`,
+  });
+}
+
+export async function getToxicityGrading(
+  questionTitle: string,
+  answer: string,
+): Promise<ApiResponse> {
+  return fetcher({
+    method: 'POST',
+    route: 'answer/grade-toxicity',
+    payload: {
+      questionTitle,
+      answer,
+    },
+  });
+}
+
+export async function toggleHiddenAnswer(id: string): Promise<ApiResponse> {
+  return fetcher({
+    method: 'PATCH',
+    route: `answer/${id}/toggle-hidden`,
+  });
+}

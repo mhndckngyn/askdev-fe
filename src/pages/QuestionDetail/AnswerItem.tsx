@@ -19,7 +19,19 @@ import {
   SimpleGrid,
   FileInput,
   Paper,
+  Modal,
+  Alert,
+  Loader,
 } from '@mantine/core';
+
+import { IconTrash as DeleteIcon } from '@tabler/icons-react';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from '@mui/material';
 import Lightbox from 'yet-another-react-lightbox';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 import {
@@ -32,12 +44,22 @@ import {
   IconPhoto,
   IconUpload,
   IconX,
+  IconCheck,
+  IconCheckbox,
+  IconSquare,
+  IconAlertTriangle,
+  IconShieldCheck,
 } from '@tabler/icons-react';
-import { voteAnswers } from './Services/AnswersServices';
+import {
+  voteAnswers,
+  markAnswerAsChosen,
+  toggleHiddenAnswer,
+} from './Services/AnswersServices';
 import {
   createComment,
   getCommentsByAnswerId,
   getVoteStatusComment,
+  getToxicityGrading, // Import the toxicity checking function
 } from './Services/CommentServices';
 import FormatTime from './formatTime';
 import CommentItem from './CommentItem';
@@ -45,15 +67,22 @@ import CommentItem from './CommentItem';
 interface AnswerItemProps {
   answer: any;
   user: any;
-  onEdit: (item: any, type: 'ANSWER' | 'COMMENT') => void;
+  questionTitle: string;
+  onEdit: (item: any, type: 'ANSWER' | 'COMMENT', title: string) => void;
   onReport: (item: any, type: string) => void;
   onRefresh: () => void;
   t: (key: string) => string;
 }
 
+interface ToxicityResult {
+  toxicity_score: number;
+  justification: string;
+}
+
 export default function AnswerItem({
   answer,
   user,
+  questionTitle,
   onEdit,
   onReport,
   onRefresh,
@@ -61,7 +90,6 @@ export default function AnswerItem({
 }: AnswerItemProps) {
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
-
   const [comments, setComments] = useState<any[]>([]);
   const [commentingId, setCommentingId] = useState<number | null>(null);
   const [newcomment, setNewComment] = useState('');
@@ -77,7 +105,35 @@ export default function AnswerItem({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [currentImages, setCurrentImages] = useState<string[]>([]);
 
-  const handleDelete = () => {};
+  // Toxicity checking states
+  const [isCheckingToxicity, setIsCheckingToxicity] = useState(false);
+  const [toxicityModalOpen, setToxicityModalOpen] = useState(false);
+  const [toxicityResult, setToxicityResult] = useState<ToxicityResult | null>(
+    null,
+  );
+  const [pendingCommentData, setPendingCommentData] = useState<{
+    answerId: string;
+    content: string;
+    images: File[];
+  } | null>(null);
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  const handleDelete = async () => {
+    if (toggleHiddenAnswer) {
+      try {
+        await toggleHiddenAnswer(answer.id);
+        setDeleteDialogOpen(false);
+        onRefresh();
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const openDeleteDialog = () => {
+    setDeleteDialogOpen(true);
+  };
 
   const fetchComments = async (answerId: string) => {
     try {
@@ -125,7 +181,6 @@ export default function AnswerItem({
     });
   };
 
-  // Remove comment image
   const removeCommentImage = (index: number) => {
     const newFiles = selectedCommentImages.filter((_, i) => i !== index);
     const newUrls = commentImagePreviewUrls.filter((_, i) => i !== index);
@@ -136,26 +191,92 @@ export default function AnswerItem({
     setCommentImagePreviewUrls(newUrls);
   };
 
-  const handleCommentSubmit = async (answerId: string) => {
-    const content = newcomment;
-    if (!content.trim() && selectedCommentImages.length === 0) return;
-
+  const checkToxicity = async (
+    content: string,
+    comment: string,
+  ): Promise<ToxicityResult | null> => {
     try {
-      const response = await createComment(
-        answerId,
-        content,
-        selectedCommentImages,
-      );
+      setIsCheckingToxicity(true);
+      const response = await getToxicityGrading(comment, content);
+
+      if (response.success) {
+        return response.content;
+      } else {
+        console.error(response.message);
+        return null;
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    } finally {
+      setIsCheckingToxicity(false);
+    }
+  };
+
+  const submitComment = async (
+    answerId: string,
+    content: string,
+    images: File[],
+  ) => {
+    try {
+      const response = await createComment(answerId, content, images);
       if (response.success) {
         setNewComment('');
         setSelectedCommentImages([]);
         commentImagePreviewUrls.forEach((url) => URL.revokeObjectURL(url));
         setCommentImagePreviewUrls([]);
         fetchComments(answerId);
+        setPendingCommentData(null);
+        setToxicityResult(null);
       }
     } catch (error) {
       console.error(error);
     }
+  };
+
+  // Handle comment submission with toxicity check
+  const handleCommentSubmit = async (answerId: string) => {
+    const content = newcomment;
+    if (!content.trim() && selectedCommentImages.length === 0) return;
+
+    // Check toxicity first
+    const comment = answer?.content || '';
+    const toxicityResult = await checkToxicity(content, comment);
+
+    if (toxicityResult) {
+      // Store pending comment data
+      setPendingCommentData({
+        answerId,
+        content,
+        images: selectedCommentImages,
+      });
+      setToxicityResult(toxicityResult);
+      setToxicityModalOpen(true);
+      return;
+    }
+
+    // If no toxicity detected, submit directly
+    await submitComment(answerId, content, selectedCommentImages);
+  };
+
+  // Handle proceeding with submission after toxicity warning
+  const handleProceedWithSubmission = async () => {
+    if (pendingCommentData) {
+      await submitComment(
+        pendingCommentData.answerId,
+        pendingCommentData.content,
+        pendingCommentData.images,
+      );
+    }
+    setToxicityModalOpen(false);
+    setCommentingId(null);
+  };
+
+  // Handle cancelling submission
+  const handleCancelSubmission = () => {
+    setToxicityModalOpen(false);
+    setToxicityResult(null);
+    setPendingCommentData(null);
   };
 
   const handleLike = async (answerId: string) => {
@@ -169,6 +290,19 @@ export default function AnswerItem({
     const response = await voteAnswers(answerId, -1);
     if (response.success) {
       onRefresh();
+    }
+  };
+
+  const handleChooseAnswer = async (answerId: string) => {
+    try {
+      const response = await markAnswerAsChosen(answerId);
+      if (response.success) {
+        onRefresh();
+      } else {
+        console.error(response.message);
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -244,6 +378,20 @@ export default function AnswerItem({
     );
   };
 
+  // Helper functions for toxicity display
+  const getToxicityColor = (score: number) => {
+    if (score <= 2) return 'green';
+    if (score <= 4) return 'blue';
+    if (score <= 6) return 'yellow';
+    if (score <= 8) return 'orange';
+    return 'red';
+  };
+
+  const getToxicityIcon = (score: number) => {
+    if (score <= 6) return <IconShieldCheck size={20} />;
+    return <IconAlertTriangle size={20} />;
+  };
+
   const cardBg = isDark
     ? 'linear-gradient(145deg, rgba(45, 48, 68, 0.95) 0%, rgba(35, 38, 54, 0.98) 100%)'
     : 'linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)';
@@ -251,6 +399,8 @@ export default function AnswerItem({
   const commentBg = isDark
     ? 'rgba(30, 35, 50, 0.6)'
     : 'rgba(248, 250, 252, 0.8)';
+
+  const isQuestionOwner = user?.id === answer?.question?.userId;
 
   return (
     <>
@@ -270,6 +420,12 @@ export default function AnswerItem({
               backdropFilter: 'blur(10px)',
               border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}`,
               transition: 'all 0.3s ease',
+              ...(answer.isChosen && {
+                border: `2px solid ${isDark ? '#4ade80' : '#22c55e'}`,
+                boxShadow: isDark
+                  ? '0 8px 32px rgba(74, 222, 128, 0.2)'
+                  : '0 8px 32px rgba(34, 197, 94, 0.15)',
+              }),
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-4px)';
@@ -320,6 +476,17 @@ export default function AnswerItem({
                           style={{ textTransform: 'none' }}>
                           <FormatTime createdAt={answer.createdAt} />
                         </Badge>
+                        {answer.isChosen && (
+                          <Badge
+                            variant="gradient"
+                            gradient={{ from: 'green', to: 'teal', deg: 45 }}
+                            radius="xl"
+                            size="lg"
+                            leftSection={<IconCheck size={14} />}
+                            style={{ textTransform: 'none' }}>
+                            {t('chosenAnswer')}
+                          </Badge>
+                        )}
                       </Group>
                       <Text
                         size="lg"
@@ -427,11 +594,43 @@ export default function AnswerItem({
                   </Group>
 
                   <Group gap="xs" style={{ flexShrink: 0 }}>
+                    {isQuestionOwner && (
+                      <Tooltip
+                        label={
+                          answer.isChosen
+                            ? t('unchooseAnswer')
+                            : t('chooseAnswer')
+                        }
+                        position="top">
+                        <ActionIcon
+                          onClick={() => handleChooseAnswer(answer.id)}
+                          variant={answer.isChosen ? 'filled' : 'light'}
+                          color="teal"
+                          size="lg"
+                          radius="xl"
+                          style={{ transition: 'all 0.2s ease' }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'scale(1.1)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'scale(1)';
+                          }}>
+                          {answer.isChosen ? (
+                            <IconCheckbox size={20} />
+                          ) : (
+                            <IconSquare size={20} />
+                          )}
+                        </ActionIcon>
+                      </Tooltip>
+                    )}
+
                     {user?.id == answer.userId ? (
                       <>
                         <Tooltip label={t('edit')} position="top">
                           <ActionIcon
-                            onClick={() => onEdit(answer, 'ANSWER')}
+                            onClick={() =>
+                              onEdit(answer, 'ANSWER', questionTitle)
+                            }
                             variant="light"
                             color="blue"
                             size="lg"
@@ -448,7 +647,7 @@ export default function AnswerItem({
                         </Tooltip>
                         <Tooltip label={t('delete')} position="top">
                           <ActionIcon
-                            onClick={handleDelete}
+                            onClick={() => openDeleteDialog()}
                             variant="light"
                             color="red"
                             size="lg"
@@ -582,17 +781,20 @@ export default function AnswerItem({
                       <Button
                         onClick={() => {
                           handleCommentSubmit(answer.id);
-                          setCommentingId(null);
                         }}
                         disabled={
-                          !newcomment?.trim() &&
-                          selectedCommentImages.length === 0
+                          (!newcomment?.trim() &&
+                            selectedCommentImages.length === 0) ||
+                          isCheckingToxicity
+                        }
+                        rightSection={
+                          isCheckingToxicity ? <Loader size={16} /> : undefined
                         }
                         variant="gradient"
                         gradient={{ from: 'blue', to: 'cyan', deg: 45 }}
                         radius="xl"
                         size="md">
-                        {t('send')}
+                        {isCheckingToxicity ? t('checkingContent') : t('send')}
                       </Button>
                     </Group>
                   </Stack>
@@ -613,6 +815,7 @@ export default function AnswerItem({
                     commentIndex={commentIndex}
                     answerId={answer.id}
                     user={user}
+                    answer={answer}
                     onEdit={onEdit}
                     onReport={onReport}
                     onRefreshComments={() => fetchComments(answer.id)}
@@ -624,6 +827,85 @@ export default function AnswerItem({
           </Card>
         )}
       </Transition>
+
+      <Modal
+        opened={toxicityModalOpen}
+        onClose={handleCancelSubmission}
+        title={
+          <Group align="center" gap="xs">
+            {toxicityResult && getToxicityIcon(toxicityResult.toxicity_score)}
+            <Text fw={700} size="xl">
+              {toxicityResult && toxicityResult.toxicity_score >= 7
+                ? t('toxicityWarningTitle')
+                : t('contentCheckNotification')}
+            </Text>
+          </Group>
+        }
+        centered
+        radius="md"
+        size="xl">
+        {toxicityResult && (
+          <Stack gap="md">
+            <Alert
+              color={getToxicityColor(toxicityResult.toxicity_score)}
+              icon={getToxicityIcon(toxicityResult.toxicity_score)}
+              title={(t as any)('toxicityScoreTitle', {
+                toxicity_score: toxicityResult.toxicity_score,
+              })}
+              radius="md">
+              <Text size="md">{toxicityResult.justification}</Text>
+            </Alert>
+
+            {toxicityResult.toxicity_score >= 7 ? (
+              <Stack gap="md">
+                <Text size="md" c="dimmed">
+                  {t('toxicityWarningBody')}
+                </Text>
+                <Group justify="flex-end" gap="xs">
+                  <Button
+                    variant="light"
+                    color="gray"
+                    onClick={handleCancelSubmission}
+                    radius="md"
+                    size="md">
+                    {t('editAgain')}
+                  </Button>
+                  <Button
+                    color="red"
+                    onClick={handleProceedWithSubmission}
+                    radius="md"
+                    size="md">
+                    {t('submitAnyway')}
+                  </Button>
+                </Group>
+              </Stack>
+            ) : (
+              <Stack gap="md">
+                <Text size="md" c="dimmed">
+                  {t('toxicityReviewPrompt')}
+                </Text>
+                <Group justify="flex-end" gap="xs">
+                  <Button
+                    variant="light"
+                    color="gray"
+                    onClick={handleCancelSubmission}
+                    radius="md"
+                    size="md">
+                    {t('review')}
+                  </Button>
+                  <Button
+                    color="blue"
+                    onClick={handleProceedWithSubmission}
+                    radius="md"
+                    size="md">
+                    {t('continueSending')}
+                  </Button>
+                </Group>
+              </Stack>
+            )}
+          </Stack>
+        )}
+      </Modal>
 
       <Lightbox
         open={imageModalOpen}
@@ -640,6 +922,60 @@ export default function AnswerItem({
         }}
         index={selectedImageIndex}
       />
+
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            boxShadow: '0 8px 40px rgba(0,0,0,0.2)',
+            bgcolor: isDark ? '#2c3e50' : 'white',
+          },
+        }}>
+        <DialogTitle
+          sx={{
+            bgcolor: '#ff7675',
+            color: 'white',
+            fontWeight: 700,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+          }}>
+          <DeleteIcon />
+          {t('deleteTitle')}
+        </DialogTitle>
+        <DialogContent sx={{ p: 3, mt: 2 }}>
+          <DialogContentText
+            sx={{
+              fontSize: '1rem',
+              color: isDark ? '#ecf0f1' : '#2c3e50',
+            }}>
+            {t('deleteAnswerMessage')}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ p: 3, gap: 1 }}>
+          <Button
+            onClick={() => setDeleteDialogOpen(false)}
+            style={{
+              backgroundColor: 'transparent',
+              borderRadius: 10,
+              color: isDark ? ' #bdc3c7' : ' #2c3e50',
+            }}>
+            {t('cancel')}
+          </Button>
+          <Button
+            onClick={handleDelete}
+            color="error"
+            variant="contained"
+            style={{
+              borderRadius: 10,
+              background: 'linear-gradient(135deg, #ff7675 0%, #d63031 100%)',
+            }}>
+            {t('delete')}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
