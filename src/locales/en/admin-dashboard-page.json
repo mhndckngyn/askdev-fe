@@ -61,5 +61,8 @@
   "comment": "Comment",
   "reportStatisticsByMonth": "Monthly Report Statistics",
   "dayWithNumber": "Day",
-  "reportStatistics": "Statistics of Reports"
+  "reportStatistics": "Statistics of Reports",
+  "overview": "Overview",
+  "content": "Content",
+  "report": "Report"
 }

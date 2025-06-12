@@ -4,6 +4,8 @@ import { Avatar, Group, Menu, Text, UnstyledButton } from '@mantine/core';
 import {
   IconChevronDown,
   IconChevronUp,
+  IconHistory,
+  IconHome,
   IconKey,
   IconLogout,
   IconUser,
@@ -12,7 +14,7 @@ import clsx from 'clsx';
 import { LayoutDashboard } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './UserMenu.module.css';
 import memberRoutePaths from '@/routes/user/member/paths';
 import publicRoutePaths from '@/routes/user/public/paths';
@@ -23,7 +25,11 @@ export default function UserMenu({ bottom = false }: { bottom: boolean }) {
   const navigate = useNavigate();
   const { user, logout } = useUserStore();
 
+  const location = useLocation();
+
   const [opened, setOpened] = useState(false); // dùng để animate icon mũi tên
+
+  const isAdminRoute = location.pathname.startsWith('/admin');
 
   const handleLogout = () => {
     logout();
@@ -44,12 +50,12 @@ export default function UserMenu({ bottom = false }: { bottom: boolean }) {
         leftSection={<IconUser size={16} />}>
         {t('profile')}
       </Menu.Item>
-      {/* <Menu.Item
+      <Menu.Item
         component={Link}
-        to={memberRoutePaths.editProfile}
-        leftSection={<IconKey size={16} />}>
-        {t('account-settings')}
-      </Menu.Item> */}
+        to={memberRoutePaths.historyPage}
+        leftSection={<IconHistory size={16} />}>
+        {t('history')}
+      </Menu.Item>
       <Menu.Item
         component={Link}
         to={memberRoutePaths.changePassword}
@@ -61,12 +67,23 @@ export default function UserMenu({ bottom = false }: { bottom: boolean }) {
 
   const adminLinks = (
     <>
-      <Menu.Item
-        component={Link}
-        to={adminRoutePaths.dashboard}
-        leftSection={<LayoutDashboard size={16} />}>
-        {t('manage')}
-      </Menu.Item>
+      {isAdminRoute ? (
+        <>
+          <Menu.Item
+            component={Link}
+            to={publicRoutePaths.homepage}
+            leftSection={<IconHome size={16} />}>
+            {t('homepage')}
+          </Menu.Item>
+        </>
+      ) : (
+        <Menu.Item
+          component={Link}
+          to={adminRoutePaths.dashboard}
+          leftSection={<LayoutDashboard size={16} />}>
+          {t('manage')}
+        </Menu.Item>
+      )}
       <Menu.Divider />
     </>
   );

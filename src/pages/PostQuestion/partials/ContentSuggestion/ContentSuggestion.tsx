@@ -1,5 +1,5 @@
 import { useErrorStore } from '@/stores/useErrorStore';
-import { Button, Group, List, Skeleton, Stack, Text } from '@mantine/core';
+import { Button, Group, Skeleton, Stack, Text } from '@mantine/core';
 import { IconFlareFilled } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -52,27 +52,29 @@ export default function ContentSuggestion({ questionTitle }: Props) {
   );
 
   return (
-    <Group justify="space-between" className={styles.container}>
-      <Stack gap="4px">
-        <Text className={styles.title}>{t('suggestion.title')}</Text>
-        <Text className={styles.description}>
-          {t('suggestion.description')}
-        </Text>
-      </Stack>
-      <Button
-        onClick={handleSubmit}
-        loading={isLoading}
-        rightSection={<IconFlareFilled className={styles.buttonIcon} />}>
-        {t('suggestion.button')}
-      </Button>
-      {result.length > 0 && !isLoading && (
-        <List spacing="xs">
-          {result.map((item, i) => (
-            <List.Item key={i}>{item}</List.Item>
-          ))}
-        </List>
-      )}
+    <Stack className={styles.container} gap='xs'>
+      <Group justify="space-between">
+        <Stack gap="4px">
+          <Text className={styles.title}>{t('suggestion.title')}</Text>
+          <Text className={styles.description}>
+            {t('suggestion.description')}
+          </Text>
+        </Stack>
+        <Button
+          onClick={handleSubmit}
+          loading={isLoading}
+          rightSection={<IconFlareFilled className={styles.buttonIcon} />}>
+          {t('suggestion.button')}
+        </Button>
+      </Group>
+        {result.length > 0 && !isLoading && (
+          <ul className={styles.suggestionList}>
+            {result.map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
+          </ul>
+        )}
       {isLoading && skeleton}
-    </Group>
+    </Stack>
   );
 }

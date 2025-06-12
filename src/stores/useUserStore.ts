@@ -10,6 +10,7 @@ type User = {
 
 type UserState = {
   user: User | null;
+  isLoading: boolean;
 
   setUser: (user: User) => void;
   fetchUser: () => Promise<void>;
@@ -18,10 +19,12 @@ type UserState = {
 
 export const useUserStore = create<UserState>((set) => ({
   user: null,
+  isLoading: false,
 
   setUser: (user) => set({ user }),
 
   fetchUser: async () => {
+    set({ isLoading: true }); 
     const responseBody = await fetcher({ method: 'GET', route: 'user/me' });
     if (responseBody.success) {
       set({ user: responseBody.content.user });
@@ -29,6 +32,7 @@ export const useUserStore = create<UserState>((set) => ({
       // !responseBody.success hoặc lỗi bất ngờ (ko có responsebody)
       set({ user: null });
     }
+    set({ isLoading: false }); 
   },
 
   logout: async () => {

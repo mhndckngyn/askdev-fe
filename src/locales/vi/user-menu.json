@@ -1,6 +1,8 @@
 {
   "profile": "Trang cá nhân",
   "account-settings": "Cài đặt tài khoản",
+  "homepage": "Trang chủ",
   "manage": "Quản lý Askdev",
-  "logout": "Đăng xuất"
+  "logout": "Đăng xuất",
+  "history": "Lịch sử hoạt động"
 }

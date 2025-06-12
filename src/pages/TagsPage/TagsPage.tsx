@@ -8,7 +8,7 @@ import TagsList from './partials/TagsList';
 import { searchTags } from './services';
 
 const timeout = 700;
-const pageSize = 16;
+const pageSize = 12;
 
 export default function TagsPage() {
   const { t } = useTranslation('tagsPage');
@@ -72,6 +72,7 @@ export default function TagsPage() {
       </Text>
       <TextInput
         onChange={handleInput}
+        radius='xl'
         placeholder={t('filter-tag')}
         leftSection={<IconSearch size={16} />}
         className={styles.search}

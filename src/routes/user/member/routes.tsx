@@ -1,6 +1,7 @@
 import ChangePassword from '@/pages/ChangePassword';
 import EditProfile from '@/pages/EditProfile';
 import EditQuestion from '@/pages/EditQuestion';
+import HistoryPage from '@/pages/HistoryPage';
 import PostQuestion from '@/pages/PostQuestion';
 import { Route } from 'react-router-dom';
 import MemberGuard from './MemberGuard';
@@ -10,6 +11,8 @@ const memberRoutes = (
   <Route element={<MemberGuard />}>
     <Route path={memberRoutePaths.postQueston} element={<PostQuestion />} />
     <Route path={memberRoutePaths.editProfile} element={<EditProfile />} />
+    <Route path={memberRoutePaths.historyPage} element={<HistoryPage />} />
+
     <Route
       path={memberRoutePaths.changePassword}
       element={<ChangePassword />}

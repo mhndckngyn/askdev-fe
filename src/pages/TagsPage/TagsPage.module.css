@@ -1,6 +1,10 @@
 .container {
   display: flex;
   flex-direction: column;
+  background: light-dark(
+    linear-gradient(135deg, #3498db 0%, #2980b9 25%, #1abc9c 50%, #16a085 100%),
+    linear-gradient(135deg, #0c1726 0%, #1a2332 25%, #2c3e50 50%, #34495e 100%)
+  );
 }
 
 .title {
@@ -10,7 +14,6 @@
 }
 
 .titleDescription {
-  color: var(--mantine-color-dimmed);
   max-width: 75ch;
 }
 
@@ -23,7 +26,7 @@
   max-width: 300px;
   margin-top: var(--mantine-spacing-xl);
   margin-bottom: var(--mantine-spacing-lg);
-  border-radius: var(--mantine-radius-md);
+  border-radius: var(--mantine-radius-xl);
 }
 
 .tagItem {
@@ -32,13 +35,17 @@
   flex-direction: column;
   gap: var(--mantine-spacing-xs);
   border: 1px solid var(--mantine-color-default-border);
-  border-radius: var(--mantine-radius-default);
+  border-radius: var(--mantine-radius-lg);
   padding: var(--mantine-spacing-sm);
+  background-color: light-dark(
+    var(--mantine-color-blue-0),
+    rgba(28, 40, 51, 0.8)
+  );
 }
 
 .tagDescription {
   flex-grow: 1;
-  color: var(--mantine-color-dimmed);
+  color: light;
   font-size: var(--mantine-font-size-sm);
 }
 

@@ -74,7 +74,7 @@ function AnswerTableComponent({
     clipboard.copy(value);
   };
 
-  const renderQuestionIdCell = (answer: AnswerAdminView) => (
+  const renderQuestionCell = (answer: AnswerAdminView) => (
     <Group gap={8}>
       <Link
         to={publicRoutePaths.questionDetail.replace(':id', answer.question.id)}
@@ -85,7 +85,7 @@ function AnswerTableComponent({
       <Tooltip label={t('copyQuestionId')}>
         <ActionIcon
           size="sm"
-          variant="light"
+          variant="subtle"
           onClick={() => copy(answer.question.id)}>
           <IconClipboard className={styles.tableIcon} />
         </ActionIcon>
@@ -144,19 +144,19 @@ function AnswerTableComponent({
         onClick={() => toggleVisibility(answer)}>
         <ActionIcon
           size="sm"
-          variant="light"
+          variant="subtle"
           onClick={() => toggleVisibility(answer)}>
           {answer.isHidden ? (
-            <IconEye className={styles.tableIcon} />
+            <IconEye className={styles.tableIcon} color="orange"/>
           ) : (
-            <IconEyeOff className={styles.tableIcon} />
+            <IconEyeOff className={styles.tableIcon} color="orange"/>
           )}
         </ActionIcon>
       </Tooltip>
 
       <Tooltip label={t('copyAnswerId')}>
-        <ActionIcon size="sm" variant="light" onClick={() => copy(answer.id)}>
-          <IconClipboard className={styles.tableIcon} />
+        <ActionIcon size="sm" variant="subtle" onClick={() => copy(answer.id)}>
+          <IconClipboard className={styles.tableIcon} color="green" />
         </ActionIcon>
       </Tooltip>
     </Group>
@@ -179,12 +179,6 @@ function AnswerTableComponent({
       }
       columns={[
         {
-          accessor: 'questionId',
-          title: t('question'),
-          width: 350,
-          render: renderQuestionIdCell /* TODO: Link to question */,
-        },
-        {
           accessor: 'content',
           title: t('content'),
           width: 400,
@@ -193,6 +187,12 @@ function AnswerTableComponent({
               {row.content}
             </Text>
           ),
+        },
+        {
+          accessor: 'question',
+          title: t('question'),
+          width: 350,
+          render: renderQuestionCell
         },
         {
           accessor: 'user.username',
@@ -242,6 +242,7 @@ function AnswerTableComponent({
         {
           accessor: 'actions',
           title: t('actions'),
+          width: '0%',
           render: renderRecordActions,
         },
       ]}

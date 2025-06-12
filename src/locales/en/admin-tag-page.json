@@ -28,5 +28,7 @@
   "tagEditFailed": "Failed to edit tag",
   "tagMergeSuccess": "Tags merged successfully",
   "tagMergeFailed": "Failed to merge tags",
-  "viewTag": "View tag details"
+  "viewTag": "View tag details",
+  "generate-with-ai": "Generate description with AI",
+  "generate-description-failed": "Generate description failed. Please try again later."
 }

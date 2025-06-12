@@ -37,3 +37,13 @@
     transform: rotate(360deg);
   }
 }
+
+.suggestionList {
+  margin: 0px;
+  padding-left: var(--mantine-spacing-lg);
+
+  li {
+    text-align: justify;
+    margin-top: var(--mantine-spacing-xs);
+  }
+}

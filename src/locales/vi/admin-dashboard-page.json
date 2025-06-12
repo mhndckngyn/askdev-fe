@@ -61,5 +61,8 @@
   "comment": "Phản hồi",
   "reportStatisticsByMonth": "Thống kê số báo cáo theo tháng",
   "dayWithNumber": "Ngày",
-  "reportStatistics": "Thống kê báo cáo"
+  "reportStatistics": "Thống kê báo cáo",
+  "overview": "Tổng quan",
+  "content": "Nội dung",
+  "report": "Báo cáo"
 }

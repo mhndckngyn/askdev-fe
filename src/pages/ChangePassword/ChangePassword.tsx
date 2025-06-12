@@ -7,7 +7,7 @@ import publicRoutePaths from '@/routes/user/public/paths';
 import { useActionStore } from '@/stores/useActionModalStore';
 import { useErrorStore } from '@/stores/useErrorStore';
 import { useUserStore } from '@/stores/useUserStore';
-import { Button, Center, PasswordInput, Stack, Title } from '@mantine/core';
+import { Button, Group, Image, PasswordInput, Stack, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +20,7 @@ import {
   getCurrentPasswordError,
 } from './schemas';
 import { changePassword, checkOAuth } from './services';
+import { passwordLogo } from '@/assets/images';
 
 export default function ChangePassword() {
   const { t } = useTranslation('changePassword');
@@ -101,7 +102,7 @@ export default function ChangePassword() {
   if (isOAuth) return <OAuthUserError />;
 
   return (
-    <Center className={styles.container}>
+    <Group>
       <Stack className={styles.stack}>
         <Title size="h2">{t('change-password')}</Title>
         <GoBack />
@@ -137,6 +138,7 @@ export default function ChangePassword() {
           </Stack>
         </form>
       </Stack>
-    </Center>
+      <Image src={passwordLogo} w='500'/>
+    </Group>
   );
 }

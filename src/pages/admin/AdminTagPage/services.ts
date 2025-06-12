@@ -1,6 +1,7 @@
 import fetcher from '@/utils/fetcher';
 import dayjs from 'dayjs';
 import { Filter } from './AdminTagPage';
+import { ApiResponse } from '@/types';
 
 type GetTagsParam = Filter & {
   page: number;
@@ -76,3 +77,20 @@ export async function createTag(data: {
     },
   });
 }
+
+export async function generateTagDescription(
+  tagName: string,
+): Promise<ApiResponse<TagDescriptionResult>> {
+  return fetcher({
+    method: 'POST',
+    route: 'tag/generate-description',
+    payload: {
+      tagName,
+    },
+  });
+}
+
+type TagDescriptionResult = {
+  descriptionVi: string;
+  descriptionEn: string;
+};

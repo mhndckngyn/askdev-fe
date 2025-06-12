@@ -9,11 +9,12 @@ import {
   Backdrop,
 } from '@mui/material';
 import { X, Edit, Sparkles, Tag } from 'lucide-react';
-import { createTag } from '../services';
+import { createTag, generateTagDescription } from '../services';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { notifications, Notifications } from '@mantine/notifications';
-import { useMantineColorScheme } from '@mantine/core';
+import { useMantineColorScheme, Button as MantineButton } from '@mantine/core';
+import { IconFlareFilled } from '@tabler/icons-react';
 
 interface Props {
   open: boolean;
@@ -29,6 +30,7 @@ function AddPage({ open, handleToggle, onSuccess }: Props) {
   const [submit, setSubmit] = useState(false);
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
+  const [isGenerating, setGenerating] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -84,6 +86,26 @@ function AddPage({ open, handleToggle, onSuccess }: Props) {
       console.error(error);
     }
   };
+
+  const handleGenerateDescription = async () => {
+    if (name === "") {
+      return;
+    }
+
+    setGenerating(true);
+
+    const result = await generateTagDescription(name);
+    if (result.success) {
+      setDescriptionVi(result.content.descriptionVi);
+      setDescriptionEn(result.content.descriptionEn);
+    } else {
+      notifications.show({
+        message: t('generate-description-failed')
+      });
+    }
+
+    setGenerating(false);
+  }
 
   const paperStyles = {
     width: { xs: '95%', sm: '85%', md: '65%', lg: '55%' },
@@ -327,6 +349,14 @@ function AddPage({ open, handleToggle, onSuccess }: Props) {
                       },
                     }}
                   />
+
+                  <MantineButton
+                    onClick={handleGenerateDescription}
+                    loading={isGenerating}
+                    variant='light'
+                    rightSection={<IconFlareFilled />}>
+                    {t('generate-with-ai')}
+                  </MantineButton>
 
                   <TextField
                     label={t('descriptionVi') + '*'}

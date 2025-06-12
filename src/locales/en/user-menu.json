@@ -1,6 +1,8 @@
 {
   "profile": "Profile",
   "account-settings": "Account settings",
+  "homepage": "Homepage",
   "manage": "Manage Askdev",
-  "logout": "Logout"
+  "logout": "Logout",
+  "history": "Activity history"
 }

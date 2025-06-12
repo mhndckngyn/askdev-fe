@@ -91,7 +91,7 @@ function QuestionTableComponent({
 
   const renderStatCell = ({ views, votes, answers }: QuestionAdminView) => {
     return (
-      <Group gap="xs">
+      <Group gap="xs" justify='center'>
         <Tooltip label="Views" withArrow>
           <Badge
             variant="light"
@@ -231,6 +231,7 @@ function QuestionTableComponent({
           accessor: 'isAnswered',
           title: t('answered'),
           textAlign: 'center',
+          width: 100,
           render: (row) => (
             <ThemeIcon
               color={row.isAnswered ? 'red' : 'green'}

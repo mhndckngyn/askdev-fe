@@ -283,6 +283,7 @@ export const HistoryList: React.FC<HistoryListProps> = ({
                         variant="h6"
                         sx={{
                           ml: 0,
+                          width:'95%',
                           fontWeight: 600,
                           color: textColor,
                           lineHeight: 1.3,

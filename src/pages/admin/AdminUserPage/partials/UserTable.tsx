@@ -77,7 +77,7 @@ function UserTableComponent({
     const response = await action(banTarget.userId, reason);
 
     if (response.success) {
-      setRender(cur => cur + 1);
+      setRender((cur) => cur + 1);
       notifications.show({ message });
     } else {
       notifications.show({ message: error, color: 'red', icon: <IconX /> });
@@ -95,28 +95,30 @@ function UserTableComponent({
 
   const renderActionCell = (user: UserAdminView) => (
     <Group gap={4} justify="center" wrap="nowrap">
-      <Tooltip label={user.isBanned ? t('unban-user') : t('ban-user')}>
-        <ActionIcon
-          onClick={() => {
-            handleSelectBanTarget(
-              user.id,
-              user.username,
-              user.isBanned ? 'unban' : 'ban',
-            );
-          }}
-          size="sm"
-          variant="light">
-          {user.isBanned ? (
-            <IconUser className={styles.tableIcon} />
-          ) : (
-            <IconUserOff className={styles.tableIcon} />
-          )}
-        </ActionIcon>
-      </Tooltip>
+      {user.role !== 'ADMIN' && (
+        <Tooltip label={user.isBanned ? t('unban-user') : t('ban-user')}>
+          <ActionIcon
+            onClick={() => {
+              handleSelectBanTarget(
+                user.id,
+                user.username,
+                user.isBanned ? 'unban' : 'ban',
+              );
+            }}
+            size="sm"
+            variant="subtle">
+            {user.isBanned ? (
+              <IconUser className={styles.tableIcon} color="lime" />
+            ) : (
+              <IconUserOff className={styles.tableIcon} color="red" />
+            )}
+          </ActionIcon>
+        </Tooltip>
+      )}
       <Tooltip label={t('copy-username')}>
         <ActionIcon
           size="sm"
-          variant="light"
+          variant="subtle"
           onClick={() => copy(user.username)}>
           <IconClipboard className={styles.tableIcon} />
         </ActionIcon>

@@ -80,7 +80,7 @@ function CommentTableComponent({
       </Text>
 
       <Tooltip label={t('copy-answer-id')}>
-        <ActionIcon size="sm" variant="light" onClick={() => copy(answer.id)}>
+        <ActionIcon size="sm" variant="subtle" onClick={() => copy(answer.id)}>
           <IconClipboard className={styles.tableIcon} />
         </ActionIcon>
       </Tooltip>
@@ -122,7 +122,8 @@ function CommentTableComponent({
         onClick={() => toggleVisibility(comment)}>
         <ActionIcon
           size="sm"
-          variant="light"
+          variant="subtle"
+          color='orange'
           onClick={() => toggleVisibility(comment)}>
           {comment.isHidden ? (
             <IconEye className={styles.tableIcon} />
@@ -133,8 +134,8 @@ function CommentTableComponent({
       </Tooltip>
 
       <Tooltip label={t('copy-comment-id')}>
-        <ActionIcon size="sm" variant="light" onClick={() => copy(comment.id)}>
-          <IconClipboard className={styles.tableIcon} />
+        <ActionIcon size="sm" variant="subtle" onClick={() => copy(comment.id)}>
+          <IconClipboard className={styles.tableIcon} color='lime'/>
         </ActionIcon>
       </Tooltip>
 
@@ -146,8 +147,8 @@ function CommentTableComponent({
             comment.question.id,
           )}
           size="sm"
-          variant="light">
-          <IconExternalLink className={styles.tableIcon} />
+          variant="subtle">
+          <IconExternalLink className={styles.tableIcon} color='indigo'/>
         </ActionIcon>
       </Tooltip>
     </Group>

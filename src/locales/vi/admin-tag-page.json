@@ -28,5 +28,7 @@
   "tagEditFailed": "Chỉnh sửa thẻ thất bại",
   "tagMergeSuccess": "Kết hợp thẻ thành công",
   "tagMergeFailed": "Kết hợp thẻ thất bại",
-  "viewTag": "Xem chi tiết thẻ"
+  "viewTag": "Xem chi tiết thẻ",
+  "generate-with-ai": "Tạo mô tả thẻ với AI",
+  "generate-description-failed": "Tạo mô tả thất bại, hãy thử lại sau."
 }
