@@ -11,7 +11,7 @@ import {
   Zoom,
   Backdrop,
 } from '@mui/material';
-import { useMantineColorScheme } from '@mantine/core';
+import { TypographyStylesProvider, useMantineColorScheme } from '@mantine/core';
 import QuestionContent from './QuestionContent';
 import ImageGrid from './ImageGrid';
 import FormatTime from './formatTime';
@@ -396,7 +396,9 @@ function QuestionHistory({ open, handleToggle, question }: Props) {
                         fontWeight: 600,
                       },
                     }}>
-                    <QuestionContent content={history.content} />
+                    <TypographyStylesProvider>
+                      <QuestionContent content={history.content} />
+                    </TypographyStylesProvider>
                   </Box>
 
                   {history.images?.length > 0 && (

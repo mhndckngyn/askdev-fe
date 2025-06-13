@@ -8,7 +8,7 @@ import {
   IconButton,
   Chip,
 } from '@mui/material';
-import { useMantineColorScheme } from '@mantine/core';
+import { TypographyStylesProvider, useMantineColorScheme } from '@mantine/core';
 import QuestionContent from './QuestionContent';
 import ImageGrid from './ImageGrid';
 import { useParams } from 'react-router-dom';
@@ -386,7 +386,9 @@ export default function QuestionView({ data }: Props) {
             },
             color: isDark ? '#ffffff' : '#1a202c',
           }}>
-          <QuestionContent content={data.content} />
+          <TypographyStylesProvider>
+            <QuestionContent content={data.content} />
+          </TypographyStylesProvider>
         </Box>
 
         {data.images?.length > 0 && (

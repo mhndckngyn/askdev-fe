@@ -10,7 +10,7 @@ import {
   Fade,
   Zoom,
 } from '@mui/material';
-import { useMantineColorScheme } from '@mantine/core';
+import { TypographyStylesProvider, useMantineColorScheme } from '@mantine/core';
 import QuestionContent from './QuestionContent';
 import ImageGrid from './ImageGrid';
 import { getQuestion } from './Services/QuestionServices';
@@ -441,7 +441,9 @@ const QuestionView = () => {
                 },
                 color: isDark ? '#ffffff' : '#1a202c',
               }}>
-              <QuestionContent content={data.content} />
+              <TypographyStylesProvider>
+                <QuestionContent content={data.content} />
+              </TypographyStylesProvider>
             </Box>
           </Fade>
 

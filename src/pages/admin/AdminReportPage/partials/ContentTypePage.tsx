@@ -1,6 +1,6 @@
 import { Box, Paper, Typography, Modal, Avatar, Divider } from '@mui/material';
 import { IconX } from '@tabler/icons-react';
-import { useMantineColorScheme } from '@mantine/core';
+import { TypographyStylesProvider, useMantineColorScheme } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import FormatTime from './formatTime';
 import QuestionContent from './QuestionContent';
@@ -278,7 +278,9 @@ function ContentTypePage({ open, handleToggle, data }: Props) {
                   color: themeColors.text,
                   mb: 3,
                 }}>
-                <QuestionContent content={data.content.question.content} />
+                <TypographyStylesProvider>
+                  <QuestionContent content={data.content.question.content} />
+                </TypographyStylesProvider>
               </Box>
 
               {/* Images */}
