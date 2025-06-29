@@ -176,7 +176,7 @@ export default function EditQuestion() {
               newImages={form.values.newImages}
               onChangeExistingImages={handleChangeExistingImages}
               onChangeNewImages={handleChangeNewImages}
-              limit={Infinity}
+              limit={5}
             />
             <Button type="submit" variant="filled" loading={isSubmitting}>
               {t('save')}

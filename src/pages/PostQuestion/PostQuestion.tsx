@@ -118,7 +118,7 @@ export default function PostQuestion() {
             <ImageDropzone
               currentImages={form.values.images}
               onImageChange={(value) => form.setFieldValue('images', value)}
-              maxImages={Infinity}
+              maxImages={5}
             />
             <Button type="submit" variant="filled" loading={isSubmitting}>
               {t('submit')}

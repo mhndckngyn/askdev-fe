@@ -191,8 +191,8 @@ function QuestionHistory({ open, handleToggle, question }: Props) {
                   zIndex: 10,
                   borderBottom: `2px solid ${themeColors.border}`,
                   borderRadius: '20px 20px 0 0',
-                  background: `linear-gradient(135deg, ${themeColors.primary}15, ${themeColors.secondary}15)`,
-                  backdropFilter: 'blur(10px)',
+                  // background: `linear-gradient(135deg, ${themeColors.primary}15, ${themeColors.secondary}15)`,
+                  // backdropFilter: 'blur(10px)',
                 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                   <History size={24} color={themeColors.primary} />
